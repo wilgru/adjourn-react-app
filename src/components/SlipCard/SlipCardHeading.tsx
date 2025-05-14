@@ -2,12 +2,12 @@ import { PushPin, Flag } from "@phosphor-icons/react";
 import { cn } from "src/utils/cn";
 import type { Slip } from "src/types/Slip.type";
 
-type SlipHeadingProps = {
+type SlipCardHeadingProps = {
   slip: Slip;
   isHovered: boolean;
 };
 
-export const SlipHeading = ({ slip, isHovered }: SlipHeadingProps) => {
+export const SlipCardHeading = ({ slip, isHovered }: SlipCardHeadingProps) => {
   return (
     <div
       className={cn(

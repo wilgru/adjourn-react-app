@@ -3,7 +3,7 @@ import { useState, forwardRef } from "react";
 import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
-import { SlipHeading } from "src/components/SlipHeading/SlipHeading";
+import { SlipCardHeading } from "src/components/SlipCard/SlipCardHeading";
 import { Toggle } from "src/components/Toggle/Toggle";
 import { colours } from "src/constants/colours.constant";
 import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
@@ -33,7 +33,7 @@ export const SlipCard = forwardRef<
         colour.backgroundGlow
       )}
     >
-      <SlipHeading slip={slip} isHovered={isHovered} />
+      <SlipCardHeading slip={slip} isHovered={isHovered} />
 
       {!isSlipContentEmpty(slip.content) && (
         <QuillContentView content={slip.content} />
