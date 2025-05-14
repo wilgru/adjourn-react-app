@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 import { useState } from "react";
+import { Icon } from "src/components/Icon/Icon";
 import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
-import { Icon } from "../Icon/Icon";
 import type { Colour } from "src/types/Colour.type";
 
 type ButtonProps = {

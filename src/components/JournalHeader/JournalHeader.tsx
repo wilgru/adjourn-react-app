@@ -1,7 +1,7 @@
 import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Button } from "src/components/Button/Button";
+import { Button } from "src/components/controls/Button/Button";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "../EditJournalModal/EditJournalModal";

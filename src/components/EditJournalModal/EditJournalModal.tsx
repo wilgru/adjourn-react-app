@@ -1,9 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
-import { Button } from "src/components/Button/Button";
-import { ColourPicker } from "src/components/ColourPicker/ColourPicker";
 import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
+import { Button } from "src/components/controls/Button/Button";
+import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { DeleteJournalModal } from "../DeleteJournalModal/DeleteJournalModal";

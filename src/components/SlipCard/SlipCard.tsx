@@ -1,10 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState, forwardRef } from "react";
-import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
 import { SlipCardHeading } from "src/components/SlipCard/SlipCardHeading";
-import { Toggle } from "src/components/Toggle/Toggle";
+import { Button } from "src/components/controls/Button/Button";
+import { Toggle } from "src/components/controls/Toggle/Toggle";
 import { colours } from "src/constants/colours.constant";
 import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
 import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";

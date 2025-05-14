@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "src/components/Button/Button";
+import { Button } from "src/components/controls/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { colours } from "src/constants/colours.constant";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
