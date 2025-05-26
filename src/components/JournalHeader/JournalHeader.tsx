@@ -21,11 +21,13 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
     <div className="border-b border-stone-200 pb-4">
       <div className="flex justify-between items-center">
         <div className="flex gap-3">
-          <Icon iconName={journal.icon} size="xl" />
+          <Icon
+            className={cn(journal.colour.text)}
+            iconName={journal.icon}
+            size="xl"
+          />
 
-          <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
-            {journal.name}
-          </h1>
+          <h1 className="font-title text-5xl">{journal.name}</h1>
         </div>
 
         <div className="flex gap-1 p-1 border border-stone-200 rounded-full">
