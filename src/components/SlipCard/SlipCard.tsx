@@ -33,7 +33,7 @@ export const SlipCard = forwardRef<
         colour.backgroundGlow
       )}
     >
-      <SlipCardHeading slip={slip} isHovered={isHovered} />
+      <SlipCardHeading slip={slip} />
 
       {!isSlipContentEmpty(slip.content) && (
         <QuillContentView content={slip.content} />
@@ -83,6 +83,10 @@ export const SlipCard = forwardRef<
           </Dialog.Root>
         </div>
       </div>
+
+      <p className={"text-xs text-stone-500"}>
+        {slip.created.format("ddd D MMMM YYYY")}
+      </p>
     </div>
   );
 });
