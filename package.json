@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run srat:pocketbase && start:vite",
+    "dev": "npm run start:pocketbase && npm run start:vite",
     "start:pocketbase": "cd ./pocketbase && docker compose down && docker compose up -d",
     "start:vite": "vite",
     "build": "tsc && vite build",
