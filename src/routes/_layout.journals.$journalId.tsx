@@ -54,7 +54,7 @@ export default function JournalComponent() {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="w-[700px] overflow-y-scroll">
+      <div className="w-[800px] overflow-y-scroll">
         <div className="p-5 mb-[50vh] mx-9 mt-4 border min-h-full border-stone-200 rounded-3xl flex flex-col gap-8 bg-white drop-shadow">
           <JournalHeader journal={journal} slipGroups={slipGroups} />
 
