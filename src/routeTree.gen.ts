@@ -14,10 +14,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
-import { Route as IndexImport } from './routes/index'
-import { Route as LayoutStreamImport } from './routes/_layout.stream'
 import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
 import { Route as LayoutJournalsJournalIdImport } from './routes/_layout.journals.$journalId'
+import { Route as LayoutDayDateStringImport } from './routes/_layout.day.$dateString'
 
 // Create/Update Routes
 
@@ -38,18 +37,6 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LayoutStreamRoute = LayoutStreamImport.update({
-  id: '/stream',
-  path: '/stream',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
 const LayoutFlaggedRoute = LayoutFlaggedImport.update({
   id: '/flagged',
   path: '/flagged',
@@ -62,17 +49,16 @@ const LayoutJournalsJournalIdRoute = LayoutJournalsJournalIdImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutDayDateStringRoute = LayoutDayDateStringImport.update({
+  id: '/day/$dateString',
+  path: '/day/$dateString',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -101,11 +87,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFlaggedImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/stream': {
-      id: '/_layout/stream'
-      path: '/stream'
-      fullPath: '/stream'
-      preLoaderRoute: typeof LayoutStreamImport
+    '/_layout/day/$dateString': {
+      id: '/_layout/day/$dateString'
+      path: '/day/$dateString'
+      fullPath: '/day/$dateString'
+      preLoaderRoute: typeof LayoutDayDateStringImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/journals/$journalId': {
@@ -122,13 +108,13 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutFlaggedRoute: typeof LayoutFlaggedRoute
-  LayoutStreamRoute: typeof LayoutStreamRoute
+  LayoutDayDateStringRoute: typeof LayoutDayDateStringRoute
   LayoutJournalsJournalIdRoute: typeof LayoutJournalsJournalIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutFlaggedRoute: LayoutFlaggedRoute,
-  LayoutStreamRoute: LayoutStreamRoute,
+  LayoutDayDateStringRoute: LayoutDayDateStringRoute,
   LayoutJournalsJournalIdRoute: LayoutJournalsJournalIdRoute,
 }
 
@@ -136,76 +122,68 @@ const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
-  '/stream': typeof LayoutStreamRoute
+  '/day/$dateString': typeof LayoutDayDateStringRoute
   '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
-  '/stream': typeof LayoutStreamRoute
+  '/day/$dateString': typeof LayoutDayDateStringRoute
   '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_layout/flagged': typeof LayoutFlaggedRoute
-  '/_layout/stream': typeof LayoutStreamRoute
+  '/_layout/day/$dateString': typeof LayoutDayDateStringRoute
   '/_layout/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | ''
     | '/login'
     | '/signup'
     | '/flagged'
-    | '/stream'
+    | '/day/$dateString'
     | '/journals/$journalId'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | ''
     | '/login'
     | '/signup'
     | '/flagged'
-    | '/stream'
+    | '/day/$dateString'
     | '/journals/$journalId'
   id:
     | '__root__'
-    | '/'
     | '/_layout'
     | '/login'
     | '/signup'
     | '/_layout/flagged'
-    | '/_layout/stream'
+    | '/_layout/day/$dateString'
     | '/_layout/journals/$journalId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
@@ -221,20 +199,16 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/_layout",
         "/login",
         "/signup"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
-    },
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/flagged",
-        "/_layout/stream",
+        "/_layout/day/$dateString",
         "/_layout/journals/$journalId"
       ]
     },
@@ -248,8 +222,8 @@ export const routeTree = rootRoute
       "filePath": "_layout.flagged.tsx",
       "parent": "/_layout"
     },
-    "/_layout/stream": {
-      "filePath": "_layout.stream.tsx",
+    "/_layout/day/$dateString": {
+      "filePath": "_layout.day.$dateString.tsx",
       "parent": "/_layout"
     },
     "/_layout/journals/$journalId": {

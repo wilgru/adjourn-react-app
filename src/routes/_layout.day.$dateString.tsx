@@ -1,61 +1,61 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { colours } from "src/constants/colours.constant";
-import { useGetSlips } from "src/hooks/slips/useGetSlips";
-import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import isAuthenticated from "src/utils/users/isAuthenticated";
-import { SlipCard } from "../components/SlipCard/SlipCard";
-import TableOfContents from "../components/TableOfContents/TableOfContents";
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
+import { colours } from 'src/constants/colours.constant'
+import { useGetSlips } from 'src/hooks/slips/useGetSlips'
+import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver'
+import isAuthenticated from 'src/utils/users/isAuthenticated'
+import { SlipCard } from '../components/SlipCard/SlipCard'
+import TableOfContents from '../components/TableOfContents/TableOfContents'
 
-export const Route = createFileRoute("/_layout/stream")({
+export const Route = createFileRoute('/_layout/day/$dateString')({
   component: StreamIndexComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: "/login",
+        to: '/login',
         search: {
           // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
           redirect: location.href,
         },
-      });
+      })
     }
   },
-});
+})
 
 function StreamIndexComponent() {
-  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false });
-  const [bottomSlip, setBottomSlip] = useState<HTMLDivElement | null>();
-  const slipRefs = useRef<HTMLDivElement[]>([]);
-  const [navigationId, setNavigationId] = useState("");
+  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false })
+  const [bottomSlip, setBottomSlip] = useState<HTMLDivElement | null>()
+  const slipRefs = useRef<HTMLDivElement[]>([])
+  const [navigationId, setNavigationId] = useState('')
 
   useIntersectionObserver(
     slipRefs,
     (entry) => {
-      setNavigationId(entry.target.id);
+      setNavigationId(entry.target.id)
     },
-    { rootMargin: "-10% 0% -90% 0%" },
-    { disabled: false }
-  );
+    { rootMargin: '-10% 0% -90% 0%' },
+    { disabled: false },
+  )
 
   useEffect(() => {
-    const lastSlipGroup = slipGroups.at(slipGroups.length - 1);
+    const lastSlipGroup = slipGroups.at(slipGroups.length - 1)
 
-    lastSlipGroup && setNavigationId(lastSlipGroup?.title);
-  }, [slipGroups]);
+    lastSlipGroup && setNavigationId(lastSlipGroup?.title)
+  }, [slipGroups])
 
-  const lastSlipRef = slipRefs.current.at(slipRefs.current.length - 1);
+  const lastSlipRef = slipRefs.current.at(slipRefs.current.length - 1)
   if (lastSlipRef !== bottomSlip) {
     lastSlipRef?.scrollIntoView({
-      behavior: "instant",
-    });
+      behavior: 'instant',
+    })
 
-    setBottomSlip(lastSlipRef);
+    setBottomSlip(lastSlipRef)
   }
 
   const length = slipGroups.reduce(
     (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
-    0
-  );
+    0,
+  )
 
   return (
     <div className="flex h-full">
@@ -64,7 +64,7 @@ function StreamIndexComponent() {
           <div
             ref={(el: HTMLDivElement | null) => {
               if (el && !slipRefs.current.includes(el)) {
-                slipRefs.current.push(el);
+                slipRefs.current.push(el)
               }
             }}
             id={group.title}
@@ -99,5 +99,5 @@ function StreamIndexComponent() {
         />
       </div>
     </div>
-  );
+  )
 }

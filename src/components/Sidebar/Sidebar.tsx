@@ -33,7 +33,7 @@ export const Sidebar = () => {
               ghost
               iconName="calendarDot"
               title="Today"
-              to="/stream/"
+              to="/day/"
               expanded={true}
             />
 

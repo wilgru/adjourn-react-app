@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
-import { Button } from "src/components/controls/Button/Button";
 import { Input } from "src/components/Input/Input";
+import { Button } from "src/components/controls/Button/Button";
 import { useLogin } from "src/hooks/users/useLogin";
 import { useUser } from "src/hooks/users/useUser";
 
@@ -36,11 +36,11 @@ function LoginIndexComponent(): JSX.Element {
     await login({ email: formData.email, password: formData.password });
 
     // redirect on successful login
-    navigate({ to: "/stream" });
+    navigate({ to: "/day" });
   };
 
   useEffect(() => {
-    user && navigate({ to: "/stream" });
+    user && navigate({ to: "/day" });
   }, [user, navigate]);
 
   return (
