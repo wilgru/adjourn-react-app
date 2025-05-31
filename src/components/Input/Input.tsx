@@ -33,7 +33,7 @@ export const Input = ({
       onChange={onChange}
       value={value}
       className={cn(
-        "block w-full bg-white rounded-md border border-stone-300 placeholder:text-stone-500",
+        "block w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-500",
         InputSize[size]
       )}
     />

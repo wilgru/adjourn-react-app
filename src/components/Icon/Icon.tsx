@@ -14,6 +14,7 @@ import {
   Palette,
   CaretLeft,
   CaretRight,
+  CalendarDot,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -70,6 +71,8 @@ const Icon = ({
       return <ArrowsDownUp {...iconProps} />;
     case "house":
       return <House {...iconProps} />;
+    case "calendarDot":
+      return <CalendarDot {...iconProps} />;
     case "user":
       return <UserCircle {...iconProps} />;
     case "palette":

@@ -183,7 +183,7 @@ const QuillEditor = forwardRef(
       <div
         id="quill-editor"
         ref={containerRef}
-        className="h-fit placeholder-stone-500"
+        className="h-fit placeholder-slate-500"
       ></div>
     );
   }

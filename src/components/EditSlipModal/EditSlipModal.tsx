@@ -80,7 +80,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-      <Dialog.Content className="fixed left-[12%] top-1/4 max-h-[85vh] w-3/4 max-w-[75%] bg-white flex flex-col gap-4 p-2 border border-stone-600 rounded-lg drop-shadow">
+      <Dialog.Content className="fixed left-[12%] top-1/4 max-h-[85vh] w-3/4 max-w-[75%] bg-white flex flex-col gap-4 p-2 border border-slate-600 rounded-lg drop-shadow">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
@@ -97,11 +97,11 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                     return newSlipData;
                   })
                 }
-                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-stone-400 select-none resize-none outline-none"
+                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
               />
               <div className="flex flex-row gap-2">
                 <p
-                  className="text-stone-400 text-xs"
+                  className="text-slate-400 text-xs"
                   onClick={() =>
                     setUpdatedDateVisible(
                       (currentUpdatedDateVisible) => !currentUpdatedDateVisible
@@ -113,7 +113,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                 <p
                   className={`${
                     updatedDateVisible ? "visible" : "hidden"
-                  } text-stone-500 text-xs italic`}
+                  } text-slate-500 text-xs italic`}
                 >
                   {"(Last edited " +
                     editedSlip.updated.format("ddd D MMMM YYYY, hh:mm a") +
@@ -156,7 +156,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
             </div>
           </div>
 
-          <div className="flex flex-row justify-between w-full border-t border-stone-200 pt-2">
+          <div className="flex flex-row justify-between w-full border-t border-slate-200 pt-2">
             <JournalMultiSelect
               initialSlip={initialSlip}
               onChange={(journals) =>
@@ -186,25 +186,25 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
               >
                 <span className="ql-formats flex flex-row gap-1">
                   <ToggleGroup.Item
-                    className="ql-bold rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+                    className="ql-bold rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                     value="bold"
                   >
                     <TextB size={16} weight="bold" />
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
-                    className="ql-italic rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+                    className="ql-italic rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                     value="italic"
                   >
                     <TextItalic size={16} weight="bold" />
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
-                    className="ql-underline rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+                    className="ql-underline rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                     value="underline"
                   >
                     <TextUnderline size={16} weight="bold" />
                   </ToggleGroup.Item>
                   <ToggleGroup.Item
-                    className=" ql-strike rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+                    className=" ql-strike rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                     value="strike"
                   >
                     <TextStrikethrough size={16} weight="bold" />

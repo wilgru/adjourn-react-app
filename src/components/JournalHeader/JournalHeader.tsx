@@ -18,7 +18,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
   const { updateJournal } = useUpdateJournal();
 
   return (
-    <div className="border-b border-stone-200 pb-4">
+    <div className="pb-4">
       <div className="flex justify-between items-center">
         <div className="flex gap-3">
           <Icon
@@ -30,7 +30,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
           <h1 className="font-title text-5xl">{journal.name}</h1>
         </div>
 
-        <div className="flex gap-1 p-1 border border-stone-200 rounded-full">
+        <div className="flex gap-1">
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <Button
@@ -56,7 +56,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
 
             <DropdownMenu.Portal>
               <DropdownMenu.Content
-                className="flex flex-col gap-2 bg-white border border-stone-200 rounded-2xl p-2 w-40 drop-shadow"
+                className="flex flex-col gap-2 bg-white border border-slate-200 rounded-2xl p-2 w-40 drop-shadow"
                 sideOffset={2}
                 align="start"
               >
@@ -74,7 +74,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                     }
                   }}
                 >
-                  <DropdownMenu.Label className="pl-2 text-xs text-stone-400">
+                  <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
                     Group by
                   </DropdownMenu.Label>
 
@@ -110,7 +110,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   value={"created"}
                   onValueChange={() => {}}
                 >
-                  <DropdownMenu.Label className="pl-2 text-xs text-stone-400">
+                  <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
                     Sort by
                   </DropdownMenu.Label>
 

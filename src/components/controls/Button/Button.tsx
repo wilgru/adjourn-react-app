@@ -34,7 +34,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         block: null,
-        ghost: "text-stone-500",
+        ghost: "text-slate-500",
         link: "underline-offset-4 hover:underline",
       },
       size: {
@@ -134,7 +134,7 @@ export const Button = ({
             isButtonHovered
               ? colour.textPill
               : variant === "ghost"
-                ? "text-stone-500"
+                ? "text-slate-500"
                 : colour.text
           }
           weight={isButtonHovered ? "fill" : "regular"}

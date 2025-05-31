@@ -69,7 +69,7 @@ export default function TableOfContents({
       <li key={item.title}>
         <h2
           className={cn(
-            "px-3 pt-3 text-stone-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
+            "px-3 pt-3 text-slate-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
             item.italic && "italic"
           )}
         >
@@ -92,7 +92,7 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="max-w-80 m-4 pl-2 pb-2 border-l-2 border-stone-200 h-fit">
+    <ul className="max-w-80 m-4 pl-2 pb-2 border-l-2 border-slate-200 h-fit">
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 

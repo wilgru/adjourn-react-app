@@ -116,7 +116,7 @@ export const JournalMultiSelect = ({
             );
           },
           placeholder: () => {
-            return cn("text-xs", "text-stone-500", "cursor-pointer");
+            return cn("text-xs", "text-slate-500", "cursor-pointer");
           },
           multiValue: (props) => {
             const { backgroundPill, text } = getColourFromJournal(
@@ -139,7 +139,7 @@ export const JournalMultiSelect = ({
           },
           dropdownIndicator: () => {
             return cn(
-              "text-stone-500",
+              "text-slate-500",
               "hover:text-orange-500",
               "rounded-md",
               "p-1",
@@ -159,7 +159,7 @@ export const JournalMultiSelect = ({
               "cursor-pointer"
             ),
           noOptionsMessage: () => {
-            return cn("text-sm", "text-stone-500", "p-1");
+            return cn("text-sm", "text-slate-500", "p-1");
           },
         }}
         styles={{

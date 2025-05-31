@@ -54,61 +54,59 @@ export default function JournalComponent() {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="w-[800px] overflow-y-scroll">
-        <div className="p-5 mb-[50vh] mx-9 mt-4 border min-h-full border-stone-200 rounded-3xl flex flex-col gap-8 bg-white drop-shadow">
-          <JournalHeader journal={journal} slipGroups={slipGroups} />
+      <div className="max-w-[800px] p-8 flex flex-col gap-8 overflow-y-scroll">
+        <JournalHeader journal={journal} slipGroups={slipGroups} />
 
-          {slipGroups.map((slipGroup) => (
-            <div className="flex flex-col">
-              <h2 className="pl-2 text-stone-400 font-title font-thin text-xl">
-                {slipGroup.title}
-              </h2>
+        {slipGroups.map((slipGroup) => (
+          <div className="flex flex-col">
+            <h2 className="pl-2 text-slate-400 font-title font-thin text-xl">
+              {slipGroup.title}
+            </h2>
 
-              <div className="flex flex-col gap-3">
-                {slipGroup.slipsWithNoTitle.map((slip) => (
-                  <SlipCard
-                    ref={(el: HTMLDivElement | null) => {
-                      if (el && !slipRefs.current.includes(el)) {
-                        slipRefs.current.push(el);
-                      }
-                    }}
-                    slip={slip}
-                    colour={journal.colour}
-                  />
-                ))}
+            <div className="flex flex-col gap-3">
+              {slipGroup.slipsWithNoTitle.map((slip) => (
+                <SlipCard
+                  ref={(el: HTMLDivElement | null) => {
+                    if (el && !slipRefs.current.includes(el)) {
+                      slipRefs.current.push(el);
+                    }
+                  }}
+                  slip={slip}
+                  colour={journal.colour}
+                />
+              ))}
 
-                {slipGroup.slipsWithNoTitle.length > 0 &&
-                  slipGroup.slipsWithTitle.length > 0 && (
-                    <div className="flex flex-row gap-2 justify-center">
-                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                    </div>
-                  )}
+              {slipGroup.slipsWithNoTitle.length > 0 &&
+                slipGroup.slipsWithTitle.length > 0 && (
+                  <div className="flex flex-row gap-2 justify-center">
+                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
+                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
+                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
+                  </div>
+                )}
 
-                {slipGroup.slipsWithTitle.map((slip) => (
-                  <SlipCard
-                    ref={(el: HTMLDivElement | null) => {
-                      if (el && !slipRefs.current.includes(el)) {
-                        slipRefs.current.push(el);
-                      }
-                    }}
-                    slip={slip}
-                    colour={journal.colour}
-                  />
-                ))}
-              </div>
+              {slipGroup.slipsWithTitle.map((slip) => (
+                <SlipCard
+                  ref={(el: HTMLDivElement | null) => {
+                    if (el && !slipRefs.current.includes(el)) {
+                      slipRefs.current.push(el);
+                    }
+                  }}
+                  slip={slip}
+                  colour={journal.colour}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
-      <TableOfContents
+      {/* <TableOfContents
         items={tableOfContentItems}
         activeItemNavigationId={navigationId}
         onJumpTo={(id) => setNavigationId(id)}
         colour={journal.colour}
-      />
+      /> */}
     </div>
   );
 }

@@ -20,7 +20,7 @@ export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-700 rounded-lg">
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-700 rounded-lg">
         <Dialog.Title className="mb-5">Confirm delete journal</Dialog.Title>
         <Dialog.Description className="mb-5">
           <p className="text-sm">

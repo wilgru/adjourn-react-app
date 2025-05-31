@@ -2,8 +2,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "src/components/controls/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
+import { Button } from "src/components/controls/Button/Button";
 import { colours } from "src/constants/colours.constant";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useLogin } from "src/hooks/users/useLogin";
@@ -25,7 +25,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className={cn("p-3", expanded && "min-w-60")}>
+    <aside className={cn("p-3 bg-slate-50", expanded && "min-w-60")}>
       <div
         className={cn(
           "flex flex-col flex-shrink-0 justify-between gap-3 h-full"
@@ -53,7 +53,7 @@ export const Sidebar = () => {
 
               <DropdownMenu.Portal>
                 <DropdownMenu.Content
-                  className="flex flex-col gap-2 bg-white border border-stone-200 text-sm rounded-2xl p-2 w-40 drop-shadow"
+                  className="flex flex-col gap-2 bg-white border border-slate-200 text-sm rounded-2xl p-2 w-40 drop-shadow"
                   sideOffset={2}
                   align="start"
                 >
@@ -67,7 +67,7 @@ export const Sidebar = () => {
                     Customise
                   </DropdownMenu.Item>
 
-                  <DropdownMenu.Separator className="h-[1px] rounded-full bg-stone-200" />
+                  <DropdownMenu.Separator className="h-[1px] rounded-full bg-slate-200" />
 
                   <DropdownMenu.Item
                     className="leading-none text-red-400 text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500 transition-colors"
@@ -89,17 +89,12 @@ export const Sidebar = () => {
             />
           </div>
 
-          <section
-            className={cn(
-              "flex flex-col gap-1 bg-white border border-stone-200 rounded-3xl",
-              expanded ? "p-2" : "p-1"
-            )}
-          >
+          <section className="flex flex-col gap-1">
             <NavItem
               ghost
-              iconName="house"
-              title={"Home"}
-              to={`/stream/`}
+              iconName="calendarDot"
+              title="Today"
+              to="/stream/"
               expanded={expanded}
             />
 

@@ -34,7 +34,7 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-600 rounded-lg">
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-600 rounded-lg">
         <Dialog.Title className="mb-5">Edit journal</Dialog.Title>
 
         <div className="flex flex-col gap-3">

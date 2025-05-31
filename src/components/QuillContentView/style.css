@@ -4,5 +4,5 @@
 
 #quill-editor .ql-editor {
   font-size: 14px;
-  color: #44403c; /* stone-700 */
+  color: var(--color-slate-700);
 }

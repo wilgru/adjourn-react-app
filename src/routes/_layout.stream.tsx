@@ -76,7 +76,7 @@ function StreamIndexComponent() {
             {group.slips.map((slip) => (
               <div
                 key={slip.id}
-                className="relative p-3 mx-9 rounded-2xl bg-white drop-shadow-md border border-stone-300"
+                className="relative p-3 mx-9 rounded-2xl bg-white drop-shadow-md border border-slate-300"
               >
                 <SlipCard slip={slip} colour={colours.orange} />
               </div>
@@ -85,7 +85,7 @@ function StreamIndexComponent() {
         ))}
 
         <div className="flex justify-center">
-          <h1 className="font-title text-2xl text-stone-300">
+          <h1 className="font-title text-2xl text-slate-300">
             {length} total slips
           </h1>
         </div>

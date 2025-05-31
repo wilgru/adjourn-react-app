@@ -51,7 +51,7 @@ export const NavItem = ({
                 className={
                   isHovered || isActive || (colour && !ghost)
                     ? colour.textPill
-                    : "text-stone-500"
+                    : "text-slate-500"
                 }
                 weight={isHovered || isActive ? "fill" : "regular"}
               />
@@ -64,7 +64,7 @@ export const NavItem = ({
             <p
               className={cn(
                 "text-xs font-medium w-2 mr-1 text-center",
-                isHovered || isActive ? colour.textPill : "text-stone-400"
+                isHovered || isActive ? colour.textPill : "text-slate-400"
               )}
             >
               {preview}

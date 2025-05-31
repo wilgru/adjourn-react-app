@@ -7,7 +7,7 @@ type SlipCardHeadingProps = {
 
 export const SlipCardHeading = ({ slip }: SlipCardHeadingProps) => {
   return (
-    <div className="flex flex-col gap-1 pb-1 transition-colors">
+    <div className="flex flex-col gap-1 transition-colors">
       <div className="flex gap-2 items-baseline">
         {slip.title && (
           <h1 className="font-title text-3xl font-normal tracking-tight">

@@ -29,7 +29,7 @@ export const SlipCard = forwardRef<
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "flex flex-col gap-1 relative p-2 rounded-md transition-colors",
+        "flex flex-col relative p-2 rounded-md transition-colors",
         colour.backgroundGlow
       )}
     >
@@ -43,7 +43,7 @@ export const SlipCard = forwardRef<
         hidden={!isHovered}
         className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
-        <div className="flex flex-col gap-2 p-1 bg-white border border-stone-300 rounded-full drop-shadow-md">
+        <div className="flex flex-col gap-2 p-1 bg-white border border-slate-300 rounded-full drop-shadow-md">
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <Button
@@ -84,7 +84,7 @@ export const SlipCard = forwardRef<
         </div>
       </div>
 
-      <p className={"text-xs text-stone-500"}>
+      <p className="text-xs text-slate-500">
         {slip.created.format("ddd D MMMM YYYY")}
       </p>
     </div>

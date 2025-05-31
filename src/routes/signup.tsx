@@ -47,14 +47,14 @@ function SignUpIndexComponent(): JSX.Element {
   }, [navigate, user]);
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
+    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-slate-100">
       {!!signUpError && (
         // TODO: show actual error message
         <div className="p-6 border border-red-500 rounded-lg bg-red-100 text-red-500 max-w-sm w-full">
           Something went wrong. Please try again
         </div>
       )}
-      <div className="flex flex-col gap-6 p-6 border bg-white border-stone-300 rounded-lg max-w-sm w-full drop-shadow">
+      <div className="flex flex-col gap-6 p-6 border bg-white border-slate-300 rounded-lg max-w-sm w-full drop-shadow">
         <h1 className="text-4xl font-normal font-title tracking-tight ">
           Sign Up
         </h1>
@@ -71,7 +71,7 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="given-name"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-slate-300 rounded-full placeholder:text-slate-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
@@ -86,7 +86,7 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="email"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-slate-300 rounded-full placeholder:text-slate-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
@@ -103,7 +103,7 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="new-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-slate-300 rounded-full placeholder:text-slate-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="new-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-slate-300 rounded-full placeholder:text-slate-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
