@@ -1,20 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { Button } from "src/components/controls/Button/Button";
 import { colours } from "src/constants/colours.constant";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
-import { useLogin } from "src/hooks/users/useLogin";
-import { useUser } from "src/hooks/users/useUser";
 import { cn } from "src/utils/cn";
 import { NavItem } from "../NavItem/NavItem";
 
 export const Sidebar = () => {
-  const { logout } = useLogin();
-  const { user } = useUser();
-  const navigate = useNavigate();
   const { journals } = useGetJournals();
 
   const [showEditSlipModal, setShowEditSlipModal] = useState(false);
@@ -38,50 +31,6 @@ export const Sidebar = () => {
               expanded ? "flex-row" : "flex-col-reverse"
             )}
           >
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild>
-                <div>
-                  <Button
-                    variant={expanded ? "block" : "ghost"}
-                    colour={colours.blue}
-                    iconName="user"
-                  >
-                    {expanded ? user?.name : undefined}
-                  </Button>
-                </div>
-              </DropdownMenu.Trigger>
-
-              <DropdownMenu.Portal>
-                <DropdownMenu.Content
-                  className="flex flex-col gap-2 bg-white border border-slate-200 text-sm rounded-2xl p-2 w-40 drop-shadow"
-                  sideOffset={2}
-                  align="start"
-                >
-                  <DropdownMenu.Item
-                    className="leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 transition-colors"
-                    onClick={() => {
-                      logout();
-                      navigate({ to: "/login" });
-                    }}
-                  >
-                    Customise
-                  </DropdownMenu.Item>
-
-                  <DropdownMenu.Separator className="h-[1px] rounded-full bg-slate-200" />
-
-                  <DropdownMenu.Item
-                    className="leading-none text-red-400 text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500 transition-colors"
-                    onClick={() => {
-                      logout();
-                      navigate({ to: "/login" });
-                    }}
-                  >
-                    Log out
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Portal>
-            </DropdownMenu.Root>
-
             <Button
               variant="ghost"
               onClick={onClickShowSidebarToggle}
@@ -107,10 +56,10 @@ export const Sidebar = () => {
             />
           </section>
 
-          <section
-            className={cn("flex flex-col gap-1", expanded ? "p-2" : "p-1")}
-          >
-            {expanded && <h1 className="font-title text-lg ml-2">Journals</h1>}
+          <section className={cn("flex flex-col gap-1", expanded && "p-1")}>
+            {expanded && (
+              <h1 className="font-title text-slate-400 text-md ml-2">Tags</h1>
+            )}
 
             {journals.map((journal) => (
               <NavItem

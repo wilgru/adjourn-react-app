@@ -1,10 +1,4 @@
-import { Check } from "@phosphor-icons/react";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Button } from "src/components/controls/Button/Button";
-import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
-import { EditJournalModal } from "../EditJournalModal/EditJournalModal";
 import { Icon } from "../Icon/Icon";
 import type { Journal } from "src/types/Journal.type";
 import type { SlipsGroupDividedByTitle } from "src/types/Slip.type";
@@ -15,8 +9,6 @@ type JournalHeaderProps = {
 };
 
 export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
-  const { updateJournal } = useUpdateJournal();
-
   return (
     <div className="pb-4">
       <div className="flex justify-between items-center">
@@ -30,121 +22,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
           <h1 className="font-title text-5xl">{journal.name}</h1>
         </div>
 
-        <div className="flex gap-1">
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <Button
-                variant="ghost"
-                colour={journal.colour}
-                iconName="palette"
-              />
-            </Dialog.Trigger>
-
-            <EditJournalModal journal={journal} />
-          </Dialog.Root>
-
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <div>
-                <Button
-                  variant="ghost"
-                  colour={journal.colour}
-                  iconName="arrowsDownUp"
-                />
-              </div>
-            </DropdownMenu.Trigger>
-
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="flex flex-col gap-2 bg-white border border-slate-200 rounded-2xl p-2 w-40 drop-shadow"
-                sideOffset={2}
-                align="start"
-              >
-                <DropdownMenu.RadioGroup
-                  value={journal.groupBy}
-                  onValueChange={(value) => {
-                    if (value === "created" || value === "journal") {
-                      updateJournal({
-                        journalId: journal.id,
-                        updateJournalData: {
-                          ...journal,
-                          groupBy: value,
-                        },
-                      });
-                    }
-                  }}
-                >
-                  <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
-                    Group by
-                  </DropdownMenu.Label>
-
-                  <DropdownMenu.RadioItem
-                    className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
-                    )}
-                    value="created"
-                  >
-                    Created
-                    <DropdownMenu.ItemIndicator>
-                      <Check />
-                    </DropdownMenu.ItemIndicator>
-                  </DropdownMenu.RadioItem>
-                  <DropdownMenu.RadioItem
-                    className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
-                    )}
-                    value="journal"
-                  >
-                    Journal
-                    <DropdownMenu.ItemIndicator>
-                      <Check />
-                    </DropdownMenu.ItemIndicator>
-                  </DropdownMenu.RadioItem>
-                </DropdownMenu.RadioGroup>
-
-                <DropdownMenu.RadioGroup
-                  value={"created"}
-                  onValueChange={() => {}}
-                >
-                  <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
-                    Sort by
-                  </DropdownMenu.Label>
-
-                  <DropdownMenu.RadioItem
-                    className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
-                    )}
-                    value="created"
-                  >
-                    Created
-                    <DropdownMenu.ItemIndicator>
-                      <Check />
-                    </DropdownMenu.ItemIndicator>
-                  </DropdownMenu.RadioItem>
-                  <DropdownMenu.RadioItem
-                    className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
-                    )}
-                    value="title"
-                  >
-                    Title
-                    <DropdownMenu.ItemIndicator>
-                      <Check />
-                    </DropdownMenu.ItemIndicator>
-                  </DropdownMenu.RadioItem>
-                </DropdownMenu.RadioGroup>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-        </div>
+        <div className="flex gap-1"></div>
       </div>
 
       <div className="flex gap-1">

@@ -10,7 +10,7 @@ function RouteComponent() {
     <div className="fixed flex h-screen w-screen">
       <Sidebar />
       {/* all the other elements */}
-      <div id="detail" className="w-full flex justify-center">
+      <div id="detail" className="w-full">
         <Outlet />
       </div>
     </div>
