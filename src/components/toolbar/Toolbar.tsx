@@ -1,7 +1,12 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
+import { useAtom } from "jotai";
+import { useState } from "react";
+import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { colours } from "src/constants/colours.constant";
 import { useLogin } from "src/hooks/users/useLogin";
+import EditSlipModal from "../EditSlipModal/EditSlipModal";
 import { Button } from "../controls/Button/Button";
 
 type ToolbarProps = {
@@ -13,24 +18,53 @@ export const Toolbar = ({ title, titleItems }: ToolbarProps) => {
   const navigate = useNavigate();
   const { logout } = useLogin();
 
-  return (
-    <div className="flex items-center justify-between p-3 bg-white">
-      <div className="flex items-center gap-2">
-        <h1 className="text-xl font-title text-slate-500">{title}</h1>
+  const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
+  const [showEditSlipModal, setShowEditSlipModal] = useState(false);
 
-        {titleItems.map((titleItem) => titleItem)}
+  return (
+    <div className="bg-white w-full flex items-center justify-between p-3">
+      <div className="flex gap-2">
+        {!isSideBarVisible && (
+          <Button
+            variant="ghost"
+            colour={colours.orange}
+            iconName="sidebar"
+            onClick={() => setValue(true)}
+          />
+        )}
+
+        <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-full drop-shadow-md p-1">
+          <Button size="sm" variant="ghost">
+            {title}
+          </Button>
+
+          {titleItems.map((titleItem) => titleItem)}
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <Button
+              variant="ghost"
+              colour={colours.orange}
+              iconName="plus"
+              onClick={() => setShowEditSlipModal(true)}
+            />
+          </Dialog.Trigger>
+          {showEditSlipModal && (
+            <EditSlipModal
+              onSave={() => {
+                setShowEditSlipModal(false);
+              }}
+            />
+          )}
+        </Dialog.Root>
+
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
-              <Button
-                variant="block"
-                colour={colours.blue}
-                iconName="user"
-                size="sm"
-              />
+              <Button variant="block" colour={colours.blue} iconName="user" />
             </div>
           </DropdownMenu.Trigger>
 

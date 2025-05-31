@@ -15,6 +15,8 @@ import {
   CaretLeft,
   CaretRight,
   CalendarDot,
+  SidebarSimple,
+  ArrowLineLeft,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -81,6 +83,10 @@ const Icon = ({
       return <CaretLeft {...iconProps} />;
     case "caretRight":
       return <CaretRight {...iconProps} />;
+    case "sidebar":
+      return <SidebarSimple {...iconProps} />;
+    case "arrowLineLeft":
+      return <ArrowLineLeft {...iconProps} />;
     default:
       return <></>;
   }

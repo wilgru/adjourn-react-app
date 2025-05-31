@@ -2,16 +2,14 @@ import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 import { EditJournalModal } from "src/components/EditJournalModal/EditJournalModal";
 import { JournalHeader } from "src/components/JournalHeader/JournalHeader";
 import { SlipCard } from "src/components/SlipCard/SlipCard";
-import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
-import { Toolbar } from "src/components/toolbar/Toolbar";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
-import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -32,52 +30,34 @@ export const Route = createFileRoute("/_layout/journals/$journalId")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slipGroups, tableOfContentItems } = useGetJournal(
-    journalId ?? ""
-  );
+  const { journal, slips } = useGetJournal(journalId ?? "");
   const { updateJournal } = useUpdateJournal();
-  const [navigationId, setNavigationId] = useState("");
 
   const slipRefs = useRef<HTMLDivElement[]>([]);
-
-  useIntersectionObserver(
-    slipRefs,
-    (entry) => {
-      setNavigationId(entry.target.id);
-    },
-    { rootMargin: "-10% 0% -90% 0%" },
-    { disabled: false }
-  );
-
-  useEffect(() => {
-    const firstNavigationId =
-      slipGroups.at(0)?.slipsWithNoTitle.at(0)?.id ??
-      slipGroups.at(0)?.slipsWithTitle.at(0)?.id;
-
-    firstNavigationId && setNavigationId(firstNavigationId);
-  }, [slipGroups]);
 
   if (!journal) {
     return null;
   }
 
   return (
-    <div className="h-full w-full flex flex-col justify-center">
+    <div className="h-full w-full flex flex-col items-center">
       <Toolbar
         title={journal.name}
         titleItems={[
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                colour={journal.colour}
-                iconName="palette"
-              />
-            </Dialog.Trigger>
+          <div>
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  colour={journal.colour}
+                  iconName="palette"
+                />
+              </Dialog.Trigger>
 
-            <EditJournalModal journal={journal} />
-          </Dialog.Root>,
+              <EditJournalModal journal={journal} />
+            </Dialog.Root>
+          </div>,
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <div>
@@ -183,59 +163,31 @@ export default function JournalComponent() {
         ]}
       />
 
-      <div className="max-w-[800px] p-8 flex flex-col gap-8 overflow-y-scroll">
-        <JournalHeader journal={journal} slipGroups={slipGroups} />
+      <div className="max-w-[800px] p-12 flex flex-col gap-8 overflow-y-scroll">
+        <JournalHeader journal={journal} slips={slips} />
 
-        {slipGroups.map((slipGroup) => (
-          <div className="flex flex-col">
-            <h2 className="pl-2 text-slate-400 font-title font-thin text-xl">
-              {slipGroup.title}
-            </h2>
+        <section>
+          <h2 className="text-slate-400 font-title text-2xl p-2">Tasks</h2>
+        </section>
 
-            <div className="flex flex-col gap-3">
-              {slipGroup.slipsWithNoTitle.map((slip) => (
-                <SlipCard
-                  ref={(el: HTMLDivElement | null) => {
-                    if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el);
-                    }
-                  }}
-                  slip={slip}
-                  colour={journal.colour}
-                />
-              ))}
+        <section>
+          <h2 className="text-slate-400 font-title text-2xl p-2">Notes</h2>
 
-              {slipGroup.slipsWithNoTitle.length > 0 &&
-                slipGroup.slipsWithTitle.length > 0 && (
-                  <div className="flex flex-row gap-2 justify-center">
-                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
-                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
-                    <div className=" rounded-full bg-slate-300 h-1 w-1"></div>
-                  </div>
-                )}
-
-              {slipGroup.slipsWithTitle.map((slip) => (
-                <SlipCard
-                  ref={(el: HTMLDivElement | null) => {
-                    if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el);
-                    }
-                  }}
-                  slip={slip}
-                  colour={journal.colour}
-                />
-              ))}
-            </div>
+          <div className="flex flex-col gap-4">
+            {slips.map((slip) => (
+              <SlipCard
+                ref={(el: HTMLDivElement | null) => {
+                  if (el && !slipRefs.current.includes(el)) {
+                    slipRefs.current.push(el);
+                  }
+                }}
+                slip={slip}
+                colour={journal.colour}
+              />
+            ))}
           </div>
-        ))}
+        </section>
       </div>
-
-      {/* <TableOfContents
-        items={tableOfContentItems}
-        activeItemNavigationId={navigationId}
-        onJumpTo={(id) => setNavigationId(id)}
-        colour={journal.colour}
-      /> */}
     </div>
   );
 }
