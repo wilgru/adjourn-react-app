@@ -42,7 +42,9 @@ export default function JournalComponent() {
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
+        iconName={journal.icon}
         title={journal.name}
+        colour={journal.colour}
         titleItems={[
           <div>
             <Dialog.Root>

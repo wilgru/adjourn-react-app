@@ -8,13 +8,21 @@ import { colours } from "src/constants/colours.constant";
 import { useLogin } from "src/hooks/users/useLogin";
 import EditSlipModal from "../EditSlipModal/EditSlipModal";
 import { Button } from "../controls/Button/Button";
+import type { Colour } from "src/types/Colour.type";
 
 type ToolbarProps = {
+  iconName?: string;
   title: string;
+  colour?: Colour;
   titleItems: JSX.Element[];
 };
 
-export const Toolbar = ({ title, titleItems }: ToolbarProps) => {
+export const Toolbar = ({
+  iconName,
+  title,
+  titleItems,
+  colour = colours.orange,
+}: ToolbarProps) => {
   const navigate = useNavigate();
   const { logout } = useLogin();
 
@@ -27,14 +35,14 @@ export const Toolbar = ({ title, titleItems }: ToolbarProps) => {
         {!isSideBarVisible && (
           <Button
             variant="ghost"
-            colour={colours.orange}
+            colour={colour}
             iconName="sidebar"
             onClick={() => setValue(true)}
           />
         )}
 
         <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-full drop-shadow-md p-1">
-          <Button size="sm" variant="ghost">
+          <Button size="sm" variant="ghost" iconName={iconName} colour={colour}>
             {title}
           </Button>
 
@@ -47,7 +55,7 @@ export const Toolbar = ({ title, titleItems }: ToolbarProps) => {
           <Dialog.Trigger asChild>
             <Button
               variant="ghost"
-              colour={colours.orange}
+              colour={colour}
               iconName="plus"
               onClick={() => setShowEditSlipModal(true)}
             />
