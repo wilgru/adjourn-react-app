@@ -1,14 +1,14 @@
 import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
 import type { Journal } from "src/types/Journal.type";
-import type { SlipsGroupDividedByTitle } from "src/types/Slip.type";
+import type { Slip } from "src/types/Slip.type";
 
 type JournalHeaderProps = {
   journal: Journal;
-  slipGroups: SlipsGroupDividedByTitle[];
+  slips: Slip[];
 };
 
-export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
+export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {
   return (
     <div className="pb-4">
       <div className="flex justify-between items-center">
@@ -33,7 +33,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
             journal.colour.textPill
           )}
         >
-          {slipGroups.length} sections
+          {slips.length} sections
         </h3>
 
         <h3
