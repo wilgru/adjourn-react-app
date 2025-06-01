@@ -4,6 +4,7 @@ import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNot
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/_layout/day/$dateString")({
@@ -22,7 +23,8 @@ export const Route = createFileRoute("/_layout/day/$dateString")({
 });
 
 function StreamIndexComponent() {
-  const { slips, tableOfContentItems } = useGetSlips({ isFlagged: false });
+  const { slips } = useGetSlips({ isFlagged: false });
+  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
 
   return (
     <div className="h-full w-full flex flex-col items-center">

@@ -9,6 +9,7 @@ import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
+import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -29,9 +30,8 @@ export const Route = createFileRoute("/_layout/journals/$journalId")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips, tableOfContentItems } = useGetJournal(
-    journalId ?? ""
-  );
+  const { journal, slips } = useGetJournal(journalId ?? "");
+  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
   const { updateJournal } = useUpdateJournal();
 
   if (!journal) {

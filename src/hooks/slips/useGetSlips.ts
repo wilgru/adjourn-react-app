@@ -1,12 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { mapSlip } from "src/utils/slips/mapSlip";
-import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 import type { Slip } from "src/types/Slip.type";
 
 type UseGetSlipsResponse = {
   slips: Slip[];
-  tableOfContentItems: TableOfContentsItem[];
 };
 
 export const useGetSlips = ({
@@ -16,7 +14,6 @@ export const useGetSlips = ({
 }): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
     slips: Slip[];
-    tableOfContentItems: TableOfContentsItem[];
   }> => {
     const filter = `deleted = null ${isFlagged ? "&& isFlagged = true" : ""}`;
 
@@ -30,14 +27,7 @@ export const useGetSlips = ({
 
     const slips = rawSlips.items.map(mapSlip);
 
-    const tableOfContentItems: TableOfContentsItem[] = slips.map((slip) => ({
-      title: slip.title ?? "No Title",
-      italic: slip.title ? false : true,
-      navigationId: slip.id,
-      subItems: [],
-    }));
-
-    return { slips, tableOfContentItems };
+    return { slips };
   };
 
   // TODO: consider time caching for better performance
@@ -50,6 +40,5 @@ export const useGetSlips = ({
 
   return {
     slips: data?.slips ?? [],
-    tableOfContentItems: data?.tableOfContentItems ?? [],
   };
 };

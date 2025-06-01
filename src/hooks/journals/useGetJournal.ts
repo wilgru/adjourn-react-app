@@ -6,14 +6,12 @@ import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
-import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 import type { Journal } from "src/types/Journal.type";
 import type { Slip } from "src/types/Slip.type";
 
 type UseJournalResponse = {
   journal: Journal | undefined;
   slips: Slip[];
-  tableOfContentItems: TableOfContentsItem[];
   refetchJournal: (options?: RefetchOptions | undefined) => Promise<
     QueryObserverResult<
       {
@@ -29,7 +27,6 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
   const queryFn = async (): Promise<{
     journal: Journal;
     slips: Slip[];
-    tableOfContentItems: TableOfContentsItem[];
   }> => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
       expand: "slips_via_journals, slips_via_journals.journals",
@@ -43,17 +40,9 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     const rawSlips = rawJournal.expand?.slips_via_journals ?? [];
     const slips: Slip[] = rawSlips.map(mapSlip);
 
-    const tableOfContentItems: TableOfContentsItem[] = slips.map((slip) => ({
-      title: slip.title ?? "No Title",
-      italic: slip.title ? false : true,
-      navigationId: slip.id,
-      subItems: [],
-    }));
-
     return {
       journal,
       slips,
-      tableOfContentItems,
     };
   };
 
@@ -68,7 +57,6 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
   return {
     journal: data?.journal,
     slips: data?.slips ?? [],
-    tableOfContentItems: data?.tableOfContentItems ?? [],
     refetchJournal: refetch,
   };
 };
