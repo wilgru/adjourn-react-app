@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { groupSlips } from "src/utils/slips/groupSlips";
 import { mapSlip } from "src/utils/slips/mapSlip";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
-import type { SlipsGroup } from "src/types/Slip.type";
+import type { Slip } from "src/types/Slip.type";
 
 type UseGetSlipsResponse = {
-  slipGroups: SlipsGroup[];
+  slips: Slip[];
   tableOfContentItems: TableOfContentsItem[];
 };
 
@@ -16,7 +15,7 @@ export const useGetSlips = ({
   isFlagged: boolean;
 }): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
-    slipGroups: SlipsGroup[];
+    slips: Slip[];
     tableOfContentItems: TableOfContentsItem[];
   }> => {
     const filter = `deleted = null ${isFlagged ? "&& isFlagged = true" : ""}`;
@@ -29,49 +28,16 @@ export const useGetSlips = ({
         sort: "-isPinned",
       });
 
-    const mappedSlips = rawSlips.items.map(mapSlip);
-    const groupedSlips = groupSlips(mappedSlips, "created");
+    const slips = rawSlips.items.map(mapSlip);
 
-    const tableOfContentItems = mappedSlips.reduce(
-      (acc: TableOfContentsItem[], slip) => {
-        const monthTitle = slip.created.format("MMMM YYYY");
-        const existingMonth = acc.find((item) => item.title === monthTitle);
+    const tableOfContentItems: TableOfContentsItem[] = slips.map((slip) => ({
+      title: slip.title ?? "No Title",
+      italic: slip.title ? false : true,
+      navigationId: slip.id,
+      subItems: [],
+    }));
 
-        if (!existingMonth) {
-          acc.push({
-            title: monthTitle,
-            navigationId: null,
-            subItems: [
-              {
-                title: slip.created.format("dddd D"),
-                navigationId: slip.created.format("ddd D MMMM YYYY"),
-                subItems: [],
-              },
-            ],
-          });
-
-          return acc;
-        }
-
-        const dayTitle = slip.created.format("dddd D");
-        const existingDay = existingMonth.subItems.find(
-          (item) => item.title === dayTitle
-        );
-
-        if (!existingDay) {
-          existingMonth.subItems.push({
-            title: slip.created.format("dddd D"),
-            navigationId: slip.created.format("ddd D MMMM YYYY"),
-            subItems: [],
-          });
-        }
-
-        return acc;
-      },
-      []
-    );
-
-    return { slipGroups: groupedSlips, tableOfContentItems };
+    return { slips, tableOfContentItems };
   };
 
   // TODO: consider time caching for better performance
@@ -83,7 +49,7 @@ export const useGetSlips = ({
   });
 
   return {
-    slipGroups: data?.slipGroups ?? [],
+    slips: data?.slips ?? [],
     tableOfContentItems: data?.tableOfContentItems ?? [],
   };
 };

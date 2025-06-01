@@ -1,50 +1,48 @@
+import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
-import { Icon } from "../Icon/Icon";
-import type { Journal } from "src/types/Journal.type";
-import type { Slip } from "src/types/Slip.type";
+import type { Colour } from "src/types/Colour.type";
 
 type JournalHeaderProps = {
-  journal: Journal;
-  slips: Slip[];
+  children: React.ReactNode;
+  colour?: Colour;
+  primaryBadges?: string[];
+  secondaryBadges?: string[];
 };
 
-export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {
+export const JournalHeader = ({
+  children,
+  colour = colours.orange,
+  primaryBadges,
+  secondaryBadges,
+}: JournalHeaderProps) => {
   return (
     <div className="pb-4">
-      <div className="flex justify-between items-center">
-        <div className="flex gap-3">
-          <Icon
-            className={cn(journal.colour.text)}
-            iconName={journal.icon}
-            size="xl"
-          />
+      {children}
 
-          <h1 className="font-title text-5xl">{journal.name}</h1>
-        </div>
+      <div className="flex gap-2">
+        {primaryBadges?.map((primaryBadge, index) => (
+          <h3
+            key={index}
+            className={cn(
+              "px-2 py-0.5 text-sm rounded-full",
+              colour.backgroundPill,
+              colour.textPill
+            )}
+          >
+            {primaryBadge}
+          </h3>
+        ))}
 
-        <div className="flex gap-1"></div>
-      </div>
-
-      <div className="flex gap-1">
-        <h3
-          className={cn(
-            "px-2 py-0.5 text-sm rounded-full",
-            journal.colour.backgroundPill,
-            journal.colour.textPill
-          )}
-        >
-          {slips.length} sections
-        </h3>
-
-        <h3
-          className={cn(
-            "px-2 py-0.5 text-sm rounded-full",
-            journal.colour.backgroundPill,
-            journal.colour.textPill
-          )}
-        >
-          {journal.slipCount} notes
-        </h3>
+        {secondaryBadges?.map((secondaryBadge, index) => (
+          <h3
+            key={index}
+            className={
+              "px-2 py-0.5 text-sm rounded-full bg-slate-100 text-slate-500"
+            }
+          >
+            {secondaryBadge}
+          </h3>
+        ))}
       </div>
     </div>
   );

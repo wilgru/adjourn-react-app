@@ -6,7 +6,7 @@ import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
 
 type ButtonProps = {
-  children?: string | JSX.Element;
+  children?: React.ReactNode;
   variant?: "block" | "ghost" | "link";
   colour?: Colour;
   size?: "sm" | "md" | "lg";

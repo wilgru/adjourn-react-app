@@ -15,8 +15,8 @@ import type { Slip } from "src/types/Slip.type";
 
 export const SlipCard = forwardRef<
   HTMLDivElement,
-  { slip: Slip; colour: Colour }
->(function ({ slip, colour }, ref) {
+  { slip: Slip; colour?: Colour }
+>(function ({ slip, colour = colours.orange }, ref) {
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
   const [isHovered, setIsHovered] = useState(false);

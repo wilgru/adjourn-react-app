@@ -29,8 +29,9 @@ export const Toolbar = ({
   const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
   const [showEditSlipModal, setShowEditSlipModal] = useState(false);
 
+  //TODO: remove h-16 when scrolling issue is fixed
   return (
-    <div className="bg-white w-full flex items-center justify-between p-3">
+    <div className="bg-white w-full h-16 flex items-center justify-between p-3">
       <div className="flex gap-2">
         {!isSideBarVisible && (
           <Button

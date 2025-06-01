@@ -2,10 +2,9 @@ import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useRef } from "react";
 import { EditJournalModal } from "src/components/EditJournalModal/EditJournalModal";
-import { JournalHeader } from "src/components/JournalHeader/JournalHeader";
-import { SlipCard } from "src/components/SlipCard/SlipCard";
+import { Icon } from "src/components/Icon/Icon";
+import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
@@ -30,10 +29,10 @@ export const Route = createFileRoute("/_layout/journals/$journalId")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips } = useGetJournal(journalId ?? "");
+  const { journal, slips, tableOfContentItems } = useGetJournal(
+    journalId ?? ""
+  );
   const { updateJournal } = useUpdateJournal();
-
-  const slipRefs = useRef<HTMLDivElement[]>([]);
 
   if (!journal) {
     return null;
@@ -165,31 +164,22 @@ export default function JournalComponent() {
         ]}
       />
 
-      <div className="max-w-[800px] p-12 flex flex-col gap-8 overflow-y-scroll">
-        <JournalHeader journal={journal} slips={slips} />
+      <TaskAndNotesLayout
+        header={
+          <div className="flex gap-3">
+            <Icon
+              className={cn(journal.colour.text)}
+              iconName={journal.icon}
+              size="xl"
+            />
 
-        <section>
-          <h2 className="text-slate-400 font-title text-2xl p-2">Tasks</h2>
-        </section>
-
-        <section>
-          <h2 className="text-slate-400 font-title text-2xl p-2">Notes</h2>
-
-          <div className="flex flex-col gap-4">
-            {slips.map((slip) => (
-              <SlipCard
-                ref={(el: HTMLDivElement | null) => {
-                  if (el && !slipRefs.current.includes(el)) {
-                    slipRefs.current.push(el);
-                  }
-                }}
-                slip={slip}
-                colour={journal.colour}
-              />
-            ))}
+            <h1 className="font-title text-5xl">{journal.name}</h1>
           </div>
-        </section>
-      </div>
+        }
+        secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}
+        slips={slips}
+        tableOfContentItems={tableOfContentItems}
+      />
     </div>
   );
 }

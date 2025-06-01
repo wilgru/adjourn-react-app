@@ -19,7 +19,7 @@ export const Sidebar = () => {
       >
         <div className="flex flex-col gap-3 justify-between overflow-y-auto">
           <div className="flex flex-row items-center justify-between gap-2">
-            <h1 className="font-title text-slate-500 text-xl">SlipStream</h1>
+            <h1 className="font-title text-slate-500 text-xl">Adjourn</h1>
 
             <Button
               variant="ghost"

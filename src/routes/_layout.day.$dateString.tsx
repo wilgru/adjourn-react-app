@@ -1,103 +1,73 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
-import { colours } from 'src/constants/colours.constant'
-import { useGetSlips } from 'src/hooks/slips/useGetSlips'
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver'
-import isAuthenticated from 'src/utils/users/isAuthenticated'
-import { SlipCard } from '../components/SlipCard/SlipCard'
-import TableOfContents from '../components/TableOfContents/TableOfContents'
+import * as Dialog from "@radix-ui/react-dialog";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
+import { Toolbar } from "src/components/Toolbar/Toolbar";
+import { Button } from "src/components/controls/Button/Button";
+import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute('/_layout/day/$dateString')({
+export const Route = createFileRoute("/_layout/day/$dateString")({
   component: StreamIndexComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: '/login',
+        to: "/login",
         search: {
           // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
           redirect: location.href,
         },
-      })
+      });
     }
   },
-})
+});
 
 function StreamIndexComponent() {
-  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false })
-  const [bottomSlip, setBottomSlip] = useState<HTMLDivElement | null>()
-  const slipRefs = useRef<HTMLDivElement[]>([])
-  const [navigationId, setNavigationId] = useState('')
-
-  useIntersectionObserver(
-    slipRefs,
-    (entry) => {
-      setNavigationId(entry.target.id)
-    },
-    { rootMargin: '-10% 0% -90% 0%' },
-    { disabled: false },
-  )
-
-  useEffect(() => {
-    const lastSlipGroup = slipGroups.at(slipGroups.length - 1)
-
-    lastSlipGroup && setNavigationId(lastSlipGroup?.title)
-  }, [slipGroups])
-
-  const lastSlipRef = slipRefs.current.at(slipRefs.current.length - 1)
-  if (lastSlipRef !== bottomSlip) {
-    lastSlipRef?.scrollIntoView({
-      behavior: 'instant',
-    })
-
-    setBottomSlip(lastSlipRef)
-  }
-
-  const length = slipGroups.reduce(
-    (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
-    0,
-  )
+  const { slips, tableOfContentItems } = useGetSlips({ isFlagged: false });
 
   return (
-    <div className="flex h-full">
-      <div className="flex flex-col h-full gap-10 py-10 w-[700px] overflow-y-auto overflow-x-hidden">
-        {slipGroups.map((group) => (
-          <div
-            ref={(el: HTMLDivElement | null) => {
-              if (el && !slipRefs.current.includes(el)) {
-                slipRefs.current.push(el)
-              }
-            }}
-            id={group.title}
-            key={group.title}
-            className="flex flex-col gap-3"
-          >
-            <h2 className="mx-9 font-title text-3xl">{group.title}</h2>
+    <div className="h-full w-full flex flex-col items-center">
+      <Toolbar
+        iconName="calendarDot"
+        title={"today"}
+        titleItems={[
+          <div>
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button variant="ghost" size="sm" iconName="caretLeft" />
+              </Dialog.Trigger>
 
-            {group.slips.map((slip) => (
-              <div
-                key={slip.id}
-                className="relative p-3 mx-9 rounded-2xl bg-white drop-shadow-md border border-slate-300"
-              >
-                <SlipCard slip={slip} colour={colours.orange} />
-              </div>
-            ))}
+              {/* <EditJournalModal journal={journal} /> */}
+            </Dialog.Root>
+          </div>,
+          <div>
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button variant="ghost" size="sm" iconName="caretRight" />
+              </Dialog.Trigger>
+
+              {/* <EditJournalModal journal={journal} /> */}
+            </Dialog.Root>
+          </div>,
+        ]}
+      />
+
+      <TaskAndNotesLayout
+        header={
+          <div className="flex items-baseline gap-3">
+            <h1 className="text-5xl font-title text-slate-800">Today</h1>
+
+            <h3 className="text-2xl text-slate-400">
+              {new Date().toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </h3>
           </div>
-        ))}
-
-        <div className="flex justify-center">
-          <h1 className="font-title text-2xl text-slate-300">
-            {length} total slips
-          </h1>
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center">
-        <TableOfContents
-          items={tableOfContentItems}
-          activeItemNavigationId={navigationId}
-          onJumpTo={(id) => setNavigationId(id)}
-        />
-      </div>
+        }
+        slips={slips}
+        tableOfContentItems={tableOfContentItems}
+      />
     </div>
-  )
+  );
 }

@@ -43,8 +43,9 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     const rawSlips = rawJournal.expand?.slips_via_journals ?? [];
     const slips: Slip[] = rawSlips.map(mapSlip);
 
-    const tableOfContentItems = slips.map((slip) => ({
-      title: slip.title ?? "",
+    const tableOfContentItems: TableOfContentsItem[] = slips.map((slip) => ({
+      title: slip.title ?? "No Title",
+      italic: slip.title ? false : true,
       navigationId: slip.id,
       subItems: [],
     }));
