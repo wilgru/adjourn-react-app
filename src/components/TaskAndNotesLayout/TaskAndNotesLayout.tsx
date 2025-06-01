@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { JournalHeader } from "src/components/JournalHeader/JournalHeader";
+import { PageHeader } from "src/components/PageHeader/PageHeader";
 import { SlipCard } from "src/components/SlipCard/SlipCard";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 import type { Slip } from "src/types/Slip.type";
 
-type TaskAndNotesLayoutType = {
+type TaskAndNotesLayoutProps = {
   header: React.ReactNode;
   primaryBadges?: string[];
   secondaryBadges?: string[];
@@ -20,7 +20,7 @@ export const TaskAndNotesLayout = ({
   secondaryBadges = [],
   slips,
   tableOfContentItems,
-}: TaskAndNotesLayoutType) => {
+}: TaskAndNotesLayoutProps) => {
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
 
@@ -43,12 +43,12 @@ export const TaskAndNotesLayout = ({
   return (
     <div className="h-full pb-16 flex items-center">
       <div className="h-full max-w-[800px] p-12 flex flex-col gap-8 overflow-y-scroll">
-        <JournalHeader
+        <PageHeader
           primaryBadges={primaryBadges}
           secondaryBadges={secondaryBadges}
         >
           {header}
-        </JournalHeader>
+        </PageHeader>
 
         <section>
           <h2 className="text-slate-400 font-title text-2xl p-2">Tasks</h2>

@@ -2,19 +2,19 @@ import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
 
-type JournalHeaderProps = {
+type PageHeaderProps = {
   children: React.ReactNode;
   colour?: Colour;
   primaryBadges?: string[];
   secondaryBadges?: string[];
 };
 
-export const JournalHeader = ({
+export const PageHeader = ({
   children,
   colour = colours.orange,
   primaryBadges,
   secondaryBadges,
-}: JournalHeaderProps) => {
+}: PageHeaderProps) => {
   return (
     <div className="pb-4">
       {children}
