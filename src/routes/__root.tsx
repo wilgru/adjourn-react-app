@@ -1,5 +1,6 @@
 import { createRootRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { getNavigationDay } from "src/utils/getNavigationDay";
 
 export const Route = createRootRoute({
   component: () => (
@@ -9,7 +10,7 @@ export const Route = createRootRoute({
     </>
   ),
   notFoundComponent: () => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getNavigationDay();
 
     return <Navigate to={`/day/${today}`} replace={true} />;
   },

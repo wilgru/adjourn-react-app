@@ -22,7 +22,6 @@ export const NavItem = ({
   title,
   preview,
   to,
-  expanded,
 }: NavItemProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -35,9 +34,7 @@ export const NavItem = ({
         className: cn(colour.textPill, colour.backgroundPill),
       }}
       className={cn(
-        "flex items-center gap-2 rounded-full text-sm transition-colors",
-        expanded ? "px-2 py-1" : "p-2",
-        expanded ? "justify-between" : "justify-center",
+        "flex justify-between items-center gap-2 px-2 py-1 rounded-full text-sm transition-colors",
         isHovered && colour.textPill,
         isHovered && colour.backgroundPill
       )}
@@ -57,19 +54,17 @@ export const NavItem = ({
               />
             )}
 
-            {expanded ? title : ""}
+            {title}
           </div>
 
-          {expanded && (
-            <p
-              className={cn(
-                "text-xs font-medium w-2 mr-1 text-center",
-                isHovered || isActive ? colour.textPill : "text-slate-400"
-              )}
-            >
-              {preview}
-            </p>
-          )}
+          <p
+            className={cn(
+              "text-xs font-medium w-2 mr-1 text-center",
+              isHovered || isActive ? colour.textPill : "text-slate-400"
+            )}
+          >
+            {preview}
+          </p>
         </>
       )}
     </Link>

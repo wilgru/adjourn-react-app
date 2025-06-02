@@ -4,6 +4,7 @@ import { Button } from "src/components/controls/Button/Button";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { cn } from "src/utils/cn";
 import { NavItem } from "../NavItem/NavItem";
+import { Calendar } from "../navigation/Calendar/Calendar";
 
 export const Sidebar = () => {
   const { journals } = useGetJournals();
@@ -46,8 +47,8 @@ export const Sidebar = () => {
             />
           </section>
 
-          <section className="flex flex-col gap-1 p-1">
-            <h1 className="font-title text-slate-400 text-md ml-2">Tags</h1>
+          <section className="flex flex-col gap-1">
+            <h1 className="font-title text-slate-400 text-md">Tags</h1>
 
             {journals.map((journal) => (
               <NavItem
@@ -61,6 +62,8 @@ export const Sidebar = () => {
             ))}
           </section>
         </div>
+
+        <Calendar />
       </div>
     </aside>
   );

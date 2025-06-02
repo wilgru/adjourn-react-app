@@ -17,6 +17,7 @@ import {
   CalendarDot,
   SidebarSimple,
   ArrowLineLeft,
+  Circle,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -87,6 +88,8 @@ const Icon = ({
       return <SidebarSimple {...iconProps} />;
     case "arrowLineLeft":
       return <ArrowLineLeft {...iconProps} />;
+    case "circle":
+      return <Circle {...iconProps} />;
     default:
       return <></>;
   }
