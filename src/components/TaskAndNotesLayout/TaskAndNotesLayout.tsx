@@ -57,7 +57,7 @@ export const TaskAndNotesLayout = ({
         <section>
           <h2 className="text-slate-400 font-title text-2xl p-2">Notes</h2>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             {slips.map((slip) => (
               <SlipCard
                 ref={(el: HTMLDivElement | null) => {

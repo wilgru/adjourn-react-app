@@ -1,4 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { useNavigate } from "@tanstack/react-router";
 import { useState, forwardRef } from "react";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
@@ -9,7 +10,9 @@ import { colours } from "src/constants/colours.constant";
 import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
 import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
 import { cn } from "src/utils/cn";
+import { getNavigationDay } from "src/utils/getNavigationDay";
 import { isSlipContentEmpty } from "src/utils/slips/isSlipContentEmpty";
+import { TagPill } from "../TagPill/TagPill";
 import type { Colour } from "src/types/Colour.type";
 import type { Slip } from "src/types/Slip.type";
 
@@ -17,6 +20,7 @@ export const SlipCard = forwardRef<
   HTMLDivElement,
   { slip: Slip; colour?: Colour }
 >(function ({ slip, colour = colours.orange }, ref) {
+  const navigate = useNavigate();
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
   const [isHovered, setIsHovered] = useState(false);
@@ -29,11 +33,37 @@ export const SlipCard = forwardRef<
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "flex flex-col relative p-2 rounded-md transition-colors",
+        "flex flex-col gap-0.5 relative p-2 rounded-md transition-colors",
         colour.backgroundGlow
       )}
     >
       <SlipCardHeading slip={slip} />
+
+      <div className="flex items-center flex-wrap -ml-2">
+        <Button
+          colour={colour}
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            navigate({ to: `/day/${getNavigationDay()}` });
+          }}
+        >
+          {slip.created.format("ddd MMMM D, YYYY")}
+        </Button>
+
+        {slip.journals.map((journal) => (
+          <TagPill
+            key={journal.id}
+            journal={journal}
+            size="sm"
+            variant="ghost"
+            closable={false}
+            onClick={(tagId) => {
+              navigate({ to: `/journals/${tagId}` });
+            }}
+          />
+        ))}
+      </div>
 
       {!isSlipContentEmpty(slip.content) && (
         <QuillContentView content={slip.content} />
@@ -83,10 +113,6 @@ export const SlipCard = forwardRef<
           </Dialog.Root>
         </div>
       </div>
-
-      <p className="text-xs text-slate-500">
-        {slip.created.format("ddd D MMMM YYYY")}
-      </p>
     </div>
   );
 });

@@ -111,7 +111,8 @@ export const Button = ({
       className={cn(
         buttonVariants({
           size,
-          content: iconName ? "icon" : "text",
+          variant,
+          content: iconName && !children ? "icon" : "text",
         }),
         variant === "block" && colour.textPill,
         variant === "block" && colour.backgroundPill,
