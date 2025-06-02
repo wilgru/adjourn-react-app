@@ -9,13 +9,20 @@ type UseGetSlipsResponse = {
 
 export const useGetSlips = ({
   isFlagged,
+  createdDateString,
 }: {
   isFlagged: boolean;
+  createdDateString?: string;
 }): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
     slips: Slip[];
   }> => {
-    const filter = `deleted = null ${isFlagged ? "&& isFlagged = true" : ""}`;
+    let filter = `deleted = null${isFlagged ? " && isFlagged = true" : ""}`;
+    if (createdDateString) {
+      const startOfDay = `${createdDateString} 00:00:00.000Z`;
+      const endOfDay = `${createdDateString} 23:59:59.999Z`;
+      filter += ` && created >= "${startOfDay}" && created <= "${endOfDay}"`;
+    }
 
     const rawSlips = await pb
       .collection("slips")
@@ -32,7 +39,7 @@ export const useGetSlips = ({
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["slips.list", isFlagged],
+    queryKey: ["slips.list", isFlagged, createdDateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

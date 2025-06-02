@@ -45,7 +45,7 @@ export const SlipCard = forwardRef<
           variant="ghost"
           size="sm"
           onClick={() => {
-            navigate({ to: `/day/${getNavigationDay()}` });
+            navigate({ to: `/day/${getNavigationDay(slip.created)}` });
           }}
         >
           {slip.created.format("ddd MMMM D, YYYY")}

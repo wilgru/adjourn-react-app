@@ -1,10 +1,11 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import dayjs from "dayjs";
 import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
+import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/_layout/day/$dateString")({
@@ -23,8 +24,18 @@ export const Route = createFileRoute("/_layout/day/$dateString")({
 });
 
 function StreamIndexComponent() {
-  const { slips } = useGetSlips({ isFlagged: false });
+  const { dateString } = Route.useParams();
+  const navigate = useNavigate();
+  const { slips } = useGetSlips({
+    isFlagged: false,
+    createdDateString: dateString,
+  });
   const tableOfContentItems = useTaskAndNotesTOCItems(slips);
+
+  const date = dayjs(dateString, "YYYY-MM-DD");
+  const today = dayjs();
+  const yesterday = date.subtract(1, "day");
+  const tomorrow = date.add(1, "day");
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -32,38 +43,40 @@ function StreamIndexComponent() {
         iconName="calendarDot"
         title={"today"}
         titleItems={[
-          <div>
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button variant="ghost" size="sm" iconName="caretLeft" />
-              </Dialog.Trigger>
-
-              {/* <EditJournalModal journal={journal} /> */}
-            </Dialog.Root>
-          </div>,
-          <div>
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button variant="ghost" size="sm" iconName="caretRight" />
-              </Dialog.Trigger>
-
-              {/* <EditJournalModal journal={journal} /> */}
-            </Dialog.Root>
-          </div>,
+          <Button
+            variant="ghost"
+            size="sm"
+            iconName="caretLeft"
+            onClick={() =>
+              navigate({ to: `/day/${getNavigationDay(yesterday)}` })
+            }
+          />,
+          <Button
+            variant="ghost"
+            size="sm"
+            iconName="circle"
+            onClick={() => navigate({ to: `/day/${getNavigationDay(today)}` })}
+          />,
+          <Button
+            variant="ghost"
+            size="sm"
+            iconName="caretRight"
+            onClick={() =>
+              navigate({ to: `/day/${getNavigationDay(tomorrow)}` })
+            }
+          />,
         ]}
       />
 
       <TaskAndNotesLayout
         header={
           <div className="flex items-baseline gap-3">
-            <h1 className="text-5xl font-title text-slate-800">Today</h1>
+            <h1 className="text-5xl font-title text-slate-800">
+              {date.format("dddd")}
+            </h1>
 
             <h3 className="text-2xl text-slate-400">
-              {new Date().toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
+              {date.format("MMMM D, YYYY")}
             </h3>
           </div>
         }
