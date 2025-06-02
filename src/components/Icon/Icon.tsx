@@ -11,11 +11,11 @@ import {
   ArrowsDownUp,
   UserCircle,
   House,
-  Palette,
+  SlidersHorizontal,
   CaretLeft,
   CaretRight,
   CalendarDot,
-  SidebarSimple,
+  ArrowLineRight,
   ArrowLineLeft,
   Circle,
 } from "@phosphor-icons/react";
@@ -78,14 +78,14 @@ const Icon = ({
       return <CalendarDot {...iconProps} />;
     case "user":
       return <UserCircle {...iconProps} />;
-    case "palette":
-      return <Palette {...iconProps} />;
+    case "slidersHorizontal":
+      return <SlidersHorizontal {...iconProps} />;
     case "caretLeft":
       return <CaretLeft {...iconProps} />;
     case "caretRight":
       return <CaretRight {...iconProps} />;
-    case "sidebar":
-      return <SidebarSimple {...iconProps} />;
+    case "arrowLineRight":
+      return <ArrowLineRight {...iconProps} />;
     case "arrowLineLeft":
       return <ArrowLineLeft {...iconProps} />;
     case "circle":

@@ -48,7 +48,7 @@ export const SlipCard = forwardRef<
             navigate({ to: `/day/${getNavigationDay(slip.created)}` });
           }}
         >
-          {slip.created.format("ddd MMMM D, YYYY")}
+          {slip.created.format("ddd MMM D, YYYY")}
         </Button>
 
         {slip.journals.map((journal) => (

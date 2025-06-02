@@ -52,7 +52,7 @@ export default function JournalComponent() {
                   variant="ghost"
                   size="sm"
                   colour={journal.colour}
-                  iconName="palette"
+                  iconName="pencil"
                 />
               </Dialog.Trigger>
 

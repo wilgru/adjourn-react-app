@@ -37,7 +37,7 @@ export const Toolbar = ({
           <Button
             variant="ghost"
             colour={colour}
-            iconName="sidebar"
+            iconName="arrowLineRight"
             onClick={() => setValue(true)}
           />
         )}

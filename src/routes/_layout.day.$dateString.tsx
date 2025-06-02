@@ -41,30 +41,40 @@ function StreamIndexComponent() {
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
         iconName="calendarDot"
-        title={"today"}
+        title={
+          date.isSame(today, "day") ? "Today" : date.format("ddd MMM D, YYYY")
+        }
         titleItems={[
-          <Button
-            variant="ghost"
-            size="sm"
-            iconName="caretLeft"
-            onClick={() =>
-              navigate({ to: `/day/${getNavigationDay(yesterday)}` })
-            }
-          />,
-          <Button
-            variant="ghost"
-            size="sm"
-            iconName="circle"
-            onClick={() => navigate({ to: `/day/${getNavigationDay(today)}` })}
-          />,
-          <Button
-            variant="ghost"
-            size="sm"
-            iconName="caretRight"
-            onClick={() =>
-              navigate({ to: `/day/${getNavigationDay(tomorrow)}` })
-            }
-          />,
+          <div>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconName="caretLeft"
+              onClick={() =>
+                navigate({ to: `/day/${getNavigationDay(yesterday)}` })
+              }
+            />
+          </div>,
+          <div>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconName="circle"
+              onClick={() =>
+                navigate({ to: `/day/${getNavigationDay(today)}` })
+              }
+            />
+          </div>,
+          <div>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconName="caretRight"
+              onClick={() =>
+                navigate({ to: `/day/${getNavigationDay(tomorrow)}` })
+              }
+            />
+          </div>,
         ]}
       />
 
