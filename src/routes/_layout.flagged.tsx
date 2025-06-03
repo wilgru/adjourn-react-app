@@ -1,10 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useRef, useState, useEffect } from "react";
-import { SlipCard } from "src/components/SlipCard/SlipCard";
-import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { Icon } from "src/components/Icon/Icon";
+import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
+import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
-import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
+import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
+import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/_layout/flagged")({
@@ -21,78 +22,31 @@ export const Route = createFileRoute("/_layout/flagged")({
   },
 });
 
-// TODO: code is almost identical to stream page, consider consolidating in generic page
 function RouteComponent() {
-  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: true });
-  const bottomRef = useRef<null | HTMLDivElement>(null);
-  const slipRefs = useRef<HTMLDivElement[]>([]);
-  const [navigationId, setNavigationId] = useState("");
-
-  useIntersectionObserver(
-    slipRefs,
-    (entry) => {
-      setNavigationId(entry.target.id);
-    },
-    { rootMargin: "-10% 0% -90% 0%" },
-    { disabled: false }
-  );
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "instant",
-    });
-
-    const lastSlipGroup = slipGroups.at(slipGroups.length - 1);
-
-    lastSlipGroup && setNavigationId(lastSlipGroup?.title);
-  }, [slipGroups]);
-
-  const length = slipGroups.reduce(
-    (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
-    0
-  );
+  const { slips } = useGetSlips({
+    isFlagged: true,
+  });
+  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
 
   return (
-    <div className="flex h-full">
-      <div className="flex flex-col h-full gap-10 py-10 max-w-[700px] overflow-y-auto overflow-x-hidden">
-        {slipGroups.map((group) => (
-          <div
-            ref={(el: HTMLDivElement | null) => {
-              if (el && !slipRefs.current.includes(el)) {
-                slipRefs.current.push(el);
-              }
-            }}
-            id={group.title}
-            key={group.title}
-            className="flex flex-col gap-3"
-          >
-            <h2 className="mx-9 font-title text-3xl">{group.title}</h2>
+    <div className="h-full w-full flex flex-col items-center">
+      <Toolbar iconName="flag" title={"Flagged"} titleItems={[]} />
 
-            {group.slips.map((slip) => (
-              <div
-                key={slip.id}
-                className="relative p-3 mx-9 rounded-2xl bg-white drop-shadow-md border border-slate-300"
-              >
-                <SlipCard slip={slip} colour={colours.orange} />
-              </div>
-            ))}
+      <TaskAndNotesLayout
+        header={
+          <div className="flex gap-3">
+            <Icon
+              className={cn(colours.orange.text)}
+              iconName="flag"
+              size="xl"
+            />
+
+            <h1 className="font-title text-5xl">Flagged</h1>
           </div>
-        ))}
-
-        <div ref={bottomRef} className="flex justify-center">
-          <h1 className="font-title text-2xl text-slate-300">
-            {length} total slips
-          </h1>
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center">
-        <TableOfContents
-          items={tableOfContentItems}
-          activeItemNavigationId={navigationId}
-          onJumpTo={(id) => setNavigationId(id)}
-        />
-      </div>
+        }
+        slips={slips}
+        tableOfContentItems={tableOfContentItems}
+      />
     </div>
   );
 }
