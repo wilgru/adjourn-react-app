@@ -1,19 +1,19 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "src/components/controls/Button/Button";
 import { colours } from "src/constants/colours.constant";
-import { useDeleteJournal } from "src/hooks/journals/useDeleteJournal";
-import type { Journal } from "src/types/Journal.type";
+import { useDeleteTag } from "src/hooks/tags/useDeleteTag";
+import type { Tag } from "src/types/Tag.type";
 
-type DeleteJournalModalProps = {
-  journal: Journal;
+type DeleteTagModalProps = {
+  tag: Tag;
 };
 
-export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
-  const { deleteJournal } = useDeleteJournal();
+export const DeleteTagModal = ({ tag }: DeleteTagModalProps) => {
+  const { deleteTag } = useDeleteTag();
 
   const onConfirmDelete = async () => {
-    if (journal) {
-      await deleteJournal(journal.id);
+    if (tag) {
+      await deleteTag(tag.id);
     }
   };
 
@@ -21,10 +21,10 @@ export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
       <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-700 rounded-lg">
-        <Dialog.Title className="mb-5">Confirm delete journal</Dialog.Title>
+        <Dialog.Title className="mb-5">Confirm delete tag</Dialog.Title>
         <Dialog.Description className="mb-5">
           <p className="text-sm">
-            Are you sure you want to delete '{journal?.name}'?
+            Are you sure you want to delete '{tag?.name}'?
           </p>
         </Dialog.Description>
 

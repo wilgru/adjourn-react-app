@@ -9,14 +9,14 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import dayjs from "dayjs";
 import Delta from "quill-delta";
 import { useMemo, useState } from "react";
-import { Button } from "src/components/controls/Button/Button";
 import { QuillEditor } from "src/components/QuillEditor/QuillEditor";
+import { Button } from "src/components/controls/Button/Button";
 import { Toggle } from "src/components/controls/Toggle/Toggle";
 import { colours } from "src/constants/colours.constant";
 import { useCreateSlip } from "src/hooks/slips/useCreateSlip";
 import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
 import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
-import { JournalMultiSelect } from "./JournalMultiSelect";
+import { TagMultiSelect } from "./TagMultiSelect";
 import type { StringMap } from "quill";
 import type { Slip } from "src/types/Slip.type";
 
@@ -38,7 +38,6 @@ const getInitialSlip = (slip: Slip | undefined): Slip => {
     id: slip?.id || "",
     title: slip?.title || "",
     content: slip?.content || new Delta(),
-    journals: slip?.journals || [],
     tags: slip?.tags || [],
     isFlagged: slip?.isFlagged || false,
     isPinned: slip?.isPinned || false,
@@ -157,13 +156,13 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
           </div>
 
           <div className="flex flex-row justify-between w-full border-t border-slate-200 pt-2">
-            <JournalMultiSelect
+            <TagMultiSelect
               initialSlip={initialSlip}
-              onChange={(journals) =>
+              onChange={(tags) =>
                 setEditedSlip((currentEditedSlip) => {
                   const newSlipData = {
                     ...currentEditedSlip,
-                    journals,
+                    tags,
                   };
 
                   return newSlipData;

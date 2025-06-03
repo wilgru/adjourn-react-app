@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import Delta from "quill-delta";
-import { mapJournal } from "../journals/mapJournal";
+import { mapTag } from "../tags/mapTag";
 import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/types/Slip.type";
 
@@ -12,10 +12,7 @@ export const mapSlip = (slip: RecordModel): Slip => {
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
-    journals: slip?.expand?.journals
-      ? slip.expand.journals.map(mapJournal)
-      : [],
-    tags: slip?.expand?.tags ?? [],
+    tags: slip?.expand?.tags ? slip.expand.tags.map(mapTag) : [],
     deleted: null,
     created: dayjs(slip.created),
     updated: dayjs(slip.updated),

@@ -28,7 +28,7 @@ export const useGetSlips = ({
       .collection("slips")
       .getList(undefined, undefined, {
         filter,
-        expand: "journals",
+        expand: "tags",
         sort: "-isPinned",
       });
 

@@ -25,15 +25,11 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
     slipId,
     updateSlipData,
   }: UpdateSlipProps): Promise<Slip | undefined> => {
-    const journalIds = updateSlipData.journals.map((journal) => journal.id);
+    const tagIds = updateSlipData.tags.map((tag) => tag.id);
 
     const updatedSlip = await pb
       .collection("slips")
-      .update(
-        slipId,
-        { ...updateSlipData, journals: journalIds },
-        { expand: "journals" }
-      );
+      .update(slipId, { ...updateSlipData, tags: tagIds }, { expand: "tags" });
 
     return mapSlip(updatedSlip);
   };
@@ -48,7 +44,7 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
     });
 
     queryClient.refetchQueries({
-      queryKey: ["journals.get"],
+      queryKey: ["tags.get"],
     });
   };
 

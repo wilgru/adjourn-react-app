@@ -2,23 +2,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
-type UseDeleteJournalResponse = {
-  deleteJournal: UseMutateAsyncFunction<
-    string | undefined,
-    Error,
-    string,
-    unknown
-  >;
+type UseDeleteTagResponse = {
+  deleteTag: UseMutateAsyncFunction<string | undefined, Error, string, unknown>;
 };
 
-export const useDeleteJournal = (): UseDeleteJournalResponse => {
+export const useDeleteTag = (): UseDeleteTagResponse => {
   const queryClient = useQueryClient();
 
-  const mutationFn = async (journalId: string): Promise<string | undefined> => {
-    const isJournalDeleted = await pb.collection("journals").delete(journalId);
+  const mutationFn = async (tagId: string): Promise<string | undefined> => {
+    const isTagDeleted = await pb.collection("tags").delete(tagId);
 
-    if (isJournalDeleted) {
-      return journalId;
+    if (isTagDeleted) {
+      return tagId;
     }
 
     return undefined;
@@ -30,10 +25,10 @@ export const useDeleteJournal = (): UseDeleteJournalResponse => {
     }
 
     queryClient.refetchQueries({
-      queryKey: ["journals.list"],
+      queryKey: ["tags.list"],
     });
 
-    // remove journal from any slips
+    // remove tag from any slips
     queryClient.refetchQueries({
       queryKey: ["slips.list"],
     });
@@ -41,12 +36,12 @@ export const useDeleteJournal = (): UseDeleteJournalResponse => {
 
   // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
-    mutationKey: ["journals.delete"],
+    mutationKey: ["tags.delete"],
     mutationFn,
     onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
 
-  return { deleteJournal: mutateAsync };
+  return { deleteTag: mutateAsync };
 };

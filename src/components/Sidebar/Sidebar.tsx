@@ -1,13 +1,13 @@
 import { useSetAtom } from "jotai";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
-import { useGetJournals } from "src/hooks/journals/useGetJournals";
+import { useGetTags } from "src/hooks/tags/useGetTags";
 import { cn } from "src/utils/cn";
 import { NavItem } from "../NavItem/NavItem";
 import { Calendar } from "../navigation/Calendar/Calendar";
 
 export const Sidebar = () => {
-  const { journals } = useGetJournals();
+  const { tags } = useGetTags();
 
   const setIsSidebarVisible = useSetAtom(isSideBarVisibleAtom);
 
@@ -50,13 +50,13 @@ export const Sidebar = () => {
           <section className="flex flex-col gap-1">
             <h1 className="font-title text-slate-400 text-md">Tags</h1>
 
-            {journals.map((journal) => (
+            {tags.map((tag) => (
               <NavItem
-                iconName={journal.icon}
-                colour={journal.colour}
-                title={journal.name}
-                preview={journal.slipCount}
-                to={`/journals/${journal.id}`}
+                iconName={tag.icon}
+                colour={tag.colour}
+                title={tag.name}
+                preview={tag.slipCount}
+                to={`/tags/${tag.id}`}
                 expanded={true}
               />
             ))}

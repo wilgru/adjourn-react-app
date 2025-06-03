@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { useGetJournals } from "src/hooks/journals/useGetJournals";
+import { useGetTags } from "src/hooks/tags/useGetTags";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
@@ -19,15 +19,13 @@ type UseDeleteSlipResponse = {
 
 export const useDeleteSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
-  const { slipGroups } = useGetSlips({ isFlagged: false });
-  const { refetchJournals } = useGetJournals();
+  const { slips } = useGetSlips({ isFlagged: false });
+  const { refetchTags } = useGetTags();
 
   const mutationFn = async ({
     slipId,
   }: deleteSlipProps): Promise<string | undefined> => {
-    const slipToDelete = slipGroups
-      .flatMap((slipGroup) => slipGroup.slips)
-      .find((slip) => slip.id === slipId);
+    const slipToDelete = slips.find((slip) => slip.id === slipId);
 
     if (!slipToDelete) {
       return;
@@ -35,8 +33,8 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
 
     await pb.collection("slips").delete(slipId);
 
-    if (slipToDelete.journals.length) {
-      await refetchJournals();
+    if (slipToDelete.tags.length) {
+      await refetchTags();
     }
 
     return slipId;
@@ -48,7 +46,7 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     });
 
     queryClient.refetchQueries({
-      queryKey: ["journals.get"],
+      queryKey: ["tags.get"],
     });
   };
 

@@ -2,20 +2,20 @@ import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { EditJournalModal } from "src/components/EditJournalModal/EditJournalModal";
+import { EditTagModal } from "src/components/EditTagModal/EditTagModal";
 import { Icon } from "src/components/Icon/Icon";
 import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
-import { useGetJournal } from "src/hooks/journals/useGetJournal";
-import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
+import { useGetTag } from "src/hooks/tags/useGetTag";
+import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute("/_layout/journals/$journalId")({
-  component: JournalComponent,
-  // loader: ({ params }) => fetchJournal(params.journalId),
+export const Route = createFileRoute("/_layout/tags/$tagId")({
+  component: TagComponent,
+  // loader: ({ params }) => fetch(params.tagId),
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
@@ -28,22 +28,22 @@ export const Route = createFileRoute("/_layout/journals/$journalId")({
   },
 });
 
-export default function JournalComponent() {
-  const { journalId } = Route.useParams();
-  const { journal, slips } = useGetJournal(journalId ?? "");
+export default function TagComponent() {
+  const { tagId } = Route.useParams();
+  const { tag, slips } = useGetTag(tagId ?? "");
   const tableOfContentItems = useTaskAndNotesTOCItems(slips);
-  const { updateJournal } = useUpdateJournal();
+  const { updateTag } = useUpdateTag();
 
-  if (!journal) {
+  if (!tag) {
     return null;
   }
 
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
-        iconName={journal.icon}
-        title={journal.name}
-        colour={journal.colour}
+        iconName={tag.icon}
+        title={tag.name}
+        colour={tag.colour}
         titleItems={[
           <div>
             <Dialog.Root>
@@ -51,12 +51,12 @@ export default function JournalComponent() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  colour={journal.colour}
+                  colour={tag.colour}
                   iconName="pencil"
                 />
               </Dialog.Trigger>
 
-              <EditJournalModal journal={journal} />
+              <EditTagModal tag={tag} />
             </Dialog.Root>
           </div>,
           <DropdownMenu.Root>
@@ -65,7 +65,7 @@ export default function JournalComponent() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  colour={journal.colour}
+                  colour={tag.colour}
                   iconName="arrowsDownUp"
                 />
               </div>
@@ -78,13 +78,13 @@ export default function JournalComponent() {
                 align="start"
               >
                 <DropdownMenu.RadioGroup
-                  value={journal.groupBy}
+                  value={tag.groupBy}
                   onValueChange={(value) => {
-                    if (value === "created" || value === "journal") {
-                      updateJournal({
-                        journalId: journal.id,
-                        updateJournalData: {
-                          ...journal,
+                    if (value === "created" || value === "tag") {
+                      updateTag({
+                        tagId: tag.id,
+                        updateTagData: {
+                          ...tag,
                           groupBy: value,
                         },
                       });
@@ -98,8 +98,8 @@ export default function JournalComponent() {
                   <DropdownMenu.RadioItem
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.backgroundPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="created"
                   >
@@ -111,12 +111,12 @@ export default function JournalComponent() {
                   <DropdownMenu.RadioItem
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.backgroundPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
-                    value="journal"
+                    value="tag"
                   >
-                    Journal
+                    Tag
                     <DropdownMenu.ItemIndicator>
                       <Check />
                     </DropdownMenu.ItemIndicator>
@@ -134,8 +134,8 @@ export default function JournalComponent() {
                   <DropdownMenu.RadioItem
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.backgroundPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="created"
                   >
@@ -147,8 +147,8 @@ export default function JournalComponent() {
                   <DropdownMenu.RadioItem
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                      `data-[highlighted]:${journal.colour.backgroundPill}`,
-                      `data-[highlighted]:${journal.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.backgroundPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="title"
                   >
@@ -168,12 +168,12 @@ export default function JournalComponent() {
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn(journal.colour.text)}
-              iconName={journal.icon}
+              className={cn(tag.colour.text)}
+              iconName={tag.icon}
               size="xl"
             />
 
-            <h1 className="font-title text-5xl">{journal.name}</h1>
+            <h1 className="font-title text-5xl">{tag.name}</h1>
           </div>
         }
         secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}

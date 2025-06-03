@@ -29,10 +29,10 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
     const createdSlip = await pb.collection("slips").create(
       {
         ...createSlipData,
-        journals: createSlipData.journals.map((journal) => journal.id),
+        tags: createSlipData.tags.map((tag) => tag.id),
         user: user?.id,
       },
-      { expand: "journals" }
+      { expand: "tags" }
     );
 
     return mapSlip(createdSlip);
@@ -48,7 +48,7 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
     });
 
     queryClient.refetchQueries({
-      queryKey: ["journals.get"],
+      queryKey: ["tags.get"],
     });
   };
 

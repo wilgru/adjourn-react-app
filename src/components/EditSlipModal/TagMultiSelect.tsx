@@ -3,16 +3,16 @@ import { useCallback, useState } from "react";
 import { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { colours } from "src/constants/colours.constant";
-import { useCreateJournal } from "src/hooks/journals/useCreateJournal";
-import { useGetJournals } from "src/hooks/journals/useGetJournals";
+import { useCreateTag } from "src/hooks/tags/useCreateTag";
+import { useGetTags } from "src/hooks/tags/useGetTags";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
-import type { Journal } from "src/types/Journal.type";
 import type { Slip } from "src/types/Slip.type";
+import type { Tag } from "src/types/Tag.type";
 
-type JournalMultiSelectProps = {
+type TagMultiSelectProps = {
   initialSlip: Slip;
-  onChange: (journals: Journal[]) => void;
+  onChange: (tags: Tag[]) => void;
 };
 
 type Option = {
@@ -20,47 +20,44 @@ type Option = {
   value: string;
 };
 
-const getColourFromJournal = (
-  journals: Journal[],
-  journalId: string
-): Colour => {
-  const journal = journals.find((journal) => journal.id === journalId);
+const getColourFromTag = (tags: Tag[], tagId: string): Colour => {
+  const tag = tags.find((tag) => tag.id === tagId);
 
-  return journal ? journal.colour : colours.orange;
+  return tag ? tag.colour : colours.orange;
 };
 
-export const JournalMultiSelect = ({
+export const TagMultiSelect = ({
   initialSlip,
   onChange,
-}: JournalMultiSelectProps) => {
-  const { journals } = useGetJournals();
-  const { createJournal } = useCreateJournal();
+}: TagMultiSelectProps) => {
+  const { tags } = useGetTags();
+  const { createTag } = useCreateTag();
 
   const [value, setValue] = useState<Option[]>(
-    initialSlip.journals.map((journal) => ({
-      value: journal.id,
-      label: journal.name,
+    initialSlip.tags.map((tag) => ({
+      value: tag.id,
+      label: tag.name,
     }))
   );
 
-  const onCreateNewJournal = useCallback(
-    async (journalToCreate: string) => {
-      const newJournal = await createJournal(journalToCreate);
+  const onCreateNewTag = useCallback(
+    async (tagToCreate: string) => {
+      const newTag = await createTag(tagToCreate);
 
       setValue((currentValue) => [
         ...currentValue,
-        { value: newJournal.id, label: newJournal.name },
+        { value: newTag.id, label: newTag.name },
       ]);
 
-      onChange([...initialSlip.journals, newJournal]);
+      onChange([...initialSlip.tags, newTag]);
     },
-    [createJournal, initialSlip.journals, onChange]
+    [createTag, initialSlip.tags, onChange]
   );
 
-  const options = journals.map((journal) => ({
-    value: journal.id,
-    label: journal.name,
-    colour: journal.colour,
+  const options = tags.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+    colour: tag.colour,
   }));
 
   return (
@@ -68,26 +65,24 @@ export const JournalMultiSelect = ({
       <CreatableSelect
         isMulti
         options={options}
-        placeholder="Add journal"
+        placeholder="Add tag"
         value={value}
-        onChange={(selectedJournals) => {
-          setValue([...selectedJournals]);
+        onChange={(selectedTags) => {
+          setValue([...selectedTags]);
 
           onChange(
-            selectedJournals.reduce((acc: Journal[], selectedJournal) => {
-              const journal = journals.find(
-                (journal) => journal.id === selectedJournal.value
-              );
+            selectedTags.reduce((acc: Tag[], selectedTag) => {
+              const tag = tags.find((tag) => tag.id === selectedTag.value);
 
-              if (journal) {
-                acc.push(journal);
+              if (tag) {
+                acc.push(tag);
               }
 
               return acc;
             }, [])
           );
         }}
-        onCreateOption={onCreateNewJournal}
+        onCreateOption={onCreateNewTag}
         components={{
           DropdownIndicator: (props) => {
             return (
@@ -119,8 +114,8 @@ export const JournalMultiSelect = ({
             return cn("text-xs", "text-slate-500", "cursor-pointer");
           },
           multiValue: (props) => {
-            const { backgroundPill, text } = getColourFromJournal(
-              journals,
+            const { backgroundPill, text } = getColourFromTag(
+              tags,
               props.data.value
             );
             return cn(

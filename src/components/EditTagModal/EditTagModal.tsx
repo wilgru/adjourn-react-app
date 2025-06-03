@@ -5,28 +5,28 @@ import { Input } from "src/components/Input/Input";
 import { Button } from "src/components/controls/Button/Button";
 import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
 import { colours } from "src/constants/colours.constant";
-import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
-import { DeleteJournalModal } from "../DeleteJournalModal/DeleteJournalModal";
-import type { Journal } from "src/types/Journal.type";
+import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
+import { DeleteTagModal } from "../DeleteTagModal/DeleteTagModal";
+import type { Tag } from "src/types/Tag.type";
 
-type EditJournalModalProps = {
-  journal: Journal;
+type EditTagModalProps = {
+  tag: Tag;
 };
 
-export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
-  const [editedJournal, setEditedJournal] = useState<Journal>(journal);
-  const { updateJournal } = useUpdateJournal();
+export const EditTagModal = ({ tag }: EditTagModalProps) => {
+  const [editedTag, setEditedTag] = useState<Tag>(tag);
+  const { updateTag } = useUpdateTag();
 
   // TODO: find better solution than using useEffect
   useEffect(() => {
-    setEditedJournal(journal);
-  }, [journal]);
+    setEditedTag(tag);
+  }, [tag]);
 
   const onSaveEdit = async () => {
-    if (journal?.id) {
-      await updateJournal({
-        journalId: editedJournal.id,
-        updateJournalData: editedJournal,
+    if (tag?.id) {
+      await updateTag({
+        tagId: editedTag.id,
+        updateTagData: editedTag,
       });
     }
   };
@@ -35,18 +35,18 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
       <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-600 rounded-lg">
-        <Dialog.Title className="mb-5">Edit journal</Dialog.Title>
+        <Dialog.Title className="mb-5">Edit tag</Dialog.Title>
 
         <div className="flex flex-col gap-3">
           <div>
             <h3 className="text-sm">Name</h3>
             <Input
               size="md"
-              id={journal.id}
-              value={editedJournal.name}
+              id={tag.id}
+              value={editedTag.name}
               onChange={(e) =>
-                setEditedJournal((currentJournalToEdit) => {
-                  return { ...currentJournalToEdit, name: e.target.value };
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, name: e.target.value };
                 })
               }
             />
@@ -55,10 +55,10 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
           <div>
             <h3 className="text-sm">Colour</h3>
             <ColourPicker
-              selectedColourName={editedJournal.colour.name}
+              selectedColourName={editedTag.colour.name}
               onSelectColour={(colour) => {
-                setEditedJournal((currentJournalToEdit) => {
-                  return { ...currentJournalToEdit, colour: colour };
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, colour: colour };
                 });
               }}
             />
@@ -67,11 +67,11 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
           <div>
             <h3 className="text-sm">Icon</h3>
             <IconPicker
-              selectedIconName={editedJournal.icon}
-              colour={editedJournal.colour}
+              selectedIconName={editedTag.icon}
+              colour={editedTag.colour}
               onSelectIcon={(iconName) => {
-                setEditedJournal((currentJournalToEdit) => {
-                  return { ...currentJournalToEdit, icon: iconName };
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, icon: iconName };
                 });
               }}
             />
@@ -85,7 +85,7 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
                 </Button>
               </Dialog.Trigger>
 
-              <DeleteJournalModal journal={journal} />
+              <DeleteTagModal tag={tag} />
             </Dialog.Root>
 
             <div className="flex gap-2 justify-end">

@@ -55,15 +55,15 @@ export const SlipCard = forwardRef<
           {slip.created.format("ddd MMM D, YYYY")}
         </Button>
 
-        {slip.journals.map((journal) => (
+        {slip.tags.map((tag) => (
           <TagPill
-            key={journal.id}
-            journal={journal}
+            key={tag.id}
+            tag={tag}
             size="sm"
             variant="ghost"
             closable={false}
             onClick={(tagId) => {
-              navigate({ to: `/journals/${tagId}` });
+              navigate({ to: `/tags/${tagId}` });
             }}
           />
         ))}

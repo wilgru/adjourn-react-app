@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "src/components/controls/Button/Button";
-import type { Journal } from "src/types/Journal.type";
+import type { Tag } from "src/types/Tag.type";
 
 type TagPillProps = {
-  journal: Journal;
+  tag: Tag;
   size?: "sm" | "md" | "lg";
   variant?: "block" | "ghost";
   closable?: boolean;
@@ -11,7 +11,7 @@ type TagPillProps = {
 };
 
 export const TagPill = ({
-  journal,
+  tag,
   size = "sm",
   variant = "block",
   closable = false,
@@ -27,12 +27,12 @@ export const TagPill = ({
     >
       <Button
         variant={variant}
-        colour={journal.colour}
+        colour={tag.colour}
         size={size}
-        onClick={() => onClick && onClick(journal.id)}
-        iconName={closable && closeButtonVisible ? "x" : journal.icon}
+        onClick={() => onClick && onClick(tag.id)}
+        iconName={closable && closeButtonVisible ? "x" : tag.icon}
       >
-        {journal.name}
+        {tag.name}
       </Button>
     </div>
   );

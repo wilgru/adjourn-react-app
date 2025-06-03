@@ -4,13 +4,13 @@ import type {
   SlipsGroupDividedByTitle,
 } from "src/types/Slip.type";
 
-const getGroupTitle = (slip: Slip, groupBy: "created" | "journal") => {
+const getGroupTitle = (slip: Slip, groupBy: "created" | "tag") => {
   switch (groupBy) {
     case "created":
       return [slip.created.format("ddd D MMMM YYYY")];
 
-    case "journal":
-      return slip.journals.map((journal) => journal.name);
+    case "tag":
+      return slip.tags.map((tag) => tag.name);
 
     default:
       return [];
@@ -19,17 +19,17 @@ const getGroupTitle = (slip: Slip, groupBy: "created" | "journal") => {
 
 export function groupSlips(
   slips: Slip[],
-  groupBy: "created" | "journal",
+  groupBy: "created" | "tag",
   divideByTitle: true
 ): SlipsGroupDividedByTitle[];
 export function groupSlips(
   slips: Slip[],
-  groupBy: "created" | "journal",
+  groupBy: "created" | "tag",
   divideByTitle?: false
 ): SlipsGroup[];
 export function groupSlips(
   slips: Slip[],
-  groupBy: "created" | "journal",
+  groupBy: "created" | "tag",
   divideByTitle: boolean = false
 ): (SlipsGroup | SlipsGroupDividedByTitle)[] {
   const groupedSlips = slips.reduce((acc: SlipsGroup[], slip: Slip) => {
