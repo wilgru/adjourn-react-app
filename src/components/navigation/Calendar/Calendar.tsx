@@ -1,15 +1,14 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
+import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import type { Dayjs } from "dayjs";
 
-type CalendarProps = {
-  year?: number;
-  month?: number; // 0-indexed (0 = January)
-};
+// type CalendarProps = {};
 
 type CalendarDay = {
   day: Dayjs;
@@ -31,15 +30,13 @@ const MONTH_NAMES = [
   "December",
 ];
 
-export const Calendar = ({ year, month }: CalendarProps): JSX.Element => {
+export const Calendar = (): JSX.Element => {
   const navigate = useNavigate();
+  const [jumpToDate, setJumpToDate] = useAtom(jumpToDateAtom);
 
   const today = dayjs();
-  const initialYear = year ?? today.year();
-  const initialMonth = month ?? today.month();
-
-  const [displayYear, setDisplayYear] = useState(initialYear);
-  const [displayMonth, setDisplayMonth] = useState(initialMonth);
+  const [displayYear, setDisplayYear] = useState(today.year());
+  const [displayMonth, setDisplayMonth] = useState(today.month());
 
   // Get first day of the month (0 = Sunday)
   const firstDay = dayjs().year(displayYear).month(displayMonth).date(1).day();
@@ -130,6 +127,15 @@ export const Calendar = ({ year, month }: CalendarProps): JSX.Element => {
     setDisplayYear(today.year());
     setDisplayMonth(today.month());
   };
+
+  useEffect(() => {
+    if (jumpToDate) {
+      setDisplayYear(jumpToDate.year());
+      setDisplayMonth(jumpToDate.month());
+
+      setJumpToDate(null);
+    }
+  }, [jumpToDate, setJumpToDate]);
 
   return (
     <div className="px-2">

@@ -1,6 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
+import { useSetAtom } from "jotai";
 import { useState, forwardRef } from "react";
+import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
 import { SlipCardHeading } from "src/components/SlipCard/SlipCardHeading";
@@ -23,6 +25,7 @@ export const SlipCard = forwardRef<
   const navigate = useNavigate();
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
+  const setJumpToAtom = useSetAtom(jumpToDateAtom);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -46,6 +49,7 @@ export const SlipCard = forwardRef<
           size="sm"
           onClick={() => {
             navigate({ to: `/day/${getNavigationDay(slip.created)}` });
+            setJumpToAtom(slip.created);
           }}
         >
           {slip.created.format("ddd MMM D, YYYY")}

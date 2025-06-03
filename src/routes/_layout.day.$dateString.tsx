@@ -1,5 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
+import { useSetAtom } from "jotai";
+import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
@@ -31,6 +33,7 @@ function StreamIndexComponent() {
     createdDateString: dateString,
   });
   const tableOfContentItems = useTaskAndNotesTOCItems(slips);
+  const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
   const today = dayjs();
@@ -50,9 +53,10 @@ function StreamIndexComponent() {
               variant="ghost"
               size="sm"
               iconName="caretLeft"
-              onClick={() =>
-                navigate({ to: `/day/${getNavigationDay(yesterday)}` })
-              }
+              onClick={() => {
+                setJumpToAtom(yesterday);
+                navigate({ to: `/day/${getNavigationDay(yesterday)}` });
+              }}
             />
           </div>,
           <div>
@@ -60,9 +64,10 @@ function StreamIndexComponent() {
               variant="ghost"
               size="sm"
               iconName="circle"
-              onClick={() =>
-                navigate({ to: `/day/${getNavigationDay(today)}` })
-              }
+              onClick={() => {
+                setJumpToAtom(today);
+                navigate({ to: `/day/${getNavigationDay(today)}` });
+              }}
             />
           </div>,
           <div>
@@ -70,9 +75,10 @@ function StreamIndexComponent() {
               variant="ghost"
               size="sm"
               iconName="caretRight"
-              onClick={() =>
-                navigate({ to: `/day/${getNavigationDay(tomorrow)}` })
-              }
+              onClick={() => {
+                setJumpToAtom(tomorrow);
+                navigate({ to: `/day/${getNavigationDay(tomorrow)}` });
+              }}
             />
           </div>,
         ]}
