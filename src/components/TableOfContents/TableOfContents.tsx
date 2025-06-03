@@ -92,7 +92,7 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="max-w-80 m-4 pl-2 pb-2 border-l-2 border-slate-200 h-fit">
+    <ul className="w-60 m-4 pl-2 pb-2 border-l-2 border-slate-200 h-fit">
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 
