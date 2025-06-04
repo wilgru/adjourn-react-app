@@ -24,9 +24,7 @@ export const Route = createFileRoute("/_layout/flagged")({
 });
 
 function RouteComponent() {
-  const { tasks } = useGetTasks({
-    isFlagged: true,
-  });
+  const { tasks } = useGetTasks({});
   const { slips } = useGetSlips({
     isFlagged: true,
   });

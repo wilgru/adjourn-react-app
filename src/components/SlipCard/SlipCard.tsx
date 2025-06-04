@@ -36,7 +36,7 @@ export const SlipCard = forwardRef<
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "flex flex-col gap-0.5 relative p-2 rounded-md transition-colors",
+        "flex flex-col gap-0.5 relative p-2 rounded-lg transition-colors",
         colour.backgroundGlow
       )}
     >

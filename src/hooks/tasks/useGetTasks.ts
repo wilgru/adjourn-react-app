@@ -16,22 +16,31 @@ type UseGetTacksResponse = {
 
 export const useGetTasks = ({
   isFlagged,
-  createdDateString,
+  dateString,
 }: {
-  isFlagged: boolean;
-  createdDateString?: string;
+  isFlagged?: boolean;
+  dateString?: string;
 }): UseGetTacksResponse => {
   const queryFn = async (): Promise<Task[]> => {
-    let filter = isFlagged ? "isFlagged = true" : "";
-    if (createdDateString) {
-      const startOfDay = `${createdDateString} 00:00:00.000Z`;
-      const endOfDay = `${createdDateString} 23:59:59.999Z`;
-      filter += ` && created >= "${startOfDay}" && created <= "${endOfDay}"`;
+    const filters = [];
+
+    if (isFlagged !== undefined) {
+      filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
     }
 
-    const rawTags = await pb
-      .collection("tasks")
-      .getList(undefined, undefined, { filter, expand: "tags" });
+    if (dateString) {
+      const startOfDueDate = `${dateString} 00:00:00.000Z`;
+      const endOfDueDate = `${dateString} 23:59:59.999Z`;
+      filters.push(
+        `dueDate <= "${endOfDueDate}" || (completedDate >= "${startOfDueDate}" && completedDate <= "${endOfDueDate}") || (cancelledDate >= "${startOfDueDate}" && cancelledDate <= "${endOfDueDate}")`
+      );
+    }
+
+    const rawTags = await pb.collection("tasks").getList(undefined, undefined, {
+      filter: filters.join(" && "),
+      expand: "tags",
+      sort: "-dueDate",
+    });
 
     const mappedTasks = rawTags.items.map(mapTask);
 

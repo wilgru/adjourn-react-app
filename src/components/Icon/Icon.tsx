@@ -18,6 +18,9 @@ import {
   ArrowLineRight,
   ArrowLineLeft,
   Circle,
+  Link,
+  CheckCircle,
+  MinusCircle,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -90,6 +93,12 @@ const Icon = ({
       return <ArrowLineLeft {...iconProps} />;
     case "circle":
       return <Circle {...iconProps} />;
+    case "link":
+      return <Link {...iconProps} />;
+    case "checkCircle":
+      return <CheckCircle {...iconProps} />;
+    case "minusCircle":
+      return <MinusCircle {...iconProps} />;
     default:
       return <></>;
   }

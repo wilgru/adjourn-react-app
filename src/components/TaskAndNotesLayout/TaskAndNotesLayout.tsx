@@ -76,9 +76,9 @@ export const TaskAndNotesLayout = ({
         <section>
           <h2 className="text-slate-400 font-title text-2xl p-2">Tasks</h2>
 
-          <div className="flex flex-col gap-5 p-1">
+          <div className="flex flex-col gap-1 p-1">
             {tasks.map((task) => (
-              <TaskItem key={task.id} task={task} />
+              <TaskItem key={task.id} task={task} colour={colour} />
             ))}
           </div>
         </section>

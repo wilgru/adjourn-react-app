@@ -30,8 +30,7 @@ function StreamIndexComponent() {
   const { dateString } = Route.useParams();
   const navigate = useNavigate();
   const { tasks } = useGetTasks({
-    isFlagged: false,
-    createdDateString: dateString,
+    dateString: dateString,
   });
   const { slips } = useGetSlips({
     isFlagged: false,
