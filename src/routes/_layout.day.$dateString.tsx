@@ -37,7 +37,7 @@ function StreamIndexComponent() {
     isFlagged: false,
     createdDateString: dateString,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
+  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, slips);
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
@@ -45,13 +45,15 @@ function StreamIndexComponent() {
   const yesterday = date.subtract(1, "day");
   const tomorrow = date.add(1, "day");
 
+  const title = date.isSame(today, "day")
+    ? "Today"
+    : date.format("ddd MMM D, YYYY");
+
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
         iconName="calendarDot"
-        title={
-          date.isSame(today, "day") ? "Today" : date.format("ddd MMM D, YYYY")
-        }
+        title={title}
         titleItems={[
           <div>
             <Button
@@ -101,6 +103,7 @@ function StreamIndexComponent() {
             </h3>
           </div>
         }
+        title={title}
         tasks={tasks}
         slips={slips}
         tableOfContentItems={tableOfContentItems}

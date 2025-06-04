@@ -30,7 +30,7 @@ function RouteComponent() {
   const { slips } = useGetSlips({
     isFlagged: true,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
+  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, slips);
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -48,6 +48,7 @@ function RouteComponent() {
             <h1 className="font-title text-5xl">Flagged</h1>
           </div>
         }
+        title="Flagged"
         slips={slips}
         tasks={tasks}
         tableOfContentItems={tableOfContentItems}

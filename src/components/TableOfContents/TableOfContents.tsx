@@ -11,6 +11,7 @@ export type TableOfContentsItem = {
 };
 
 type TableOfContentsProps = {
+  title: string;
   items: TableOfContentsItem[];
   activeItemNavigationId: string;
   onJumpTo: (id: string) => void;
@@ -18,6 +19,7 @@ type TableOfContentsProps = {
 };
 
 export default function TableOfContents({
+  title,
   items,
   activeItemNavigationId,
   onJumpTo,
@@ -38,8 +40,8 @@ export default function TableOfContents({
       >
         <h2
           className={cn(
-            "px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
-            item.italic ? "italic text-sm py-1" : "font-title text-md pt-1",
+            "text-sm py-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
+            item.italic && "italic",
             isActive && colour.backgroundPill,
             isActive && colour.textPill,
             colour.backgroundPillInverted,
@@ -92,7 +94,21 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="w-60 m-4 pl-2 pb-2 border-l-2 border-slate-200 h-fit">
+    <ul className="w-60 m-4 pl-2 pb-2  h-fit opacity-60 hover:opacity-100">
+      <li>
+        <h2
+          className={cn(
+            "font-title text-lg pt-1 px-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
+            // isActive && colour.backgroundPill,
+            // isActive && colour.textPill,
+            colour.backgroundPillInverted,
+            colour.textPillInverted
+          )}
+        >
+          {title}
+        </h2>
+      </li>
+
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 

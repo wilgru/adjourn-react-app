@@ -32,6 +32,7 @@ export default function TagComponent() {
   const { tagId } = Route.useParams();
   const { tag, tasks, slips } = useGetTag(tagId ?? "");
   const tableOfContentItems = useTaskAndNotesTOCItems(
+    tasks,
     slips,
     tag?.groupBy,
     tag?.name
@@ -198,6 +199,7 @@ export default function TagComponent() {
             <h1 className="font-title text-5xl">{tag.name}</h1>
           </div>
         }
+        title={tag.name}
         secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}
         colour={tag.colour}
         slips={slips}

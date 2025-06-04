@@ -13,6 +13,7 @@ import type { Task } from "src/types/Task.type";
 
 type TaskAndNotesLayoutProps = {
   header: React.ReactNode;
+  title: string;
   colour?: Colour;
   primaryBadges?: string[];
   secondaryBadges?: string[];
@@ -25,6 +26,7 @@ type TaskAndNotesLayoutProps = {
 
 export const TaskAndNotesLayout = ({
   header,
+  title,
   colour = colours.orange,
   primaryBadges = [],
   secondaryBadges = [],
@@ -106,6 +108,7 @@ export const TaskAndNotesLayout = ({
 
       <div className="flex flex-col justify-center">
         <TableOfContents
+          title={title}
           items={tableOfContentItems}
           colour={colour}
           activeItemNavigationId={navigationId}
