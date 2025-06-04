@@ -1,16 +1,28 @@
-import type {
-  Slip,
-  SlipsGroup,
-  SlipsGroupDividedByTitle,
-} from "src/types/Slip.type";
+import type { Slip, SlipsGroup } from "src/types/Slip.type";
 
-const getGroupTitle = (slip: Slip, groupBy: "created" | "tag") => {
+const getGroupTitle = (
+  slip: Slip,
+  groupBy: "created" | "tag",
+  defaultGroupTitle: string | undefined = undefined
+) => {
   switch (groupBy) {
     case "created":
       return [slip.created.format("ddd D MMMM YYYY")];
-
     case "tag":
-      return slip.tags.map((tag) => tag.name);
+      if (
+        slip.tags.length === 1 &&
+        slip.tags.at(0)?.name === defaultGroupTitle
+      ) {
+        return ["Notes"];
+      }
+
+      return slip.tags.reduce((acc: string[], tag) => {
+        if (tag.name === defaultGroupTitle) {
+          return acc;
+        }
+
+        return [...acc, tag.name];
+      }, []);
 
     default:
       return [];
@@ -20,20 +32,10 @@ const getGroupTitle = (slip: Slip, groupBy: "created" | "tag") => {
 export function groupSlips(
   slips: Slip[],
   groupBy: "created" | "tag",
-  divideByTitle: true
-): SlipsGroupDividedByTitle[];
-export function groupSlips(
-  slips: Slip[],
-  groupBy: "created" | "tag",
-  divideByTitle?: false
-): SlipsGroup[];
-export function groupSlips(
-  slips: Slip[],
-  groupBy: "created" | "tag",
-  divideByTitle: boolean = false
-): (SlipsGroup | SlipsGroupDividedByTitle)[] {
+  defaultGroupTitle: string | undefined = undefined
+): SlipsGroup[] {
   const groupedSlips = slips.reduce((acc: SlipsGroup[], slip: Slip) => {
-    const groupTitles = getGroupTitle(slip, groupBy);
+    const groupTitles = getGroupTitle(slip, groupBy, defaultGroupTitle);
 
     for (const groupTitle of groupTitles) {
       const existingGroup = acc.find(
@@ -54,27 +56,6 @@ export function groupSlips(
 
     return acc;
   }, []);
-
-  if (divideByTitle) {
-    return groupedSlips.map((groupedSlip) => {
-      const slipsWithTitle: Slip[] = [];
-      const slipsWithNoTitle: Slip[] = [];
-
-      groupedSlip.slips.forEach((slip) => {
-        if (slip.title) {
-          slipsWithTitle.push(slip);
-        } else {
-          slipsWithNoTitle.push(slip);
-        }
-      });
-
-      return {
-        title: groupedSlip.title,
-        slipsWithTitle,
-        slipsWithNoTitle,
-      };
-    });
-  }
 
   return groupedSlips;
 }

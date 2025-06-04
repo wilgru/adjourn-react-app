@@ -3,7 +3,7 @@ import { pb } from "src/connections/pocketbase";
 import { useGetTags } from "src/hooks/tags/useGetTags";
 import { mapTag } from "src/utils/tags/mapTag";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { SlipsGroup } from "src/types/Slip.type";
+import type { Slip } from "src/types/Slip.type";
 import type { Tag } from "src/types/Tag.type";
 
 type UpdateTagProps = {
@@ -57,22 +57,17 @@ export const useUpdateTag = (): UseUpdateTagResponse => {
     });
 
     // update tag in any slips that have it
-    queryClient.setQueryData(
-      ["slips.list"],
-      (currentSlipGroups: SlipsGroup[]) => {
-        return currentSlipGroups.map((currentSlipGroup) => {
-          return currentSlipGroup.slips.map((slip) => {
-            return slip.tags.map((tag) => {
-              if (tag.id === data.id) {
-                return data;
-              }
+    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {
+      return currentSlips.map((slip) => {
+        return slip.tags.map((tag) => {
+          if (tag.id === data.id) {
+            return data;
+          }
 
-              return tag;
-            });
-          });
+          return tag;
         });
-      }
-    );
+      });
+    });
   };
 
   // TODO: consider time caching for better performance

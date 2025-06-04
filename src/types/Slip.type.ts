@@ -19,9 +19,3 @@ export type SlipsGroup = {
   title: string;
   slips: Slip[];
 };
-
-export type SlipsGroupDividedByTitle = {
-  title: string;
-  slipsWithNoTitle: Slip[];
-  slipsWithTitle: Slip[];
-};

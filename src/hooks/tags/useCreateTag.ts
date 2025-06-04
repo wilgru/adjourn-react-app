@@ -19,7 +19,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
       colour: "orange",
       icon: "book",
       user: user?.id,
-      groupBy: "created",
+      groupBy: null,
     });
 
     const mappedNewTag = mapTag({ ...newTag, totalSlips: 0 });

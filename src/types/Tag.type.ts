@@ -7,7 +7,7 @@ export type Tag = {
   colour: Colour;
   icon: string;
   slipCount: number;
-  groupBy: "created" | "tag";
+  groupBy: "created" | "tag" | null;
   created: Dayjs;
   updated: Dayjs;
 };

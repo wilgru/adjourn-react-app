@@ -31,7 +31,11 @@ export const Route = createFileRoute("/_layout/tags/$tagId")({
 export default function TagComponent() {
   const { tagId } = Route.useParams();
   const { tag, slips } = useGetTag(tagId ?? "");
-  const tableOfContentItems = useTaskAndNotesTOCItems(slips);
+  const tableOfContentItems = useTaskAndNotesTOCItems(
+    slips,
+    tag?.groupBy,
+    tag?.name
+  );
   const { updateTag } = useUpdateTag();
 
   if (!tag) {
@@ -78,14 +82,18 @@ export default function TagComponent() {
                 align="start"
               >
                 <DropdownMenu.RadioGroup
-                  value={tag.groupBy}
+                  value={tag.groupBy || "null"}
                   onValueChange={(value) => {
-                    if (value === "created" || value === "tag") {
+                    if (
+                      value === "null" ||
+                      value === "created" ||
+                      value === "tag"
+                    ) {
                       updateTag({
                         tagId: tag.id,
                         updateTagData: {
                           ...tag,
-                          groupBy: value,
+                          groupBy: value === "null" ? null : value,
                         },
                       });
                     }
@@ -101,9 +109,23 @@ export default function TagComponent() {
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
                       `data-[highlighted]:${tag.colour.textPill}`
                     )}
+                    value="null"
+                  >
+                    None
+                    <DropdownMenu.ItemIndicator>
+                      <Check />
+                    </DropdownMenu.ItemIndicator>
+                  </DropdownMenu.RadioItem>
+
+                  <DropdownMenu.RadioItem
+                    className={cn(
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
+                      `data-[highlighted]:${tag.colour.backgroundPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
+                    )}
                     value="created"
                   >
-                    Created
+                    Day Created
                     <DropdownMenu.ItemIndicator>
                       <Check />
                     </DropdownMenu.ItemIndicator>
@@ -177,7 +199,10 @@ export default function TagComponent() {
           </div>
         }
         secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}
+        colour={tag.colour}
         slips={slips}
+        groupSlipsBy={tag.groupBy}
+        defaultNoteGroupTitle={tag.name}
         tableOfContentItems={tableOfContentItems}
       />
     </div>
