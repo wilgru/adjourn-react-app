@@ -94,11 +94,11 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="w-60 m-4 pl-2 pb-2  h-fit opacity-60 hover:opacity-100">
+    <ul className="w-60 m-4 pl-2 pb-2  h-fit opacity-60 hover:opacity-100 transition-opacity">
       <li>
         <h2
           className={cn(
-            "font-title text-lg pt-1 px-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
+            "font-title text-lg pt-1 px-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
             // isActive && colour.backgroundPill,
             // isActive && colour.textPill,
             colour.backgroundPillInverted,
