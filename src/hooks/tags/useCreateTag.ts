@@ -17,7 +17,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
     const newTag = await pb.collection("tags").create({
       name: tagName,
       colour: "orange",
-      icon: "book",
+      icon: "tag",
       user: user?.id,
       groupBy: null,
     });
