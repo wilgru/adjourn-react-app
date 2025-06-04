@@ -4,6 +4,7 @@ import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNot
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
@@ -23,6 +24,9 @@ export const Route = createFileRoute("/_layout/flagged")({
 });
 
 function RouteComponent() {
+  const { tasks } = useGetTasks({
+    isFlagged: true,
+  });
   const { slips } = useGetSlips({
     isFlagged: true,
   });
@@ -45,6 +49,7 @@ function RouteComponent() {
           </div>
         }
         slips={slips}
+        tasks={tasks}
         tableOfContentItems={tableOfContentItems}
       />
     </div>

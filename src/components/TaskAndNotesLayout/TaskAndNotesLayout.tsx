@@ -5,15 +5,18 @@ import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { groupSlips } from "src/utils/slips/groupSlips";
+import { TaskItem } from "../dataDisplay/TaskItem/TaskItem";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 import type { Colour } from "src/types/Colour.type";
 import type { Slip, SlipsGroup } from "src/types/Slip.type";
+import type { Task } from "src/types/Task.type";
 
 type TaskAndNotesLayoutProps = {
   header: React.ReactNode;
   colour?: Colour;
   primaryBadges?: string[];
   secondaryBadges?: string[];
+  tasks: Task[];
   slips: Slip[];
   groupSlipsBy?: "created" | "tag" | null;
   defaultNoteGroupTitle?: string;
@@ -25,6 +28,7 @@ export const TaskAndNotesLayout = ({
   colour = colours.orange,
   primaryBadges = [],
   secondaryBadges = [],
+  tasks,
   slips,
   groupSlipsBy = null,
   defaultNoteGroupTitle,
@@ -69,6 +73,12 @@ export const TaskAndNotesLayout = ({
 
         <section>
           <h2 className="text-slate-400 font-title text-2xl p-2">Tasks</h2>
+
+          <div className="flex flex-col gap-5 p-1">
+            {tasks.map((task) => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
         </section>
 
         {slipGroups.map((slipGroup) => (

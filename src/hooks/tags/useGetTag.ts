@@ -2,15 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { mapSlip } from "src/utils/slips/mapSlip";
 import { mapTag } from "src/utils/tags/mapTag";
+import { mapTask } from "src/utils/tasks/mapTask";
 import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
 import type { Slip } from "src/types/Slip.type";
 import type { Tag } from "src/types/Tag.type";
+import type { Task } from "src/types/Task.type";
 
 type UseTagResponse = {
   tag: Tag | undefined;
+  tasks: Task[];
   slips: Slip[];
   refetchTag: (options?: RefetchOptions | undefined) => Promise<
     QueryObserverResult<
@@ -26,22 +29,27 @@ type UseTagResponse = {
 export const useGetTag = (tagId: string): UseTagResponse => {
   const queryFn = async (): Promise<{
     tag: Tag;
+    tasks: Task[];
     slips: Slip[];
   }> => {
     const rawTag = await pb.collection("tags").getOne(tagId, {
-      expand: "slips_via_tags, slips_via_tags.tags",
+      expand:
+        "slips_via_tags, slips_via_tags.tags, tasks_via_tags, tasks_via_tags.tags",
     });
-
     const tag: Tag = mapTag({
       ...rawTag,
       totalSlips: rawTag.expand?.slips_via_tags?.length ?? 0,
     });
+
+    const rawTasks = rawTag.expand?.tasks_via_tags ?? [];
+    const tasks: Task[] = rawTasks.map(mapTask);
 
     const rawSlips = rawTag.expand?.slips_via_tags ?? [];
     const slips: Slip[] = rawSlips.map(mapSlip);
 
     return {
       tag,
+      tasks,
       slips,
     };
   };
@@ -56,6 +64,7 @@ export const useGetTag = (tagId: string): UseTagResponse => {
 
   return {
     tag: data?.tag,
+    tasks: data?.tasks ?? [],
     slips: data?.slips ?? [],
     refetchTag: refetch,
   };

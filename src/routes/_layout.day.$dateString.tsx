@@ -6,6 +6,7 @@ import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNot
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
@@ -28,6 +29,10 @@ export const Route = createFileRoute("/_layout/day/$dateString")({
 function StreamIndexComponent() {
   const { dateString } = Route.useParams();
   const navigate = useNavigate();
+  const { tasks } = useGetTasks({
+    isFlagged: false,
+    createdDateString: dateString,
+  });
   const { slips } = useGetSlips({
     isFlagged: false,
     createdDateString: dateString,
@@ -96,6 +101,7 @@ function StreamIndexComponent() {
             </h3>
           </div>
         }
+        tasks={tasks}
         slips={slips}
         tableOfContentItems={tableOfContentItems}
       />
