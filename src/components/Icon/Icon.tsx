@@ -2,6 +2,7 @@ import {
   Gear,
   Pencil,
   Plus,
+  PlusSquare,
   X,
   Flag,
   PushPin,
@@ -21,6 +22,7 @@ import {
   Link,
   CheckCircle,
   MinusCircle,
+  ListChecks,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -69,6 +71,8 @@ const Icon = ({
       return <Gear {...iconProps} />;
     case "plus":
       return <Plus {...iconProps} weight="bold" />;
+    case "plusSquare":
+      return <PlusSquare {...iconProps} />;
     case "dotsThree":
       return <DotsThree {...iconProps} weight="bold" />;
     case "chatCircle":
@@ -99,6 +103,8 @@ const Icon = ({
       return <CheckCircle {...iconProps} />;
     case "minusCircle":
       return <MinusCircle {...iconProps} />;
+    case "listChecks":
+      return <ListChecks {...iconProps} />;
     default:
       return <></>;
   }

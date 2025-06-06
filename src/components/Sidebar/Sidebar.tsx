@@ -40,6 +40,14 @@ export const Sidebar = () => {
 
             <NavItem
               ghost
+              iconName="listChecks"
+              title="Tasks"
+              to="/tasks/"
+              expanded={true}
+            />
+
+            <NavItem
+              ghost
               iconName="flag"
               title={"Flagged"}
               to={`/flagged/`}
