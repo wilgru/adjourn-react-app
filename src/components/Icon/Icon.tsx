@@ -23,6 +23,8 @@ import {
   CheckCircle,
   MinusCircle,
   ListChecks,
+  ArrowBendUpLeft,
+  ArrowBendUpRight,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -105,6 +107,10 @@ const Icon = ({
       return <MinusCircle {...iconProps} />;
     case "listChecks":
       return <ListChecks {...iconProps} />;
+    case "arrowBendUpLeft":
+      return <ArrowBendUpLeft {...iconProps} />;
+    case "arrowBendUpRight":
+      return <ArrowBendUpRight {...iconProps} />;
     default:
       return <></>;
   }

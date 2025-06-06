@@ -58,7 +58,7 @@ function StreamIndexComponent() {
             <Button
               variant="ghost"
               size="sm"
-              iconName="caretLeft"
+              iconName="arrowBendUpLeft"
               onClick={() => {
                 setJumpToAtom(yesterday);
                 navigate({ to: `/day/${getNavigationDay(yesterday)}` });
@@ -80,7 +80,7 @@ function StreamIndexComponent() {
             <Button
               variant="ghost"
               size="sm"
-              iconName="caretRight"
+              iconName="arrowBendUpRight"
               onClick={() => {
                 setJumpToAtom(tomorrow);
                 navigate({ to: `/day/${getNavigationDay(tomorrow)}` });
