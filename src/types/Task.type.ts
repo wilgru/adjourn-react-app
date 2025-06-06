@@ -1,5 +1,5 @@
 import type { Dayjs } from "dayjs";
-import type { Tag } from "storybook/internal/types";
+import type { Tag } from "src/types/Tag.type";
 
 export type Task = {
   id: string;
