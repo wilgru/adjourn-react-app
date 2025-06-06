@@ -96,7 +96,16 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
           </div>
         </div>
 
-        <p className="text-sm italic text-slate-400">{task.description}</p>
+        <p
+          className={cn(
+            "text-sm italic",
+            task.completedDate || task.cancelledDate
+              ? "text-slate-400"
+              : "text-slate-500"
+          )}
+        >
+          {task.description}
+        </p>
       </div>
     </div>
   );
