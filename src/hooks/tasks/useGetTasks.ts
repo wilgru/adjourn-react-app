@@ -29,10 +29,11 @@ export const useGetTasks = ({
     }
 
     if (dateString) {
-      const startOfDueDate = `${dateString} 00:00:00.000Z`;
-      const endOfDueDate = `${dateString} 23:59:59.999Z`;
+      const startOfGivenDate = `${dateString} 00:00:00.000Z`;
+      const endOfGivenDate = `${dateString} 23:59:59.999Z`;
+
       filters.push(
-        `dueDate <= "${endOfDueDate}" || (completedDate >= "${startOfDueDate}" && completedDate <= "${endOfDueDate}") || (cancelledDate >= "${startOfDueDate}" && cancelledDate <= "${endOfDueDate}")`
+        `(dueDate <= "${endOfGivenDate}" && completedDate = "" && cancelledDate = "") || (completedDate >= "${startOfGivenDate}" && completedDate <= "${endOfGivenDate}") || (cancelledDate >= "${startOfGivenDate}" && cancelledDate <= "${endOfGivenDate}")`
       );
     }
 
@@ -49,7 +50,7 @@ export const useGetTasks = ({
 
   // TODO: consider time caching for better performance
   const { data, refetch } = useQuery({
-    queryKey: ["tasks.list"],
+    queryKey: ["tasks.list", isFlagged, dateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
