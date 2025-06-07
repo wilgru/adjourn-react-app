@@ -28,9 +28,9 @@ export const useDeleteTag = (): UseDeleteTagResponse => {
       queryKey: ["tags.list"],
     });
 
-    // remove tag from any slips
+    // remove tag from any notes
     queryClient.refetchQueries({
-      queryKey: ["slips.list"],
+      queryKey: ["notes.list"],
     });
   };
 

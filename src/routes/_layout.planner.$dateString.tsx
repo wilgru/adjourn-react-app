@@ -5,7 +5,7 @@ import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { Button } from "src/components/controls/Button/Button";
-import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { getNavigationDay } from "src/utils/getNavigationDay";
@@ -32,11 +32,11 @@ function StreamIndexComponent() {
   const { tasks } = useGetTasks({
     dateString: dateString,
   });
-  const { slips } = useGetSlips({
+  const { notes } = useGetNotes({
     isFlagged: false,
     createdDateString: dateString,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, slips);
+  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, notes);
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
@@ -102,7 +102,7 @@ function StreamIndexComponent() {
         }
         title={title}
         tasks={tasks}
-        slips={slips}
+        notes={notes}
         tableOfContentItems={tableOfContentItems}
       />
     </div>

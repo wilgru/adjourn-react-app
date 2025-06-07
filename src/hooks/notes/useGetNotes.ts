@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { mapSlip } from "src/utils/slips/mapSlip";
-import type { Slip } from "src/types/Slip.type";
+import { mapNote } from "src/utils/notes/mapNote";
+import type { Note } from "src/types/Note.type";
 
-type UseGetSlipsResponse = {
-  slips: Slip[];
+type UseGetNotesResponse = {
+  notes: Note[];
 };
 
-export const useGetSlips = ({
+export const useGetNotes = ({
   isFlagged,
   createdDateString,
 }: {
   isFlagged: boolean;
   createdDateString?: string;
-}): UseGetSlipsResponse => {
+}): UseGetNotesResponse => {
   const queryFn = async (): Promise<{
-    slips: Slip[];
+    notes: Note[];
   }> => {
     let filter = `deleted = null${isFlagged ? " && isFlagged = true" : ""}`;
     if (createdDateString) {
@@ -24,28 +24,28 @@ export const useGetSlips = ({
       filter += ` && created >= "${startOfDay}" && created <= "${endOfDay}"`;
     }
 
-    const rawSlips = await pb
-      .collection("slips")
+    const rawNotes = await pb
+      .collection("notes")
       .getList(undefined, undefined, {
         filter,
         expand: "tags",
         sort: "-isPinned",
       });
 
-    const slips = rawSlips.items.map(mapSlip);
+    const notes = rawNotes.items.map(mapNote);
 
-    return { slips };
+    return { notes };
   };
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["slips.list", isFlagged, createdDateString],
+    queryKey: ["notes.list", isFlagged, createdDateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
 
   return {
-    slips: data?.slips ?? [],
+    notes: data?.notes ?? [],
   };
 };

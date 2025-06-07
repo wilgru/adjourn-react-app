@@ -17,7 +17,7 @@ type UseGetTagsResponse = {
 export const useGetTags = (): UseGetTagsResponse => {
   const queryFn = async (): Promise<Tag[]> => {
     const rawTags = await pb
-      .collection("tagsWithSlipCounts")
+      .collection("tagsWithNoteCounts")
       .getList(undefined, undefined);
 
     const mappedTags = rawTags.items.map(mapTag);

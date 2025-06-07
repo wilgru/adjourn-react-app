@@ -3,7 +3,7 @@ import { Icon } from "src/components/Icon/Icon";
 import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
-import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
@@ -25,10 +25,10 @@ export const Route = createFileRoute("/_layout/flagged")({
 
 function RouteComponent() {
   const { tasks } = useGetTasks({ isFlagged: true });
-  const { slips } = useGetSlips({
+  const { notes } = useGetNotes({
     isFlagged: true,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, slips);
+  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, notes);
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -47,7 +47,7 @@ function RouteComponent() {
           </div>
         }
         title="Flagged"
-        slips={slips}
+        notes={notes}
         tasks={tasks}
         prefillNewNoteData={{ isFlagged: true }}
         tableOfContentItems={tableOfContentItems}

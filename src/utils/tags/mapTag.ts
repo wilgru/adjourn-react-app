@@ -8,7 +8,7 @@ export const mapTag = (tag: RecordModel): Tag => {
     name: tag.name,
     colour: getColour(tag.colour),
     icon: tag.icon,
-    slipCount: tag.totalSlips,
+    noteCount: tag.totalNotes,
     groupBy: tag.groupBy,
     created: tag.createdAt,
     updated: tag.updatedAt,

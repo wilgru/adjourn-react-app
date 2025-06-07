@@ -1,17 +1,17 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState, useRef } from "react";
+import { NoteItem } from "src/components/NoteItem/NoteItem";
 import { PageHeader } from "src/components/PageHeader/PageHeader";
-import { SlipCard } from "src/components/SlipCard/SlipCard";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import { groupSlips } from "src/utils/slips/groupSlips";
-import EditSlipModal from "../EditSlipModal/EditSlipModal";
+import { groupNotes } from "src/utils/notes/groupNotes";
+import EditNoteModal from "../EditNoteModal/EditNoteModal";
 import { Button } from "../controls/Button/Button";
 import { TaskItem } from "../dataDisplay/TaskItem/TaskItem";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 import type { Colour } from "src/types/Colour.type";
-import type { Slip, SlipsGroup } from "src/types/Slip.type";
+import type { Note, NotesGroup } from "src/types/Note.type";
 import type { Task } from "src/types/Task.type";
 
 type TaskAndNotesLayoutProps = {
@@ -21,9 +21,9 @@ type TaskAndNotesLayoutProps = {
   primaryBadges?: string[];
   secondaryBadges?: string[];
   tasks: Task[];
-  slips: Slip[];
-  prefillNewNoteData?: Partial<Slip>;
-  groupSlipsBy?: "created" | "tag" | null;
+  notes: Note[];
+  prefillNewNoteData?: Partial<Note>;
+  groupNotesBy?: "created" | "tag" | null;
   defaultNoteGroupTitle?: string;
   tableOfContentItems: TableOfContentsItem[];
 };
@@ -35,18 +35,18 @@ export const TaskAndNotesLayout = ({
   primaryBadges = [],
   secondaryBadges = [],
   tasks,
-  slips,
+  notes,
   prefillNewNoteData,
-  groupSlipsBy = null,
+  groupNotesBy = null,
   defaultNoteGroupTitle,
   tableOfContentItems,
 }: TaskAndNotesLayoutProps) => {
-  const slipRefs = useRef<HTMLDivElement[]>([]);
+  const noteRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
   const [showEditNoteModal, setShowEditNoteModal] = useState(false);
 
   useIntersectionObserver(
-    slipRefs,
+    noteRefs,
     (entry) => {
       setNavigationId(entry.target.id);
     },
@@ -54,18 +54,18 @@ export const TaskAndNotesLayout = ({
     { disabled: false }
   );
 
-  const slipGroups: SlipsGroup[] = !groupSlipsBy
+  const noteGroups: NotesGroup[] = !groupNotesBy
     ? [
         {
           title: "Notes",
-          slips: slips,
+          notes: notes,
           relevantNoteData: prefillNewNoteData ?? {},
         },
       ]
-    : groupSlips(
-        slips,
-        groupSlipsBy,
-        groupSlipsBy === "tag" ? defaultNoteGroupTitle : undefined,
+    : groupNotes(
+        notes,
+        groupNotesBy,
+        groupNotesBy === "tag" ? defaultNoteGroupTitle : undefined,
         prefillNewNoteData ?? {}
       );
 
@@ -121,12 +121,12 @@ export const TaskAndNotesLayout = ({
           </div>
         </section>
 
-        {slipGroups.map((slipGroup) => (
+        {noteGroups.map((noteGroup) => (
           <section>
             <Dialog.Root>
               <div className="flex gap-2 p-2">
                 <h2 className="text-slate-400 font-title text-2xl">
-                  {slipGroup.title}
+                  {noteGroup.title}
                 </h2>
 
                 <Dialog.Trigger asChild>
@@ -142,7 +142,7 @@ export const TaskAndNotesLayout = ({
                 </Dialog.Trigger>
               </div>
 
-              {slipGroup.slips.length === 0 && (
+              {noteGroup.notes.length === 0 && (
                 <div className="w-full p-3 flex flex-col gap-3 items-center rounded-lg bg-gray-50">
                   <p className="text-slate-500">No notes yet</p>
 
@@ -163,22 +163,22 @@ export const TaskAndNotesLayout = ({
               )}
 
               <div className="flex flex-col gap-5">
-                {slipGroup.slips.map((slip) => (
-                  <SlipCard
+                {noteGroup.notes.map((note) => (
+                  <NoteItem
                     ref={(el: HTMLDivElement | null) => {
-                      if (el && !slipRefs.current.includes(el)) {
-                        slipRefs.current.push(el);
+                      if (el && !noteRefs.current.includes(el)) {
+                        noteRefs.current.push(el);
                       }
                     }}
                     colour={colour}
-                    slip={slip}
+                    note={note}
                   />
                 ))}
               </div>
 
               {showEditNoteModal && (
-                <EditSlipModal
-                  slip={slipGroup.relevantNoteData}
+                <EditNoteModal
+                  note={noteGroup.relevantNoteData}
                   onSave={() => {
                     setShowEditNoteModal(false);
                   }}

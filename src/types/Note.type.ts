@@ -2,7 +2,7 @@ import type { Dayjs } from "dayjs";
 import type Delta from "quill-delta";
 import type { Tag } from "src/types/Tag.type";
 
-export type Slip = {
+export type Note = {
   id: string;
   isDraft: boolean; // TODO: remove
   title: string | null;
@@ -15,8 +15,8 @@ export type Slip = {
   updated: Dayjs;
 };
 
-export type SlipsGroup = {
+export type NotesGroup = {
   title: string;
-  slips: Slip[];
-  relevantNoteData: Partial<Slip>;
+  notes: Note[];
+  relevantNoteData: Partial<Note>;
 };

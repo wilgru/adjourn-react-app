@@ -30,10 +30,10 @@ export const Route = createFileRoute("/_layout/tags/$tagId")({
 
 export default function TagComponent() {
   const { tagId } = Route.useParams();
-  const { tag, tasks, slips } = useGetTag(tagId ?? "");
+  const { tag, tasks, notes } = useGetTag(tagId ?? "");
   const tableOfContentItems = useTaskAndNotesTOCItems(
     tasks,
-    slips,
+    notes,
     tag?.groupBy,
     tag?.name
   );
@@ -200,12 +200,12 @@ export default function TagComponent() {
           </div>
         }
         title={tag.name}
-        secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}
+        secondaryBadges={[`${0} tasks`, `${notes.length} notes`]}
         colour={tag.colour}
-        slips={slips}
+        notes={notes}
         prefillNewNoteData={{ tags: [tag] }}
         tasks={tasks}
-        groupSlipsBy={tag.groupBy}
+        groupNotesBy={tag.groupBy}
         defaultNoteGroupTitle={tag.name}
         tableOfContentItems={tableOfContentItems}
       />

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { colours } from "src/constants/colours.constant";
 import { useLogin } from "src/hooks/users/useLogin";
-import EditSlipModal from "../EditSlipModal/EditSlipModal";
+import EditNoteModal from "../EditNoteModal/EditNoteModal";
 import { Button } from "../controls/Button/Button";
 import type { Colour } from "src/types/Colour.type";
 
@@ -27,7 +27,7 @@ export const Toolbar = ({
   const { logout } = useLogin();
 
   const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
-  const [showEditSlipModal, setShowEditSlipModal] = useState(false);
+  const [showEditNoteModal, setShowEditNoteModal] = useState(false);
 
   //TODO: remove h-16 when scrolling issue is fixed
   return (
@@ -58,13 +58,13 @@ export const Toolbar = ({
               variant="ghost"
               colour={colour}
               iconName="plus"
-              onClick={() => setShowEditSlipModal(true)}
+              onClick={() => setShowEditNoteModal(true)}
             />
           </Dialog.Trigger>
-          {showEditSlipModal && (
-            <EditSlipModal
+          {showEditNoteModal && (
+            <EditNoteModal
               onSave={() => {
-                setShowEditSlipModal(false);
+                setShowEditNoteModal(false);
               }}
             />
           )}

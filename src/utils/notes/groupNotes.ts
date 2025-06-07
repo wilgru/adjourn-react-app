@@ -1,28 +1,28 @@
-import type { Slip, SlipsGroup } from "src/types/Slip.type";
+import type { Note, NotesGroup } from "src/types/Note.type";
 import type { Tag } from "src/types/Tag.type";
 
 const getGroup = (
-  slip: Slip,
+  note: Note,
   groupBy: "created" | "tag",
   defaultGroupTitle: string | undefined = undefined
 ): {
   title: string;
-  relevantNoteData: Partial<Slip>;
+  relevantNoteData: Partial<Note>;
 }[] => {
   switch (groupBy) {
     case "created":
       return [
         {
-          title: slip.created.format("ddd D MMMM YYYY"),
+          title: note.created.format("ddd D MMMM YYYY"),
           relevantNoteData: {},
         },
       ];
     case "tag": {
       if (
-        slip.tags.length === 1 &&
-        slip.tags.at(0)?.name === defaultGroupTitle
+        note.tags.length === 1 &&
+        note.tags.at(0)?.name === defaultGroupTitle
       ) {
-        const defaultTag = slip.tags.find(
+        const defaultTag = note.tags.find(
           (tag) => tag.name === defaultGroupTitle
         );
 
@@ -36,11 +36,11 @@ const getGroup = (
         ];
       }
 
-      return slip.tags.reduce(
+      return note.tags.reduce(
         (
           acc: {
             title: string;
-            relevantNoteData: Partial<Slip>;
+            relevantNoteData: Partial<Note>;
           }[],
           tag
         ) => {
@@ -77,14 +77,14 @@ const mergeTagArrays = (tagsArray1: Tag[] = [], tagsArray2: Tag[] = []) => {
   return Array.from(map.values());
 };
 
-export function groupSlips(
-  slips: Slip[],
+export function groupNotes(
+  notes: Note[],
   groupBy: "created" | "tag",
   defaultGroupTitle: string | undefined = undefined,
-  relevantNoteData: Partial<Slip>
-): SlipsGroup[] {
-  const groupedSlips = slips.reduce((acc: SlipsGroup[], slip: Slip) => {
-    const groups = getGroup(slip, groupBy, defaultGroupTitle);
+  relevantNoteData: Partial<Note>
+): NotesGroup[] {
+  const groupedNotes = notes.reduce((acc: NotesGroup[], note: Note) => {
+    const groups = getGroup(note, groupBy, defaultGroupTitle);
 
     for (const group of groups) {
       const existingGroup = acc.find(
@@ -92,11 +92,11 @@ export function groupSlips(
       );
 
       if (existingGroup) {
-        existingGroup.slips.push(slip);
+        existingGroup.notes.push(note);
       } else {
-        const newGroup: SlipsGroup = {
+        const newGroup: NotesGroup = {
           title: group.title,
-          slips: [slip],
+          notes: [note],
           relevantNoteData: {
             tags: mergeTagArrays(
               relevantNoteData?.tags ?? [],
@@ -112,5 +112,5 @@ export function groupSlips(
     return acc;
   }, []);
 
-  return groupedSlips;
+  return groupedNotes;
 }

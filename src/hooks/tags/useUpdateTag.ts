@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { mapTag } from "src/utils/tags/mapTag";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/types/Slip.type";
+import type { Note } from "src/types/Note.type";
 import type { Tag } from "src/types/Tag.type";
 
 type UpdateTagProps = {
@@ -47,10 +47,10 @@ export const useUpdateTag = (): UseUpdateTagResponse => {
       queryKey: ["tags.get"],
     });
 
-    // update tag in any slips that have it
-    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {
-      return currentSlips.map((slip) => {
-        return slip.tags.map((tag) => {
+    // update tag in any notes that have it
+    queryClient.setQueryData(["notes.list"], (currentNotes: Note[]) => {
+      return currentNotes.map((note) => {
+        return note.tags.map((tag) => {
           if (tag.id === data.id) {
             return data;
           }

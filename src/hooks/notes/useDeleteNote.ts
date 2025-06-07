@@ -1,48 +1,48 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { useGetTags } from "src/hooks/tags/useGetTags";
-import { useGetSlips } from "./useGetSlips";
+import { useGetNotes } from "./useGetNotes";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
-type deleteSlipProps = {
-  slipId: string;
+type deleteNoteProps = {
+  noteId: string;
 };
 
-type UseDeleteSlipResponse = {
-  deleteSlip: UseMutateAsyncFunction<
+type UseDeleteNoteResponse = {
+  deleteNote: UseMutateAsyncFunction<
     string | undefined,
     Error,
-    deleteSlipProps,
+    deleteNoteProps,
     unknown
   >;
 };
 
-export const useDeleteSlip = (): UseDeleteSlipResponse => {
+export const useDeleteNote = (): UseDeleteNoteResponse => {
   const queryClient = useQueryClient();
-  const { slips } = useGetSlips({ isFlagged: false });
+  const { notes } = useGetNotes({ isFlagged: false });
   const { refetchTags } = useGetTags();
 
   const mutationFn = async ({
-    slipId,
-  }: deleteSlipProps): Promise<string | undefined> => {
-    const slipToDelete = slips.find((slip) => slip.id === slipId);
+    noteId,
+  }: deleteNoteProps): Promise<string | undefined> => {
+    const noteToDelete = notes.find((note) => note.id === noteId);
 
-    if (!slipToDelete) {
+    if (!noteToDelete) {
       return;
     }
 
-    await pb.collection("slips").delete(slipId);
+    await pb.collection("notes").delete(noteId);
 
-    if (slipToDelete.tags.length) {
+    if (noteToDelete.tags.length) {
       await refetchTags();
     }
 
-    return slipId;
+    return noteId;
   };
 
   const onSuccess = () => {
     queryClient.refetchQueries({
-      queryKey: ["slips.list"],
+      queryKey: ["notes.list"],
     });
 
     queryClient.refetchQueries({
@@ -52,12 +52,12 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
 
   // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
-    mutationKey: ["slips.delete"],
+    mutationKey: ["notes.delete"],
     mutationFn,
     onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
 
-  return { deleteSlip: mutateAsync };
+  return { deleteNote: mutateAsync };
 };

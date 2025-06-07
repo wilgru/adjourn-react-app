@@ -22,7 +22,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
       groupBy: null,
     });
 
-    const mappedNewTag = mapTag({ ...newTag, totalSlips: 0 });
+    const mappedNewTag = mapTag({ ...newTag, totalNotes: 0 });
 
     return mappedNewTag;
   };

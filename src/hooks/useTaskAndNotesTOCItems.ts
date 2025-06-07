@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { groupSlips } from "src/utils/slips/groupSlips";
+import { groupNotes } from "src/utils/notes/groupNotes";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
-import type { Slip } from "src/types/Slip.type";
+import type { Note } from "src/types/Note.type";
 import type { Task } from "src/types/Task.type";
 
 export const useTaskAndNotesTOCItems = (
   tasks: Task[],
-  notes: Slip[],
+  notes: Note[],
   groupBy: "created" | "tag" | null = null,
   tagName?: string
 ): TableOfContentsItem[] => {
@@ -20,11 +20,11 @@ export const useTaskAndNotesTOCItems = (
     });
 
     const noteGroups = groupBy
-      ? groupSlips(notes, groupBy, groupBy === "tag" ? tagName : undefined)
+      ? groupNotes(notes, groupBy, groupBy === "tag" ? tagName : undefined, {})
       : [
           {
             title: "Notes",
-            slips: notes,
+            notes: notes,
           },
         ];
 
@@ -32,7 +32,7 @@ export const useTaskAndNotesTOCItems = (
       return {
         title: noteGroup.title,
         navigationId: null,
-        subItems: noteGroup.slips.map((note) => {
+        subItems: noteGroup.notes.map((note) => {
           let noteTitle = note.title;
 
           if (!noteTitle && typeof note.content.ops[0].insert === "string") {

@@ -3,36 +3,36 @@ import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
 import { useState, forwardRef } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
-import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
+import EditNoteModal from "src/components/EditNoteModal/EditNoteModal";
+import { NoteItemHeading } from "src/components/NoteItem/NoteItemHeading";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
-import { SlipCardHeading } from "src/components/SlipCard/SlipCardHeading";
 import { Button } from "src/components/controls/Button/Button";
 import { Toggle } from "src/components/controls/Toggle/Toggle";
 import { colours } from "src/constants/colours.constant";
-import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
-import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
+import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
+import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
-import { isSlipContentEmpty } from "src/utils/slips/isSlipContentEmpty";
+import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
 import { TagPill } from "../TagPill/TagPill";
 import type { Colour } from "src/types/Colour.type";
-import type { Slip } from "src/types/Slip.type";
+import type { Note } from "src/types/Note.type";
 
-export const SlipCard = forwardRef<
+export const NoteItem = forwardRef<
   HTMLDivElement,
-  { slip: Slip; colour?: Colour }
->(function ({ slip, colour = colours.orange }, ref) {
+  { note: Note; colour?: Colour }
+>(function ({ note, colour = colours.orange }, ref) {
   const navigate = useNavigate();
-  const { updateSlip } = useUpdateSlip();
-  const { deleteSlip } = useDeleteSlip();
+  const { updateNote } = useUpdateNote();
+  const { deleteNote } = useDeleteNote();
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       ref={ref}
-      id={slip.id}
-      key={slip.id}
+      id={note.id}
+      key={note.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
@@ -40,7 +40,7 @@ export const SlipCard = forwardRef<
         colour.backgroundGlow
       )}
     >
-      <SlipCardHeading slip={slip} />
+      <NoteItemHeading note={note} />
 
       <div className="flex items-center flex-wrap -ml-2">
         <Button
@@ -48,14 +48,14 @@ export const SlipCard = forwardRef<
           variant="ghost"
           size="sm"
           onClick={() => {
-            navigate({ to: `/planner/${getNavigationDay(slip.created)}` });
-            setJumpToAtom(slip.created);
+            navigate({ to: `/planner/${getNavigationDay(note.created)}` });
+            setJumpToAtom(note.created);
           }}
         >
-          {slip.created.format("ddd MMM D, YYYY")}
+          {note.created.format("ddd MMM D, YYYY")}
         </Button>
 
-        {slip.tags.map((tag) => (
+        {note.tags.map((tag) => (
           <TagPill
             key={tag.id}
             tag={tag}
@@ -68,8 +68,8 @@ export const SlipCard = forwardRef<
           />
         ))}
       </div>
-      {!isSlipContentEmpty(slip.content) && (
-        <QuillContentView content={slip.content} />
+      {!isNoteContentEmpty(note.content) && (
+        <QuillContentView content={note.content} />
       )}
       <div
         hidden={!isHovered}
@@ -88,22 +88,22 @@ export const SlipCard = forwardRef<
 
             <Toggle
               onClick={() => {
-                updateSlip({
-                  slipId: slip.id,
-                  updateSlipData: {
-                    ...slip,
-                    isFlagged: !slip.isFlagged,
+                updateNote({
+                  noteId: note.id,
+                  updateNoteData: {
+                    ...note,
+                    isFlagged: !note.isFlagged,
                   },
                 });
               }}
-              isToggled={slip.isFlagged}
+              isToggled={note.isFlagged}
               iconName="flag"
               size="sm"
             />
 
             <Button
               onClick={() => {
-                deleteSlip({ slipId: slip.id });
+                deleteNote({ noteId: note.id });
               }}
               colour={colours.red}
               iconName="trash"
@@ -111,7 +111,7 @@ export const SlipCard = forwardRef<
               size="sm"
             />
 
-            <EditSlipModal slip={slip} />
+            <EditNoteModal note={note} />
           </Dialog.Root>
         </div>
       </div>

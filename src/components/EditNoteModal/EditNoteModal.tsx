@@ -13,67 +13,67 @@ import { QuillEditor } from "src/components/QuillEditor/QuillEditor";
 import { Button } from "src/components/controls/Button/Button";
 import { Toggle } from "src/components/controls/Toggle/Toggle";
 import { colours } from "src/constants/colours.constant";
-import { useCreateSlip } from "src/hooks/slips/useCreateSlip";
-import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
-import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
+import { useCreateNote } from "src/hooks/notes/useCreateNote";
+import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
+import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
 import { TagMultiSelect } from "./TagMultiSelect";
 import type { StringMap } from "quill";
-import type { Slip } from "src/types/Slip.type";
+import type { Note } from "src/types/Note.type";
 
-type EditSlipModalProps = {
-  slip?: Partial<Slip>;
+type EditNoteModalProps = {
+  note?: Partial<Note>;
   onSave?: () => void;
 };
 
 //TODO: move to types folder
 // AnyKeyValueOf
-export type AnyKeyValueOfSlip = {
-  [K in keyof Slip]: { [P in K]: Slip[K] };
-}[keyof Slip];
+export type AnyKeyValueOfNote = {
+  [K in keyof Note]: { [P in K]: Note[K] };
+}[keyof Note];
 
 const QUILL_TOOLBAR_ID = "toolbar";
 
-const getInitialSlip = (slip: Partial<Slip> | undefined): Slip => {
+const getInitialNote = (note: Partial<Note> | undefined): Note => {
   return {
-    id: slip?.id || "",
-    title: slip?.title || "",
-    content: slip?.content || new Delta(),
-    tags: slip?.tags || [],
-    isFlagged: slip?.isFlagged || false,
-    isPinned: slip?.isPinned || false,
-    created: slip?.created || dayjs(),
-    updated: slip?.updated || dayjs(),
-    deleted: slip?.deleted || null,
+    id: note?.id || "",
+    title: note?.title || "",
+    content: note?.content || new Delta(),
+    tags: note?.tags || [],
+    isFlagged: note?.isFlagged || false,
+    isPinned: note?.isPinned || false,
+    created: note?.created || dayjs(),
+    updated: note?.updated || dayjs(),
+    deleted: note?.deleted || null,
     isDraft: false,
   };
 };
 
-const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
-  const { createSlip } = useCreateSlip();
-  const { updateSlip } = useUpdateSlip();
-  const { deleteSlip } = useDeleteSlip();
+const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
+  const { createNote } = useCreateNote();
+  const { updateNote } = useUpdateNote();
+  const { deleteNote } = useDeleteNote();
 
-  const [editedSlip, setEditedSlip] = useState<Slip>(getInitialSlip(slip));
+  const [editedNote, setEditedNote] = useState<Note>(getInitialNote(note));
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
 
-  const initialSlip = useMemo(() => getInitialSlip(slip), [slip]);
+  const initialNote = useMemo(() => getInitialNote(note), [note]);
 
-  const onSaveSlip = async () => {
-    if (editedSlip.id) {
-      await updateSlip({
-        slipId: initialSlip.id,
-        updateSlipData: editedSlip,
+  const onSaveNote = async () => {
+    if (editedNote.id) {
+      await updateNote({
+        noteId: initialNote.id,
+        updateNoteData: editedNote,
       });
     } else {
-      createSlip({ createSlipData: editedSlip });
+      createNote({ createNoteData: editedNote });
     }
 
     onSave?.();
   };
 
-  const onDeleteSlip = async () => {
-    deleteSlip({ slipId: initialSlip.id });
+  const onDeleteNote = async () => {
+    deleteNote({ noteId: initialNote.id });
   };
 
   return (
@@ -84,16 +84,16 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
               <textarea
-                value={editedSlip.title ?? ""}
+                value={editedNote.title ?? ""}
                 placeholder="No Title"
                 onChange={(e) =>
-                  setEditedSlip((currentEditedSlip) => {
-                    const newSlipData = {
-                      ...currentEditedSlip,
+                  setEditedNote((currentEditedNote) => {
+                    const newNoteData = {
+                      ...currentEditedNote,
                       title: e.target.value,
                     };
 
-                    return newSlipData;
+                    return newNoteData;
                   })
                 }
                 className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
@@ -107,7 +107,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                     )
                   }
                 >
-                  {editedSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
+                  {editedNote.created.format("ddd D MMMM YYYY, hh:mm a")}
                 </p>
                 <p
                   className={`${
@@ -115,7 +115,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                   } text-slate-500 text-xs italic`}
                 >
                   {"(Last edited " +
-                    editedSlip.updated.format("ddd D MMMM YYYY, hh:mm a") +
+                    editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +
                     ")"}
                 </p>
               </div>
@@ -124,30 +124,30 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
             <div className=" flex flex-row gap-1">
               <Toggle
                 colour={colours.red}
-                isToggled={editedSlip.isPinned}
+                isToggled={editedNote.isPinned}
                 onClick={() =>
-                  setEditedSlip((currentEditedSlip) => {
-                    const newSlipData = {
-                      ...currentEditedSlip,
-                      isPinned: !editedSlip.isPinned,
+                  setEditedNote((currentEditedNote) => {
+                    const newNoteData = {
+                      ...currentEditedNote,
+                      isPinned: !editedNote.isPinned,
                     };
 
-                    return newSlipData;
+                    return newNoteData;
                   })
                 }
                 iconName="pushPin"
               />
 
               <Toggle
-                isToggled={editedSlip.isFlagged}
+                isToggled={editedNote.isFlagged}
                 onClick={() =>
-                  setEditedSlip((currentEditedSlip) => {
-                    const newSlipData = {
-                      ...currentEditedSlip,
-                      isFlagged: !editedSlip.isFlagged,
+                  setEditedNote((currentEditedNote) => {
+                    const newNoteData = {
+                      ...currentEditedNote,
+                      isFlagged: !editedNote.isFlagged,
                     };
 
-                    return newSlipData;
+                    return newNoteData;
                   })
                 }
                 iconName="flag"
@@ -157,15 +157,15 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
 
           <div className="flex flex-row justify-between w-full border-t border-slate-200 pt-2">
             <TagMultiSelect
-              initialSlip={initialSlip}
+              initialNote={initialNote}
               onChange={(tags) =>
-                setEditedSlip((currentEditedSlip) => {
-                  const newSlipData = {
-                    ...currentEditedSlip,
+                setEditedNote((currentEditedNote) => {
+                  const newNoteData = {
+                    ...currentEditedNote,
                     tags,
                   };
 
-                  return newSlipData;
+                  return newNoteData;
                 })
               }
             />
@@ -216,15 +216,15 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
 
         <QuillEditor
           toolbarId={QUILL_TOOLBAR_ID}
-          initialValue={initialSlip.content}
+          initialValue={initialNote.content}
           onChange={(delta) =>
-            setEditedSlip((currentEditedSlip) => {
-              const newSlipData = {
-                ...currentEditedSlip,
+            setEditedNote((currentEditedNote) => {
+              const newNoteData = {
+                ...currentEditedNote,
                 content: delta,
               };
 
-              return newSlipData;
+              return newNoteData;
             })
           }
           onSelectedFormattingChange={(selectionFormatting: StringMap) => {
@@ -237,7 +237,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
               colour={colours.red}
               variant="block"
               size="sm"
-              onClick={onDeleteSlip}
+              onClick={onDeleteNote}
             >
               Delete
             </Button>
@@ -254,7 +254,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                 colour={colours.green}
                 variant="block"
                 size="sm"
-                onClick={onSaveSlip}
+                onClick={onSaveNote}
               >
                 Save
               </Button>
@@ -266,4 +266,4 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
   );
 };
 
-export default EditSlipModal;
+export default EditNoteModal;

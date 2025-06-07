@@ -63,7 +63,7 @@ export const Sidebar = () => {
                 iconName={tag.icon}
                 colour={tag.colour}
                 title={tag.name}
-                preview={tag.slipCount}
+                preview={tag.noteCount}
                 to={`/tags/${tag.id}`}
                 expanded={true}
               />
