@@ -38,7 +38,7 @@ function RouteComponent() {
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn(colours.orange.text)}
+              className={cn("pb-1", colours.orange.text)}
               iconName="flag"
               size="xl"
             />
