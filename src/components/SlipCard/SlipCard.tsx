@@ -36,7 +36,7 @@ export const SlipCard = forwardRef<
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "flex flex-col gap-0.5 relative p-2 rounded-lg transition-colors",
+        "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-colors",
         colour.backgroundGlow
       )}
     >
@@ -68,11 +68,9 @@ export const SlipCard = forwardRef<
           />
         ))}
       </div>
-
       {!isSlipContentEmpty(slip.content) && (
         <QuillContentView content={slip.content} />
       )}
-
       <div
         hidden={!isHovered}
         className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2"

@@ -203,6 +203,7 @@ export default function TagComponent() {
         secondaryBadges={[`${0} tasks`, `${slips.length} notes`]}
         colour={tag.colour}
         slips={slips}
+        prefillNewNoteData={{ tags: [tag] }}
         tasks={tasks}
         groupSlipsBy={tag.groupBy}
         defaultNoteGroupTitle={tag.name}

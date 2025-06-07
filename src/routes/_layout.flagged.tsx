@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_layout/flagged")({
 });
 
 function RouteComponent() {
-  const { tasks } = useGetTasks({});
+  const { tasks } = useGetTasks({ isFlagged: true });
   const { slips } = useGetSlips({
     isFlagged: true,
   });
@@ -49,6 +49,7 @@ function RouteComponent() {
         title="Flagged"
         slips={slips}
         tasks={tasks}
+        prefillNewNoteData={{ isFlagged: true }}
         tableOfContentItems={tableOfContentItems}
       />
     </div>

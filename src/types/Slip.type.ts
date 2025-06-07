@@ -18,4 +18,5 @@ export type Slip = {
 export type SlipsGroup = {
   title: string;
   slips: Slip[];
+  relevantNoteData: Partial<Slip>;
 };

@@ -21,11 +21,11 @@ import type { StringMap } from "quill";
 import type { Slip } from "src/types/Slip.type";
 
 type EditSlipModalProps = {
-  slip?: Slip;
+  slip?: Partial<Slip>;
   onSave?: () => void;
 };
 
-//TODO: move to types folder under common module
+//TODO: move to types folder
 // AnyKeyValueOf
 export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
@@ -33,7 +33,7 @@ export type AnyKeyValueOfSlip = {
 
 const QUILL_TOOLBAR_ID = "toolbar";
 
-const getInitialSlip = (slip: Slip | undefined): Slip => {
+const getInitialSlip = (slip: Partial<Slip> | undefined): Slip => {
   return {
     id: slip?.id || "",
     title: slip?.title || "",
