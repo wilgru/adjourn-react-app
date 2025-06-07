@@ -19,8 +19,8 @@ export const DeleteTagModal = ({ tag }: DeleteTagModalProps) => {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-700 rounded-lg">
+      <Dialog.Overlay className="bg-black opacity-25 fixed inset-0" />
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl">
         <Dialog.Title className="mb-5">Confirm delete tag</Dialog.Title>
         <Dialog.Description className="mb-5">
           <p className="text-sm">
