@@ -12,6 +12,6 @@ export const Route = createRootRoute({
   notFoundComponent: () => {
     const today = getNavigationDay();
 
-    return <Navigate to={`/day/${today}`} replace={true} />;
+    return <Navigate to={`/planner/${today}`} replace={true} />;
   },
 });

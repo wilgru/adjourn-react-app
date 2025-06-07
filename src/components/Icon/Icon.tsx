@@ -16,15 +16,16 @@ import {
   CaretLeft,
   CaretRight,
   CalendarDot,
-  ArrowLineRight,
+  CalendarDots,
   ArrowLineLeft,
+  ArrowLineRight,
   Circle,
   Link,
   CheckCircle,
   MinusCircle,
   ListChecks,
-  ArrowBendUpLeft,
-  ArrowBendUpRight,
+  ArrowArcLeft,
+  ArrowArcRight,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -85,6 +86,8 @@ const Icon = ({
       return <House {...iconProps} />;
     case "calendarDot":
       return <CalendarDot {...iconProps} />;
+    case "calendarDots":
+      return <CalendarDots {...iconProps} />;
     case "user":
       return <UserCircle {...iconProps} />;
     case "slidersHorizontal":
@@ -107,10 +110,10 @@ const Icon = ({
       return <MinusCircle {...iconProps} />;
     case "listChecks":
       return <ListChecks {...iconProps} />;
-    case "arrowBendUpLeft":
-      return <ArrowBendUpLeft {...iconProps} />;
-    case "arrowBendUpRight":
-      return <ArrowBendUpRight {...iconProps} />;
+    case "arrowArcLeft":
+      return <ArrowArcLeft {...iconProps} />;
+    case "arrowArcRight":
+      return <ArrowArcRight {...iconProps} />;
     default:
       return <></>;
   }

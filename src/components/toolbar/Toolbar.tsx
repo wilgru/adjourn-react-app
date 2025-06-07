@@ -20,8 +20,8 @@ type ToolbarProps = {
 export const Toolbar = ({
   iconName,
   title,
-  titleItems,
   colour = colours.orange,
+  titleItems,
 }: ToolbarProps) => {
   const navigate = useNavigate();
   const { logout } = useLogin();

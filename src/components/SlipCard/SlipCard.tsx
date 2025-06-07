@@ -48,7 +48,7 @@ export const SlipCard = forwardRef<
           variant="ghost"
           size="sm"
           onClick={() => {
-            navigate({ to: `/day/${getNavigationDay(slip.created)}` });
+            navigate({ to: `/planner/${getNavigationDay(slip.created)}` });
             setJumpToAtom(slip.created);
           }}
         >

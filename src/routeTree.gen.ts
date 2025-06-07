@@ -16,7 +16,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
 import { Route as LayoutTagsTagIdImport } from './routes/_layout.tags.$tagId'
-import { Route as LayoutDayDateStringImport } from './routes/_layout.day.$dateString'
+import { Route as LayoutPlannerDateStringImport } from './routes/_layout.planner.$dateString'
 
 // Create/Update Routes
 
@@ -49,9 +49,9 @@ const LayoutTagsTagIdRoute = LayoutTagsTagIdImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutDayDateStringRoute = LayoutDayDateStringImport.update({
-  id: '/day/$dateString',
-  path: '/day/$dateString',
+const LayoutPlannerDateStringRoute = LayoutPlannerDateStringImport.update({
+  id: '/planner/$dateString',
+  path: '/planner/$dateString',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -87,11 +87,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFlaggedImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/day/$dateString': {
-      id: '/_layout/day/$dateString'
-      path: '/day/$dateString'
-      fullPath: '/day/$dateString'
-      preLoaderRoute: typeof LayoutDayDateStringImport
+    '/_layout/planner/$dateString': {
+      id: '/_layout/planner/$dateString'
+      path: '/planner/$dateString'
+      fullPath: '/planner/$dateString'
+      preLoaderRoute: typeof LayoutPlannerDateStringImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/tags/$tagId': {
@@ -108,13 +108,13 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutFlaggedRoute: typeof LayoutFlaggedRoute
-  LayoutDayDateStringRoute: typeof LayoutDayDateStringRoute
+  LayoutPlannerDateStringRoute: typeof LayoutPlannerDateStringRoute
   LayoutTagsTagIdRoute: typeof LayoutTagsTagIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutFlaggedRoute: LayoutFlaggedRoute,
-  LayoutDayDateStringRoute: LayoutDayDateStringRoute,
+  LayoutPlannerDateStringRoute: LayoutPlannerDateStringRoute,
   LayoutTagsTagIdRoute: LayoutTagsTagIdRoute,
 }
 
@@ -126,7 +126,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
-  '/day/$dateString': typeof LayoutDayDateStringRoute
+  '/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
 
@@ -135,7 +135,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
-  '/day/$dateString': typeof LayoutDayDateStringRoute
+  '/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
 
@@ -145,7 +145,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_layout/flagged': typeof LayoutFlaggedRoute
-  '/_layout/day/$dateString': typeof LayoutDayDateStringRoute
+  '/_layout/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/_layout/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
 
@@ -156,7 +156,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/flagged'
-    | '/day/$dateString'
+    | '/planner/$dateString'
     | '/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -164,7 +164,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/flagged'
-    | '/day/$dateString'
+    | '/planner/$dateString'
     | '/tags/$tagId'
   id:
     | '__root__'
@@ -172,7 +172,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_layout/flagged'
-    | '/_layout/day/$dateString'
+    | '/_layout/planner/$dateString'
     | '/_layout/tags/$tagId'
   fileRoutesById: FileRoutesById
 }
@@ -208,7 +208,7 @@ export const routeTree = rootRoute
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/flagged",
-        "/_layout/day/$dateString",
+        "/_layout/planner/$dateString",
         "/_layout/tags/$tagId"
       ]
     },
@@ -222,8 +222,8 @@ export const routeTree = rootRoute
       "filePath": "_layout.flagged.tsx",
       "parent": "/_layout"
     },
-    "/_layout/day/$dateString": {
-      "filePath": "_layout.day.$dateString.tsx",
+    "/_layout/planner/$dateString": {
+      "filePath": "_layout.planner.$dateString.tsx",
       "parent": "/_layout"
     },
     "/_layout/tags/$tagId": {

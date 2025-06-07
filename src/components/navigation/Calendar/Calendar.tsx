@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -31,7 +31,6 @@ const MONTH_NAMES = [
 ];
 
 export const Calendar = (): JSX.Element => {
-  const navigate = useNavigate();
   const [jumpToDate, setJumpToDate] = useAtom(jumpToDateAtom);
 
   const today = dayjs();
@@ -117,13 +116,7 @@ export const Calendar = (): JSX.Element => {
     });
   };
 
-  const handleToday = () => {
-    const date = getNavigationDay(today);
-
-    navigate({
-      to: `/day/${date}`,
-    });
-
+  const handleThisMonth = () => {
     setDisplayYear(today.year());
     setDisplayMonth(today.month());
   };
@@ -155,7 +148,7 @@ export const Calendar = (): JSX.Element => {
             variant="ghost"
             size="sm"
             iconName="circle"
-            onClick={handleToday}
+            onClick={handleThisMonth}
           />
           <Button
             onClick={handleNextMonth}
@@ -178,7 +171,7 @@ export const Calendar = (): JSX.Element => {
         {calendarDays.map((calendarDay, index) => {
           return (
             <Link
-              to={`/day/${getNavigationDay(calendarDay.day)}`}
+              to={`/planner/${getNavigationDay(calendarDay.day)}`}
               key={index}
               className={cn(
                 "h-7 w-7 text-sm text-center leading-7 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",

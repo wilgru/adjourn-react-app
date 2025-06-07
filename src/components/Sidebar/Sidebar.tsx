@@ -32,9 +32,9 @@ export const Sidebar = () => {
           <section className="flex flex-col gap-1">
             <NavItem
               ghost
-              iconName="calendarDot"
-              title="Today"
-              to="/day/"
+              iconName="calendarDots"
+              title="Planner"
+              to="/planner/"
               expanded={true}
             />
 

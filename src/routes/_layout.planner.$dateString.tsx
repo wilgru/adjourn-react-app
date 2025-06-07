@@ -11,7 +11,7 @@ import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute("/_layout/day/$dateString")({
+export const Route = createFileRoute("/_layout/planner/$dateString")({
   component: StreamIndexComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
@@ -44,24 +44,22 @@ function StreamIndexComponent() {
   const yesterday = date.subtract(1, "day");
   const tomorrow = date.add(1, "day");
 
-  const title = date.isSame(today, "day")
-    ? "Today"
-    : date.format("ddd MMM D, YYYY");
+  const title = date.format("ddd MMM D, YYYY");
 
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
-        iconName="calendarDot"
+        iconName="calendarDots"
         title={title}
         titleItems={[
           <div>
             <Button
               variant="ghost"
               size="sm"
-              iconName="arrowBendUpLeft"
+              iconName="arrowArcLeft"
               onClick={() => {
                 setJumpToAtom(yesterday);
-                navigate({ to: `/day/${getNavigationDay(yesterday)}` });
+                navigate({ to: `/planner/${getNavigationDay(yesterday)}` });
               }}
             />
           </div>,
@@ -69,10 +67,10 @@ function StreamIndexComponent() {
             <Button
               variant="ghost"
               size="sm"
-              iconName="circle"
+              iconName="calendarDot"
               onClick={() => {
                 setJumpToAtom(today);
-                navigate({ to: `/day/${getNavigationDay(today)}` });
+                navigate({ to: `/planner/${getNavigationDay(today)}` });
               }}
             />
           </div>,
@@ -80,10 +78,10 @@ function StreamIndexComponent() {
             <Button
               variant="ghost"
               size="sm"
-              iconName="arrowBendUpRight"
+              iconName="arrowArcRight"
               onClick={() => {
                 setJumpToAtom(tomorrow);
-                navigate({ to: `/day/${getNavigationDay(tomorrow)}` });
+                navigate({ to: `/planner/${getNavigationDay(tomorrow)}` });
               }}
             />
           </div>,
