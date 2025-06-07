@@ -36,11 +36,11 @@ function LoginIndexComponent(): JSX.Element {
     await login({ email: formData.email, password: formData.password });
 
     // redirect on successful login
-    navigate({ to: "/day" });
+    navigate({ to: "/planner/" });
   };
 
   useEffect(() => {
-    user && navigate({ to: "/day" });
+    user && navigate({ to: "/planner/" });
   }, [user, navigate]);
 
   return (
@@ -52,7 +52,7 @@ function LoginIndexComponent(): JSX.Element {
       )}
       <div className="flex flex-col gap-6 p-6 border bg-white border-slate-300 rounded-lg max-w-sm w-full drop-shadow">
         <h1 className="text-4xl font-normal font-title tracking-tight ">
-          SlipStream
+          Adjourn
         </h1>
         <form className="space-y-6" onSubmit={onSubmit}>
           <div>
@@ -91,7 +91,7 @@ function LoginIndexComponent(): JSX.Element {
           </div>
 
           <div className="flex items-baseline">
-            <p className="text-sm">New to SlipStream?&nbsp;</p>
+            <p className="text-sm">New to Adjourn?&nbsp;</p>
             <Button
               variant="link"
               onClick={() => {

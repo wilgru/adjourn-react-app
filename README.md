@@ -1,6 +1,6 @@
-# SlipStream
+# Adjourn
 
-SlipStream is a stream of consciousness note taking web app where you can view your notes in different ways.
+Adjourn is a stream of consciousness note taking web app where you can view your notes in different ways.
 
 ## Getting Started
 
@@ -18,9 +18,9 @@ SlipStream is a stream of consciousness note taking web app where you can view y
    npm install
    ```
 
-4. Start the Pocketbase Docker Container
+4. Start the PocketBase Docker Container
 
-   > [!TIP]   
+   > [!TIP]  
    > you can skip step 4 and 5 by running this one command
    >
    > ```
@@ -67,17 +67,9 @@ SlipStream is a stream of consciousness note taking web app where you can view y
    npm run start:vite
    ```
 
-## Development
-
-### Comments
-
-Use the following prefixes with comments to make them stand out with highlighting (using the Better Comments extension):
-
-<img width="389" alt="better_comments_demo" src="https://github.com/wilgru/slipstream-react-app/assets/40753609/2595ddfe-bd86-4a07-bbbf-ed9a837efc6a"><br>
-
 ## Deployment
 
-SlipStream is configured to deploy to Fly.io.
+Adjourn is configured to deploy to Fly.io.
 
 ### Deploy Frontend
 

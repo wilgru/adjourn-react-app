@@ -7,7 +7,7 @@ export default create({
   fontBase: '"Helvetica Neue", sans-serif',
   fontCode: "monospace",
 
-  brandTitle: "SlipStream",
+  brandTitle: "Adjourn",
   brandUrl: "https://github.com/wilgru/slipstream-react-app",
   // brandImage: "https://github.com/wilgru/slipstream-react-app",
   brandTarget: "_self",
