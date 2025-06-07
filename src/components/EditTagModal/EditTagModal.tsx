@@ -33,8 +33,8 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-slate-100 border border-slate-600 rounded-lg">
+      <Dialog.Overlay className="bg-black opacity-25 fixed inset-0" />
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl">
         <Dialog.Title className="mb-5">Edit tag</Dialog.Title>
 
         <div className="flex flex-col gap-3">
@@ -49,6 +49,20 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
                   return { ...currentTagToEdit, name: e.target.value };
                 })
               }
+            />
+          </div>
+
+          <div>
+            <h3 className="text-sm">Description (optional)</h3>
+            <textarea
+              value={editedTag.description ?? undefined}
+              placeholder="No desciption"
+              onChange={(e) =>
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, description: e.target.value };
+                })
+              }
+              className="block p-1 text-sm w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-500"
             />
           </div>
 

@@ -6,6 +6,7 @@ export type Tag = {
   name: string;
   colour: Colour;
   icon: string;
+  description: string | null;
   noteCount: number;
   groupBy: "created" | "tag" | null;
   created: Dayjs;

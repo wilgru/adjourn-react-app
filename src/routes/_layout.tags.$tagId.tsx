@@ -191,7 +191,7 @@ export default function TagComponent() {
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn(tag.colour.text)}
+              className={cn("pb-1", tag.colour.text)}
               iconName={tag.icon}
               size="xl"
             />
@@ -200,11 +200,12 @@ export default function TagComponent() {
           </div>
         }
         title={tag.name}
-        secondaryBadges={[`${0} tasks`, `${notes.length} notes`]}
+        secondaryBadges={[`${tasks.length} tasks`, `${notes.length} notes`]}
         colour={tag.colour}
-        notes={notes}
-        prefillNewNoteData={{ tags: [tag] }}
         tasks={tasks}
+        notes={notes}
+        description={tag.description ? <p>{tag.description}</p> : undefined}
+        prefillNewNoteData={{ tags: [tag] }}
         groupNotesBy={tag.groupBy}
         defaultNoteGroupTitle={tag.name}
         tableOfContentItems={tableOfContentItems}

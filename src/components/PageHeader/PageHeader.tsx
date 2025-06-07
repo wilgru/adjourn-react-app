@@ -16,7 +16,7 @@ export const PageHeader = ({
   secondaryBadges,
 }: PageHeaderProps) => {
   return (
-    <div className="pb-4">
+    <div className="flex flex-col gap-1">
       {children}
 
       <div className="flex gap-2">

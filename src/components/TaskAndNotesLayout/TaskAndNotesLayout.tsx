@@ -22,6 +22,7 @@ type TaskAndNotesLayoutProps = {
   secondaryBadges?: string[];
   tasks: Task[];
   notes: Note[];
+  description?: React.ReactNode;
   prefillNewNoteData?: Partial<Note>;
   groupNotesBy?: "created" | "tag" | null;
   defaultNoteGroupTitle?: string;
@@ -36,6 +37,7 @@ export const TaskAndNotesLayout = ({
   secondaryBadges = [],
   tasks,
   notes,
+  description,
   prefillNewNoteData,
   groupNotesBy = null,
   defaultNoteGroupTitle,
@@ -80,6 +82,8 @@ export const TaskAndNotesLayout = ({
         >
           {header}
         </PageHeader>
+
+        {description && <section className="px-2">{description}</section>}
 
         <section>
           <div className="flex gap-2 p-2">
