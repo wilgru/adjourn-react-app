@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { useGetTags } from "src/hooks/tags/useGetTags";
 import { mapTag } from "src/utils/tags/mapTag";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Slip } from "src/types/Slip.type";
@@ -22,19 +21,11 @@ type UseUpdateTagResponse = {
 
 export const useUpdateTag = (): UseUpdateTagResponse => {
   const queryClient = useQueryClient();
-  const { tags } = useGetTags();
 
   const mutationFn = async ({
     tagId,
     updateTagData,
   }: UpdateTagProps): Promise<Tag | undefined> => {
-    // TODO: redundant?
-    const tagToUpdate = tags.find((tag) => tag.id === tagId);
-
-    if (!tagToUpdate) {
-      return;
-    }
-
     const rawUpdatedTag = await pb.collection("tags").update(tagId, {
       ...updateTagData,
       colour: updateTagData.colour.name,

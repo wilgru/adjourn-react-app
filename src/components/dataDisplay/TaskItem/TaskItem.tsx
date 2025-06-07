@@ -4,6 +4,7 @@ import { Icon } from "src/components/Icon/Icon";
 import { TagPill } from "src/components/TagPill/TagPill";
 import { Button } from "src/components/controls/Button/Button";
 import { colours } from "src/constants/colours.constant";
+import { useUpdateTask } from "src/hooks/tasks/useUpdateTask";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
 import type { Task } from "src/types/Task.type";
@@ -15,6 +16,7 @@ type TaskProps = {
 
 export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
   const navigate = useNavigate();
+  const { updateTask } = useUpdateTask();
 
   return (
     <div
@@ -23,7 +25,18 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
         colour.backgroundGlow
       )}
     >
-      <button className="pt-px pl-px">
+      <button
+        className="pt-px pl-px"
+        onClick={() =>
+          updateTask({
+            taskId: task.id,
+            updateTaskData: {
+              ...task,
+              completedDate: task.completedDate ? null : dayjs(),
+            },
+          })
+        }
+      >
         <Icon
           iconName={
             task.completedDate
