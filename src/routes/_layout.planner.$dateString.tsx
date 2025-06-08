@@ -103,6 +103,7 @@ function StreamIndexComponent() {
         title={title}
         tasks={tasks}
         notes={notes}
+        showNoteCreateTimeOnly
         tableOfContentItems={tableOfContentItems}
       />
     </div>

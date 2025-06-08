@@ -7,7 +7,7 @@ import type { Colour } from "src/types/Colour.type";
 
 type ButtonProps = {
   children?: React.ReactNode;
-  variant?: "block" | "ghost" | "link";
+  variant?: "block" | "ghost" | "ghost-strong" | "link";
   colour?: Colour;
   size?: "sm" | "md" | "lg";
   type?: "button" | "submit";
@@ -35,6 +35,7 @@ const buttonVariants = cva(
       variant: {
         block: null,
         ghost: "text-slate-500",
+        "ghost-strong": "text-slate-300",
         link: "underline-offset-4 hover:underline",
       },
       size: {
@@ -49,37 +50,37 @@ const buttonVariants = cva(
     },
     compoundVariants: [
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "text",
         size: "sm",
         className: "py-1 px-2",
       },
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "text",
         size: "md",
         className: "py-2 px-3",
       },
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "text",
         size: "lg",
         className: "py-3 px-4",
       },
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "icon",
         size: "sm",
         className: "p-1",
       },
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "icon",
         size: "md",
         className: "p-2",
       },
       {
-        variant: ["block", "ghost"],
+        variant: ["block", "ghost", "ghost-strong"],
         content: "icon",
         size: "lg",
         className: "p-3",
@@ -120,6 +121,8 @@ export const Button = ({
         variant === "block" && colour.backgroundPillInverted,
         variant === "ghost" && `hover:${colour.textPill}`,
         variant === "ghost" && `hover:${colour.backgroundPill}`,
+        variant === "ghost-strong" && `hover:${colour.textPill}`,
+        variant === "ghost-strong" && `hover:${colour.backgroundPill}`,
         className
       )}
       disabled={disabled}
@@ -131,13 +134,7 @@ export const Button = ({
         <Icon
           iconName={iconName}
           size={size}
-          className={
-            isButtonHovered
-              ? colour.textPill
-              : variant === "ghost"
-                ? "text-slate-500"
-                : colour.text
-          }
+          className={cn(isButtonHovered && colour.textPill)}
           weight={isButtonHovered ? "fill" : "regular"}
         />
       )}

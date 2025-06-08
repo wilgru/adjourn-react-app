@@ -20,8 +20,11 @@ import type { Note } from "src/types/Note.type";
 
 export const NoteItem = forwardRef<
   HTMLDivElement,
-  { note: Note; colour?: Colour }
->(function ({ note, colour = colours.orange }, ref) {
+  { note: Note; createdDateFormat?: string; colour?: Colour }
+>(function (
+  { note, createdDateFormat = "ddd MMM D, YYYY", colour = colours.orange },
+  ref
+) {
   const navigate = useNavigate();
   const { updateNote } = useUpdateNote();
   const { deleteNote } = useDeleteNote();
@@ -52,7 +55,7 @@ export const NoteItem = forwardRef<
             setJumpToAtom(note.created);
           }}
         >
-          {note.created.format("ddd MMM D, YYYY")}
+          {note.created.format(createdDateFormat)}
         </Button>
 
         {note.tags.map((tag) => (

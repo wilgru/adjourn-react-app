@@ -13,7 +13,7 @@ const getGroup = (
     case "created":
       return [
         {
-          title: note.created.format("ddd D MMMM YYYY"),
+          title: note.created.format("dddd MMMM D, YYYY"),
           relevantNoteData: {},
         },
       ];
