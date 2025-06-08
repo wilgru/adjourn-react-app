@@ -55,8 +55,9 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
           <div>
             <h3 className="text-sm">Description (optional)</h3>
             <textarea
+              name="description"
               value={editedTag.description ?? undefined}
-              placeholder="No desciption"
+              placeholder="No description"
               onChange={(e) =>
                 setEditedTag((currentTagToEdit) => {
                   return { ...currentTagToEdit, description: e.target.value };

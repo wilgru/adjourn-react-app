@@ -79,11 +79,12 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-25" />
-      <Dialog.Content className="fixed left-[12%] top-1/4 max-h-[85vh] w-3/4 max-w-[75%] bg-white flex flex-col gap-4 p-3 border border-slate-300 rounded-2xl shadow-2xl">
+      <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-4 p-3 border border-slate-300 rounded-2xl shadow-2xl">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
               <textarea
+                name="content"
                 value={editedNote.title ?? ""}
                 placeholder="No Title"
                 onChange={(e) =>
