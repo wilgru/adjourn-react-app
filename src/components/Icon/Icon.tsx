@@ -26,6 +26,7 @@ import {
   ListChecks,
   ArrowArcLeft,
   ArrowArcRight,
+  Paperclip,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -103,7 +104,9 @@ const Icon = ({
     case "circle":
       return <Circle {...iconProps} />;
     case "link":
-      return <Link {...iconProps} />;
+      return <Link {...iconProps} weight="bold" />;
+    case "paperclip":
+      return <Paperclip {...iconProps} />;
     case "checkCircle":
       return <CheckCircle {...iconProps} />;
     case "minusCircle":

@@ -35,8 +35,11 @@ export const useTaskAndNotesTOCItems = (
         subItems: noteGroup.notes.map((note) => {
           let noteTitle = note.title;
 
-          if (!noteTitle && typeof note.content.ops[0].insert === "string") {
-            noteTitle = note.content.ops[0].insert;
+          if (
+            !noteTitle &&
+            typeof note.content.ops.at(0)?.insert === "string"
+          ) {
+            noteTitle = note.content.ops.at(0)?.insert as string; // TODO: will eventially get rid of this when TOC only shows heading and not note names anymore
           }
 
           return {

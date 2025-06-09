@@ -13,6 +13,6 @@
 #quill-editor .ql-editor.ql-blank::before {
   left: unset;
   right: unset;
-  color: var(--color-slate-400);
+  color: #94a3b8; /* slate-400. Tailwind v4 will let you use var(--color-slate-400) */
   font-style: unset;
 }

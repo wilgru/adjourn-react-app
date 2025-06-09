@@ -16,6 +16,7 @@ import { colours } from "src/constants/colours.constant";
 import { useCreateNote } from "src/hooks/notes/useCreateNote";
 import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
 import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
+import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
 import { TagMultiSelect } from "./TagMultiSelect";
 import type { StringMap } from "quill";
 import type { Note } from "src/types/Note.type";
@@ -60,6 +61,10 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
   const initialNote = useMemo(() => getInitialNote(note), [note]);
 
   const onSaveNote = async () => {
+    if (!editedNote.title && isNoteContentEmpty(editedNote.content)) {
+      return;
+    }
+
     if (editedNote.id) {
       await updateNote({
         noteId: initialNote.id,
@@ -79,7 +84,12 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-25" />
-      <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-4 p-3 border border-slate-300 rounded-2xl shadow-2xl">
+      <Dialog.Content
+        onInteractOutside={onSaveNote}
+        onEscapeKeyDown={onSaveNote}
+        onFocusOutside={onSaveNote}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-4 p-3 border border-slate-300 rounded-2xl shadow-2xl"
+      >
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
@@ -99,9 +109,9 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 }
                 className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
               />
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 items-center">
                 <p
-                  className="text-slate-400 text-xs"
+                  className="text-slate-500 text-xs"
                   onClick={() =>
                     setUpdatedDateVisible(
                       (currentUpdatedDateVisible) => !currentUpdatedDateVisible
@@ -110,6 +120,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 >
                   {editedNote.created.format("ddd D MMMM YYYY, hh:mm a")}
                 </p>
+
                 <p
                   className={`${
                     updatedDateVisible ? "visible" : "hidden"
@@ -119,6 +130,20 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                     editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +
                     ")"}
                 </p>
+
+                <TagMultiSelect
+                  initialNote={initialNote}
+                  onChange={(tags) =>
+                    setEditedNote((currentEditedNote) => {
+                      const newNoteData = {
+                        ...currentEditedNote,
+                        tags,
+                      };
+
+                      return newNoteData;
+                    })
+                  }
+                />
               </div>
             </div>
 
@@ -157,20 +182,6 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
           </div>
 
           <div className="flex flex-row justify-between w-full border-t border-slate-200 pt-2">
-            <TagMultiSelect
-              initialNote={initialNote}
-              onChange={(tags) =>
-                setEditedNote((currentEditedNote) => {
-                  const newNoteData = {
-                    ...currentEditedNote,
-                    tags,
-                  };
-
-                  return newNoteData;
-                })
-              }
-            />
-
             <div id={QUILL_TOOLBAR_ID}>
               <ToggleGroup.Root
                 className="font-medium text-sm"
@@ -212,6 +223,25 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 </span>
               </ToggleGroup.Root>
             </div>
+
+            <div className="flex gap-2">
+              <Button
+                colour={colours.blue}
+                variant="ghost"
+                size="sm"
+                iconName="paperclip"
+              />
+
+              <Dialog.Close asChild>
+                <Button
+                  colour={colours.red}
+                  variant="ghost"
+                  size="sm"
+                  iconName="trash"
+                  onClick={onDeleteNote}
+                />
+              </Dialog.Close>
+            </div>
           </div>
         </div>
 
@@ -232,36 +262,6 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
             setToolbarFormatting(selectionFormatting);
           }}
         />
-        <div className="flex justify-between gap-2">
-          <Dialog.Close asChild>
-            <Button
-              colour={colours.red}
-              variant="block"
-              size="sm"
-              onClick={onDeleteNote}
-            >
-              Delete
-            </Button>
-          </Dialog.Close>
-
-          <div className="flex gap-2">
-            <Dialog.Close asChild>
-              <Button variant="ghost" size="sm">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close asChild>
-              <Button
-                colour={colours.green}
-                variant="block"
-                size="sm"
-                onClick={onSaveNote}
-              >
-                Save
-              </Button>
-            </Dialog.Close>
-          </div>
-        </div>
       </Dialog.Content>
     </Dialog.Portal>
   );

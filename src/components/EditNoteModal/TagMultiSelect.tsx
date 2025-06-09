@@ -105,7 +105,7 @@ export const TagMultiSelect = ({
           control: ({ isFocused }) => {
             return cn(
               "bg-white",
-              "rounded-md",
+              "rounded-full",
               "hover:bg-orange-100",
               isFocused && "bg-orange-100"
             );

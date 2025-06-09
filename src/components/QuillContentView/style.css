@@ -4,5 +4,5 @@
 
 #quill-editor .ql-editor {
   font-size: 14px;
-  color: var(--color-slate-700);
+  color: #334155; /* slate-700 Tailwind v4 will let you use var(--color-slate-700) */
 }
