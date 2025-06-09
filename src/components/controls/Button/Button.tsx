@@ -46,9 +46,11 @@ const buttonVariants = cva(
       content: {
         text: null,
         icon: null,
+        iconAndText: null,
       },
     },
     compoundVariants: [
+      // text only
       {
         variant: ["block", "ghost", "ghost-strong"],
         content: "text",
@@ -67,6 +69,7 @@ const buttonVariants = cva(
         size: "lg",
         className: "py-3 px-4",
       },
+      // icons only
       {
         variant: ["block", "ghost", "ghost-strong"],
         content: "icon",
@@ -84,6 +87,25 @@ const buttonVariants = cva(
         content: "icon",
         size: "lg",
         className: "p-3",
+      },
+      //  icons and text
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "iconAndText",
+        size: "sm",
+        className: "py-1 pl-1 pr-2",
+      },
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "iconAndText",
+        size: "md",
+        className: "py-2 pl-2 pr-3",
+      },
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "iconAndText",
+        size: "lg",
+        className: "py-3 pl-3 pr-4",
       },
     ],
     defaultVariants: {
@@ -106,6 +128,13 @@ export const Button = ({
 }: ButtonProps) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
 
+  const content =
+    iconName && children
+      ? "iconAndText"
+      : iconName && !children
+        ? "icon"
+        : "text";
+
   return (
     <button
       type={type}
@@ -113,7 +142,7 @@ export const Button = ({
         buttonVariants({
           size,
           variant,
-          content: iconName && !children ? "icon" : "text",
+          content,
         }),
         variant === "block" && colour.textPill,
         variant === "block" && colour.backgroundPill,
