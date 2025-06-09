@@ -39,11 +39,11 @@ function SignUpIndexComponent(): JSX.Element {
     await signUp(formData);
 
     // redirect on successful sign up
-    navigate({ to: "/day" });
+    navigate({ to: "/planner" });
   };
 
   useEffect(() => {
-    user && navigate({ to: "/day" });
+    user && navigate({ to: "/planner" });
   }, [navigate, user]);
 
   return (
