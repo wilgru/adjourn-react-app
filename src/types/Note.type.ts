@@ -20,3 +20,9 @@ export type NotesGroup = {
   notes: Note[];
   relevantNoteData: Partial<Note>;
 };
+
+export type DateWithNotes = {
+  id: string;
+  created: Dayjs;
+  hasFlagged: boolean;
+};

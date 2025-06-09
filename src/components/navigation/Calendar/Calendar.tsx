@@ -4,9 +4,11 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
+import { useGetDatesWithNotes } from "src/hooks/notes/useGetDatesWithNotes";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import type { Dayjs } from "dayjs";
+import type { DateWithNotes } from "src/types/Note.type";
 
 // type CalendarProps = {};
 
@@ -30,7 +32,67 @@ const MONTH_NAMES = [
   "December",
 ];
 
+type CalendarItem = {
+  key: number;
+  datesWithNotes: DateWithNotes[];
+  today: Dayjs;
+  calendarDay: CalendarDay;
+  handleSelectDay: (calendarDay: CalendarDay) => void;
+};
+
+const CalendarItem = ({
+  key,
+  datesWithNotes,
+  today,
+  calendarDay,
+  handleSelectDay,
+}: CalendarItem) => {
+  const dateWithNotes = datesWithNotes.find((dateWithNotes) => {
+    return calendarDay.day.isSame(dateWithNotes.created, "day");
+  });
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-0.5 items-center",
+        !dateWithNotes && "pb-1.5"
+      )}
+    >
+      <Link
+        to={`/planner/${getNavigationDay(calendarDay.day)}`}
+        key={key}
+        className={cn(
+          "h-6 w-6 text-sm text-center leading-6 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",
+          !calendarDay.isCurrentMonth && "text-slate-400 bg-transparent"
+        )}
+        activeProps={{ className: "bg-orange-200 text-orange-500" }}
+        inactiveProps={{
+          className: cn(
+            calendarDay.day.isSame(today, "day")
+              ? "text-orange-500"
+              : calendarDay.isCurrentMonth && "text-slate-700"
+          ),
+        }}
+        onClick={() => handleSelectDay(calendarDay)}
+        aria-hidden={false}
+      >
+        {calendarDay.day.date()}
+      </Link>
+
+      {dateWithNotes && (
+        <div
+          className={cn(
+            "h-1 w-1 rounded-full",
+            dateWithNotes.hasFlagged ? "bg-orange-400" : "bg-slate-400"
+          )}
+        />
+      )}
+    </div>
+  );
+};
+
 export const Calendar = (): JSX.Element => {
+  const { datesWithNotes } = useGetDatesWithNotes();
   const [jumpToDate, setJumpToDate] = useAtom(jumpToDateAtom);
 
   const today = dayjs();
@@ -88,7 +150,7 @@ export const Calendar = (): JSX.Element => {
     });
   }
 
-  const handleSelect = (day: CalendarDay) => {
+  const handleSelectDay = (day: CalendarDay) => {
     // If selecting a day from prev/next month, update the displayed month
     if (!day.isCurrentMonth) {
       setDisplayYear(day.day.year());
@@ -168,33 +230,15 @@ export const Calendar = (): JSX.Element => {
           </h3>
         ))}
 
-        {calendarDays.map((calendarDay, index) => {
-          return (
-            <Link
-              to={`/planner/${getNavigationDay(calendarDay.day)}`}
-              key={index}
-              className={cn(
-                "h-7 w-7 text-sm text-center leading-7 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",
-                !calendarDay.isCurrentMonth &&
-                  "text-slate-400 bg-transparent hover:bg-slate-100 hover:text-slate-500"
-              )}
-              activeProps={{ className: "bg-orange-200 text-orange-500" }}
-              inactiveProps={{
-                className: cn(
-                  calendarDay.day.isSame(today, "day")
-                    ? "bg-slate-200 text-slate-500"
-                    : calendarDay.isCurrentMonth
-                      ? "text-slate-700 bg-transparent"
-                      : ""
-                ),
-              }}
-              onClick={() => handleSelect(calendarDay)}
-              aria-hidden={false}
-            >
-              {calendarDay.day.date()}
-            </Link>
-          );
-        })}
+        {calendarDays.map((calendarDay, index) => (
+          <CalendarItem
+            key={index}
+            calendarDay={calendarDay}
+            datesWithNotes={datesWithNotes}
+            today={today}
+            handleSelectDay={handleSelectDay}
+          />
+        ))}
       </div>
     </div>
   );
