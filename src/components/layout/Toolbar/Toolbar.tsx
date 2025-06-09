@@ -4,10 +4,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
+import { Button } from "src/components/controls/Button/Button";
+import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
 import { useLogin } from "src/hooks/users/useLogin";
-import EditNoteModal from "../EditNoteModal/EditNoteModal";
-import { Button } from "../controls/Button/Button";
 import type { Colour } from "src/types/Colour.type";
 
 type ToolbarProps = {

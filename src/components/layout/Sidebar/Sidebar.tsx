@@ -1,10 +1,10 @@
 import { useSetAtom } from "jotai";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
+import { Calendar } from "src/components/navigation/Calendar/Calendar";
+import { NavItem } from "src/components/navigation/NavItem/NavItem";
 import { useGetTags } from "src/hooks/tags/useGetTags";
 import { cn } from "src/utils/cn";
-import { NavItem } from "../NavItem/NavItem";
-import { Calendar } from "../navigation/Calendar/Calendar";
 
 export const Sidebar = () => {
   const { tags } = useGetTags();

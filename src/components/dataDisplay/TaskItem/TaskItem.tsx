@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import { Icon } from "src/components/Icon/Icon";
-import { TagPill } from "src/components/TagPill/TagPill";
 import { Button } from "src/components/controls/Button/Button";
+import { TagPill } from "src/components/dataDisplay/TagPill/TagPill";
+import { Icon } from "src/components/general/Icon/Icon";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateTask } from "src/hooks/tasks/useUpdateTask";
 import { cn } from "src/utils/cn";

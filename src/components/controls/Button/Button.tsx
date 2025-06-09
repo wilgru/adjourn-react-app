@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 import { useState } from "react";
-import { Icon } from "src/components/Icon/Icon";
+import { Icon } from "src/components/general/Icon/Icon";
 import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";

@@ -1,6 +1,6 @@
+import { Icon } from "src/components/general/Icon/Icon";
 import { icons } from "src/constants/icons.constant";
 import { cn } from "src/utils/cn";
-import { Icon } from "../Icon/Icon";
 import type { Colour } from "src/types/Colour.type";
 
 type IconPickerProps = {

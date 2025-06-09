@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Icon } from "src/components/Icon/Icon";
-import { TaskAndNotesLayout } from "src/components/TaskAndNotesLayout/TaskAndNotesLayout";
-import { Toolbar } from "src/components/Toolbar/Toolbar";
+import { Icon } from "src/components/general/Icon/Icon";
+import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
