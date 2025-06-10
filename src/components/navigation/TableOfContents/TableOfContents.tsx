@@ -7,7 +7,6 @@ export type TableOfContentsItem = {
   title: string;
   navigationId: string | null;
   italic?: boolean;
-  subItems: TableOfContentsItem[];
 };
 
 type TableOfContentsProps = {
@@ -18,6 +17,43 @@ type TableOfContentsProps = {
   colour?: Colour;
 };
 
+const TableOfContentsListItem = ({
+  item,
+  isActive,
+  onJumpTo,
+  colour,
+}: {
+  item: TableOfContentsItem;
+  onJumpTo: (id: string) => void;
+  isActive: boolean;
+  colour: Colour;
+}) => {
+  const navigate = useNavigate();
+
+  return (
+    <li
+      key={item.title}
+      onClick={() => {
+        item.navigationId && onJumpTo(item.navigationId);
+        navigate({ to: `#${item.navigationId}` });
+      }}
+    >
+      <h2
+        className={cn(
+          "text-sm py-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
+          item.italic && "italic",
+          isActive && colour.backgroundPill,
+          isActive && colour.textPill,
+          colour.backgroundPillInverted,
+          colour.textPillInverted
+        )}
+      >
+        {item.title}
+      </h2>
+    </li>
+  );
+};
+
 export default function TableOfContents({
   title,
   items,
@@ -25,80 +61,12 @@ export default function TableOfContents({
   onJumpTo,
   colour = colours.orange,
 }: TableOfContentsProps) {
-  const navigate = useNavigate();
-
-  const NavigatableLi = ({ item }: { item: TableOfContentsItem }) => {
-    const isActive = item.navigationId === activeItemNavigationId;
-
-    return (
-      <li
-        key={item.title}
-        onClick={() => {
-          item.navigationId && onJumpTo(item.navigationId);
-          navigate({ to: `#${item.navigationId}` });
-        }}
-      >
-        <h2
-          className={cn(
-            "text-sm py-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
-            item.italic && "italic",
-            isActive && colour.backgroundPill,
-            isActive && colour.textPill,
-            colour.backgroundPillInverted,
-            colour.textPillInverted
-          )}
-        >
-          {item.title}
-        </h2>
-
-        <ul>
-          {item.subItems.map((subItem) => {
-            const isNavigatable = !!subItem.navigationId;
-
-            return isNavigatable ? (
-              <NavigatableLi item={subItem} />
-            ) : (
-              <StaticLi item={subItem} />
-            );
-          })}
-        </ul>
-      </li>
-    );
-  };
-
-  const StaticLi = ({ item }: { item: TableOfContentsItem }) => {
-    return (
-      <li key={item.title}>
-        <h2
-          className={cn(
-            "px-3 pt-3 text-slate-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
-            item.italic && "italic"
-          )}
-        >
-          {item.title}
-        </h2>
-
-        <ul>
-          {item.subItems.map((subItem) => {
-            const isNavigatable = !!subItem.navigationId;
-
-            return isNavigatable ? (
-              <NavigatableLi item={subItem} />
-            ) : (
-              <StaticLi item={subItem} />
-            );
-          })}
-        </ul>
-      </li>
-    );
-  };
-
   return (
-    <ul className="w-60 m-4 pl-2 pb-2  h-fit opacity-60 hover:opacity-100 transition-opacity">
+    <ul className="w-40 m-4 pl-2 pb-2 h-fit opacity-60 hover:opacity-100 transition-opacity">
       <li>
         <h2
           className={cn(
-            "font-title text-lg pt-1 px-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
+            "font-title text-lg pt-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
             // isActive && colour.backgroundPill,
             // isActive && colour.textPill,
             colour.backgroundPillInverted,
@@ -109,15 +77,15 @@ export default function TableOfContents({
         </h2>
       </li>
 
-      {items.map((item) => {
-        const isNavigatable = !!item.navigationId;
-
-        return isNavigatable ? (
-          <NavigatableLi item={item} />
-        ) : (
-          <StaticLi item={item} />
-        );
-      })}
+      {items.map((item) => (
+        <TableOfContentsListItem
+          key={item.navigationId}
+          item={item}
+          colour={colour}
+          isActive={activeItemNavigationId === item.navigationId}
+          onJumpTo={onJumpTo}
+        />
+      ))}
     </ul>
   );
 }

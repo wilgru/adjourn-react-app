@@ -9,7 +9,6 @@ import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { EditTagModal } from "src/components/modals/EditTagModal/EditTagModal";
 import { useGetTag } from "src/hooks/tags/useGetTag";
 import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
-import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -31,12 +30,6 @@ export const Route = createFileRoute("/_layout/tags/$tagId")({
 export default function TagComponent() {
   const { tagId } = Route.useParams();
   const { tag, tasks, notes } = useGetTag(tagId ?? "");
-  const tableOfContentItems = useTaskAndNotesTOCItems(
-    tasks,
-    notes,
-    tag?.groupBy,
-    tag?.name
-  );
   const { updateTag } = useUpdateTag();
 
   if (!tag) {
@@ -208,7 +201,6 @@ export default function TagComponent() {
         prefillNewNoteData={{ tags: [tag] }}
         groupNotesBy={tag.groupBy}
         defaultNoteGroupTitle={tag.name}
-        tableOfContentItems={tableOfContentItems}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { Button } from "src/components/controls/Button/Button";
 import { NoteItem } from "src/components/dataDisplay/NoteItem/NoteItem";
 import { TaskItem } from "src/components/dataDisplay/TaskItem/TaskItem";
@@ -8,8 +8,8 @@ import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import TableOfContents from "src/components/navigation/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
+import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { groupNotes } from "src/utils/notes/groupNotes";
-import type { TableOfContentsItem } from "src/components/navigation/TableOfContents/TableOfContents";
 import type { Colour } from "src/types/Colour.type";
 import type { Note, NotesGroup } from "src/types/Note.type";
 import type { Task } from "src/types/Task.type";
@@ -27,7 +27,6 @@ type TaskAndNotesLayoutProps = {
   prefillNewNoteData?: Partial<Note>;
   groupNotesBy?: "created" | "tag" | null;
   defaultNoteGroupTitle?: string;
-  tableOfContentItems: TableOfContentsItem[];
 };
 
 export const TaskAndNotesLayout = ({
@@ -43,7 +42,6 @@ export const TaskAndNotesLayout = ({
   prefillNewNoteData,
   groupNotesBy = null,
   defaultNoteGroupTitle,
-  tableOfContentItems,
 }: TaskAndNotesLayoutProps) => {
   const noteRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
@@ -58,20 +56,25 @@ export const TaskAndNotesLayout = ({
     { disabled: false }
   );
 
-  const noteGroups: NotesGroup[] = !groupNotesBy
-    ? [
+  const noteGroups = useMemo<NotesGroup[]>(() => {
+    if (!groupNotesBy) {
+      return [
         {
           title: "Notes",
           notes: notes,
           relevantNoteData: prefillNewNoteData ?? {},
         },
-      ]
-    : groupNotes(
-        notes,
-        groupNotesBy,
-        groupNotesBy === "tag" ? defaultNoteGroupTitle : undefined,
-        prefillNewNoteData ?? {}
-      );
+      ];
+    }
+    return groupNotes(
+      notes,
+      groupNotesBy,
+      groupNotesBy === "tag" ? defaultNoteGroupTitle : undefined,
+      prefillNewNoteData ?? {}
+    );
+  }, [notes, groupNotesBy, defaultNoteGroupTitle, prefillNewNoteData]);
+
+  const tableOfContentItems = useTaskAndNotesTOCItems(noteGroups);
 
   // TODO: pb-16 is the height of the toolbar to fix issue with scrolling body getting cut off. Issue to do with not having a fixed height on consuming element and children elements before this one pushing this one down.
   return (
@@ -87,7 +90,7 @@ export const TaskAndNotesLayout = ({
 
         {description && <section className="px-2">{description}</section>}
 
-        <section>
+        <section id="Tasks">
           <div className="flex gap-2 p-2">
             <h2 className="text-slate-400 font-title text-2xl">Tasks</h2>
 
@@ -128,7 +131,7 @@ export const TaskAndNotesLayout = ({
         </section>
 
         {noteGroups.map((noteGroup) => (
-          <section>
+          <section id={noteGroup.title}>
             <Dialog.Root>
               <div className="flex gap-2 p-2">
                 <h2 className="text-slate-400 font-title text-2xl">
