@@ -199,8 +199,7 @@ export default function TagComponent() {
         notes={notes}
         description={tag.description ? <p>{tag.description}</p> : undefined}
         prefillNewNoteData={{ tags: [tag] }}
-        groupNotesBy={tag.groupBy}
-        defaultNoteGroupTitle={tag.name}
+        groupNotesBy={tag.groupBy ?? undefined}
       />
     </div>
   );

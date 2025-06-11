@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { TableOfContentsItem } from "src/components/navigation/TableOfContents/TableOfContents";
 import type { NotesGroup } from "src/types/Note.type";
+import type { TableOfContentsItem } from "src/types/TableOfContentsItem.type";
 
 export const useTaskAndNotesTOCItems = (
   noteGroups: NotesGroup[]

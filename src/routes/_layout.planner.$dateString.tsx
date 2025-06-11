@@ -7,7 +7,6 @@ import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/Tas
 import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
-import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -36,7 +35,6 @@ function StreamIndexComponent() {
     isFlagged: false,
     createdDateString: dateString,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, notes);
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
@@ -104,7 +102,6 @@ function StreamIndexComponent() {
         tasks={tasks}
         notes={notes}
         showNoteCreateTimeOnly
-        tableOfContentItems={tableOfContentItems}
       />
     </div>
   );

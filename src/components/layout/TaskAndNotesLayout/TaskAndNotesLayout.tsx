@@ -21,8 +21,7 @@ type TaskAndNotesLayoutProps = {
   showNoteCreateTimeOnly?: boolean;
   description?: React.ReactNode;
   prefillNewNoteData?: Partial<Note>;
-  groupNotesBy?: "created" | "tag" | null;
-  defaultNoteGroupTitle?: string;
+  groupNotesBy?: "created" | "tag";
 };
 
 export const TaskAndNotesLayout = ({
@@ -36,8 +35,7 @@ export const TaskAndNotesLayout = ({
   showNoteCreateTimeOnly = false,
   description,
   prefillNewNoteData,
-  groupNotesBy = null,
-  defaultNoteGroupTitle,
+  groupNotesBy,
 }: TaskAndNotesLayoutProps) => {
   const [navigationId, setNavigationId] = useState("");
 
@@ -51,17 +49,12 @@ export const TaskAndNotesLayout = ({
         },
       ];
     }
-    return groupNotes(
-      notes,
-      groupNotesBy,
-      groupNotesBy === "tag" ? defaultNoteGroupTitle : undefined,
-      prefillNewNoteData ?? {}
-    );
-  }, [notes, groupNotesBy, defaultNoteGroupTitle, prefillNewNoteData]);
+    return groupNotes(notes, groupNotesBy, title, prefillNewNoteData ?? {});
+  }, [notes, groupNotesBy, title, prefillNewNoteData]);
 
   const tableOfContentItems = useTaskAndNotesTOCItems(noteGroups);
 
-  // TODO: pb-16 is the height of the toolbar to fix issue with scrolling body getting cut off. Issue to do with not having a fixed height on consuming element and children elements before this one pushing this one down.
+  // FIXME: pb-16 is the height of the toolbar to fix issue with scrolling body getting cut off. Issue to do with not having a fixed height on consuming element and children elements before this one pushing this one down.
   return (
     <div className="h-full max-w-[1000px] w-full min-w-0 pb-16 flex items-center">
       <div className="h-full w-full p-12 flex flex-col gap-10 overflow-y-scroll">

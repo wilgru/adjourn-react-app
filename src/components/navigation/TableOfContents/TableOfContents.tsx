@@ -2,12 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
-
-export type TableOfContentsItem = {
-  title: string;
-  navigationId: string | null;
-  italic?: boolean;
-};
+import type { TableOfContentsItem } from "src/types/TableOfContentsItem.type";
 
 type TableOfContentsListItemProps = {
   item: TableOfContentsItem;

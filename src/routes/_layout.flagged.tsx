@@ -5,7 +5,6 @@ import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
-import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -28,7 +27,6 @@ function RouteComponent() {
   const { notes } = useGetNotes({
     isFlagged: true,
   });
-  const tableOfContentItems = useTaskAndNotesTOCItems(tasks, notes);
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -50,7 +48,6 @@ function RouteComponent() {
         notes={notes}
         tasks={tasks}
         prefillNewNoteData={{ isFlagged: true }}
-        tableOfContentItems={tableOfContentItems}
       />
     </div>
   );
