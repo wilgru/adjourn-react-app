@@ -9,25 +9,18 @@ export type TableOfContentsItem = {
   italic?: boolean;
 };
 
-type TableOfContentsProps = {
-  title: string;
-  items: TableOfContentsItem[];
-  activeItemNavigationId: string;
+type TableOfContentsListItemProps = {
+  item: TableOfContentsItem;
   onJumpTo: (id: string) => void;
-  colour?: Colour;
+  isActive?: boolean; // not using for now
+  colour: Colour;
 };
 
 const TableOfContentsListItem = ({
   item,
-  isActive,
   onJumpTo,
   colour,
-}: {
-  item: TableOfContentsItem;
-  onJumpTo: (id: string) => void;
-  isActive: boolean;
-  colour: Colour;
-}) => {
+}: TableOfContentsListItemProps) => {
   const navigate = useNavigate();
 
   return (
@@ -42,8 +35,6 @@ const TableOfContentsListItem = ({
         className={cn(
           "text-sm py-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
           item.italic && "italic",
-          isActive && colour.backgroundPill,
-          isActive && colour.textPill,
           colour.backgroundPillInverted,
           colour.textPillInverted
         )}
@@ -54,10 +45,17 @@ const TableOfContentsListItem = ({
   );
 };
 
+type TableOfContentsProps = {
+  title: string;
+  items: TableOfContentsItem[];
+  activeItemNavigationId: string;
+  onJumpTo: (id: string) => void;
+  colour?: Colour;
+};
+
 export default function TableOfContents({
   title,
   items,
-  activeItemNavigationId,
   onJumpTo,
   colour = colours.orange,
 }: TableOfContentsProps) {
@@ -67,8 +65,6 @@ export default function TableOfContents({
         <h2
           className={cn(
             "font-title text-lg pt-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
-            // isActive && colour.backgroundPill,
-            // isActive && colour.textPill,
             colour.backgroundPillInverted,
             colour.textPillInverted
           )}
@@ -82,7 +78,6 @@ export default function TableOfContents({
           key={item.navigationId}
           item={item}
           colour={colour}
-          isActive={activeItemNavigationId === item.navigationId}
           onJumpTo={onJumpTo}
         />
       ))}

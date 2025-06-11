@@ -6,19 +6,17 @@ import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import type { Colour } from "src/types/Colour.type";
 import type { NotesGroup } from "src/types/Note.type";
 
-type NotesSection = {
+type NotesSectionProps = {
   noteGroup: NotesGroup;
   createdDateFormat?: string;
-  noteRefs: any;
   colour: Colour;
 };
 
 export const NotesSection = ({
   noteGroup,
   createdDateFormat,
-  noteRefs,
   colour,
-}: NotesSection) => {
+}: NotesSectionProps) => {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   const [showEditNoteModal, setShowEditNoteModal] = useState(false);
 
@@ -72,11 +70,6 @@ export const NotesSection = ({
         <div className="flex flex-col gap-5">
           {noteGroup.notes.map((note) => (
             <NoteItem
-              ref={(el: HTMLDivElement | null) => {
-                if (el && !noteRefs.current.includes(el)) {
-                  noteRefs.current.push(el);
-                }
-              }}
               createdDateFormat={createdDateFormat}
               colour={colour}
               note={note}

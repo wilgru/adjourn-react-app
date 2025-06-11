@@ -4,12 +4,12 @@ import { TaskItem } from "src/components/dataDisplay/TaskItem/TaskItem";
 import type { Colour } from "src/types/Colour.type";
 import type { Task } from "src/types/Task.type";
 
-type TasksSectionType = {
+type TasksSectionProps = {
   tasks: Task[];
   colour: Colour;
 };
 
-export const TasksSection = ({ tasks, colour }: TasksSectionType) => {
+export const TasksSection = ({ tasks, colour }: TasksSectionProps) => {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
 
   return (

@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { Toggle } from "src/components/controls/Toggle/Toggle";
@@ -18,13 +18,17 @@ import { TagPill } from "../TagPill/TagPill";
 import type { Colour } from "src/types/Colour.type";
 import type { Note } from "src/types/Note.type";
 
-export const NoteItem = forwardRef<
-  HTMLDivElement,
-  { note: Note; createdDateFormat?: string; colour?: Colour }
->(function (
-  { note, createdDateFormat = "ddd MMM D, YYYY", colour = colours.orange },
-  ref
-) {
+type NoteItemProps = {
+  note: Note;
+  createdDateFormat?: string;
+  colour?: Colour;
+};
+
+export const NoteItem = ({
+  note,
+  createdDateFormat = "ddd MMM D, YYYY",
+  colour = colours.orange,
+}: NoteItemProps) => {
   const navigate = useNavigate();
   const { updateNote } = useUpdateNote();
   const { deleteNote } = useDeleteNote();
@@ -33,7 +37,6 @@ export const NoteItem = forwardRef<
 
   return (
     <div
-      ref={ref}
       id={note.id}
       key={note.id}
       onMouseOver={() => setIsHovered(true)}
@@ -120,4 +123,4 @@ export const NoteItem = forwardRef<
       </div>
     </div>
   );
-});
+};

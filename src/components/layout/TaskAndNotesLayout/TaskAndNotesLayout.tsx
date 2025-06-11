@@ -1,8 +1,7 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { PageHeader } from "src/components/layout/PageHeader/PageHeader";
 import TableOfContents from "src/components/navigation/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
-import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { groupNotes } from "src/utils/notes/groupNotes";
 import { NotesSection } from "../NotesSection/NotesSection";
@@ -40,17 +39,7 @@ export const TaskAndNotesLayout = ({
   groupNotesBy = null,
   defaultNoteGroupTitle,
 }: TaskAndNotesLayoutProps) => {
-  const noteRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
-
-  useIntersectionObserver(
-    noteRefs,
-    (entry) => {
-      setNavigationId(entry.target.id);
-    },
-    { rootMargin: "-10% 0% -90% 0%" },
-    { disabled: false }
-  );
 
   const noteGroups = useMemo<NotesGroup[]>(() => {
     if (!groupNotesBy) {
@@ -92,7 +81,6 @@ export const TaskAndNotesLayout = ({
           <NotesSection
             noteGroup={noteGroup}
             colour={colour}
-            noteRefs={noteRefs}
             createdDateFormat={
               showNoteCreateTimeOnly || groupNotesBy === "created"
                 ? "h:mm a"
