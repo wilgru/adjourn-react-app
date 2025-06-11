@@ -28,7 +28,7 @@ export const NotesSection = ({
           onMouseOver={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
         >
-          <h2 className="text-slate-400 font-title text-2xl">
+          <h2 className="text-slate-400 font-title text-3xl">
             {noteGroup.title}
           </h2>
 

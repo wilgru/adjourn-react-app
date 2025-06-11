@@ -19,7 +19,7 @@ export const TasksSection = ({ tasks, colour }: TasksSectionProps) => {
         onMouseOver={() => setIsTitleHovered(true)}
         onMouseLeave={() => setIsTitleHovered(false)}
       >
-        <h2 className="text-slate-400 font-title text-2xl">Tasks</h2>
+        <h2 className="text-slate-400 font-title text-3xl">Tasks</h2>
 
         {isTitleHovered && (
           <div className="mb-2">

@@ -1,3 +1,4 @@
+import { PushPin, Flag } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
@@ -5,7 +6,6 @@ import { useState } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { Toggle } from "src/components/controls/Toggle/Toggle";
-import { NoteItemHeading } from "src/components/dataDisplay/NoteItem/NoteItemHeading";
 import QuillContentView from "src/components/dataDisplay/QuillContentView/QuillContentView";
 import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
@@ -46,9 +46,17 @@ export const NoteItem = ({
         colour.backgroundGlow
       )}
     >
-      <NoteItemHeading note={note} />
+      {note.title && (
+        <h1 className="font-title text-2xl font-normal tracking-tight">
+          {note.title}
+        </h1>
+      )}
 
-      <div className="flex items-center flex-wrap -ml-2">
+      {!isNoteContentEmpty(note.content) && (
+        <QuillContentView content={note.content} />
+      )}
+
+      <div className="flex items-center flex-wrap">
         <Button
           colour={colour}
           variant="ghost"
@@ -73,10 +81,17 @@ export const NoteItem = ({
             }}
           />
         ))}
+
+        {note.isPinned && (
+          <PushPin weight="fill" className="w-5 h-4 mr-1 text-red-400" />
+        )}
+
+        {note.isFlagged && (
+          <Flag weight="fill" className="w-5 h-4 mr-1 text-orange-400" />
+        )}
       </div>
-      {!isNoteContentEmpty(note.content) && (
-        <QuillContentView content={note.content} />
-      )}
+
+      {/* left side quick actions */}
       <div
         hidden={!isHovered}
         className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
