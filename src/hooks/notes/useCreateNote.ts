@@ -25,7 +25,6 @@ export const useCreateNote = (): UseCreateNoteResponse => {
   const mutationFn = async ({
     createNoteData,
   }: CreateNoteProps): Promise<Note | undefined> => {
-    // if note is a draft then its not actually in the db, so persist it
     const createdNote = await pb.collection("notes").create(
       {
         ...createNoteData,
