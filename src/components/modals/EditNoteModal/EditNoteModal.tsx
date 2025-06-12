@@ -17,7 +17,7 @@ import { useCreateNote } from "src/hooks/notes/useCreateNote";
 import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
 import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
 import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
-import { TagMultiSelect } from "./TagMultiSelect";
+import { TagMultiSelect } from "../../dataEntry/TagMultiSelect/TagMultiSelect";
 import type { StringMap } from "quill";
 import type { Note } from "src/types/Note.type";
 
@@ -88,101 +88,28 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
         onInteractOutside={onSaveNote}
         onEscapeKeyDown={onSaveNote}
         onFocusOutside={onSaveNote}
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-4 p-3 border border-slate-300 rounded-2xl shadow-2xl"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-3 p-3 border border-slate-300 rounded-2xl shadow-2xl"
       >
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-start">
-            <div className="flex-grow flex flex-col">
-              <textarea
-                name="content"
-                value={editedNote.title ?? ""}
-                placeholder="No Title"
-                onChange={(e) =>
-                  setEditedNote((currentEditedNote) => {
-                    const newNoteData = {
-                      ...currentEditedNote,
-                      title: e.target.value,
-                    };
+        <div className="flex flex-col gap-1">
+          <textarea
+            name="content"
+            value={editedNote.title ?? ""}
+            placeholder="No Title"
+            onChange={(e) =>
+              setEditedNote((currentEditedNote) => {
+                const newNoteData = {
+                  ...currentEditedNote,
+                  title: e.target.value,
+                };
 
-                    return newNoteData;
-                  })
-                }
-                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
-              />
-              <div className="flex flex-row gap-2 items-center">
-                <p
-                  className="text-slate-500 text-xs"
-                  onClick={() =>
-                    setUpdatedDateVisible(
-                      (currentUpdatedDateVisible) => !currentUpdatedDateVisible
-                    )
-                  }
-                >
-                  {editedNote.created.format("ddd D MMMM YYYY, hh:mm a")}
-                </p>
+                return newNoteData;
+              })
+            }
+            className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
+          />
 
-                <p
-                  className={`${
-                    updatedDateVisible ? "visible" : "hidden"
-                  } text-slate-500 text-xs italic`}
-                >
-                  {"(Last edited " +
-                    editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +
-                    ")"}
-                </p>
-
-                <TagMultiSelect
-                  initialNote={initialNote}
-                  onChange={(tags) =>
-                    setEditedNote((currentEditedNote) => {
-                      const newNoteData = {
-                        ...currentEditedNote,
-                        tags,
-                      };
-
-                      return newNoteData;
-                    })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className=" flex flex-row gap-1">
-              <Toggle
-                colour={colours.red}
-                isToggled={editedNote.isPinned}
-                onClick={() =>
-                  setEditedNote((currentEditedNote) => {
-                    const newNoteData = {
-                      ...currentEditedNote,
-                      isPinned: !editedNote.isPinned,
-                    };
-
-                    return newNoteData;
-                  })
-                }
-                iconName="pushPin"
-              />
-
-              <Toggle
-                isToggled={editedNote.isFlagged}
-                onClick={() =>
-                  setEditedNote((currentEditedNote) => {
-                    const newNoteData = {
-                      ...currentEditedNote,
-                      isFlagged: !editedNote.isFlagged,
-                    };
-
-                    return newNoteData;
-                  })
-                }
-                iconName="flag"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-row justify-between w-full border-t border-slate-200 pt-2">
-            <div id={QUILL_TOOLBAR_ID}>
+          <div className="flex flex-row justify-between w-full">
+            <div className="-ml-2" id={QUILL_TOOLBAR_ID}>
               <ToggleGroup.Root
                 className="font-medium text-sm"
                 type="multiple"
@@ -230,17 +157,9 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 variant="ghost"
                 size="sm"
                 iconName="paperclip"
-              />
-
-              <Dialog.Close asChild>
-                <Button
-                  colour={colours.red}
-                  variant="ghost"
-                  size="sm"
-                  iconName="trash"
-                  onClick={onDeleteNote}
-                />
-              </Dialog.Close>
+              >
+                Add attachment
+              </Button>
             </div>
           </div>
         </div>
@@ -262,6 +181,88 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
             setToolbarFormatting(selectionFormatting);
           }}
         />
+
+        <div className="flex justify-between border-t border-slate-200 pt-3">
+          <div className="flex flex-row gap-2 items-center">
+            <p
+              className="text-slate-400 text-xs"
+              onClick={() =>
+                setUpdatedDateVisible(
+                  (currentUpdatedDateVisible) => !currentUpdatedDateVisible
+                )
+              }
+            >
+              {editedNote.created.format("ddd D MMMM YYYY, hh:mm a")}
+            </p>
+
+            <p
+              className={`${
+                updatedDateVisible ? "visible" : "hidden"
+              } text-slate-400 text-xs italic`}
+            >
+              {"(Last edited " +
+                editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +
+                ")"}
+            </p>
+
+            <TagMultiSelect
+              initialTags={initialNote.tags}
+              onChange={(tags) =>
+                setEditedNote((currentEditedNote) => {
+                  const newNoteData = {
+                    ...currentEditedNote,
+                    tags,
+                  };
+
+                  return newNoteData;
+                })
+              }
+            />
+
+            <Toggle
+              colour={colours.red}
+              isToggled={editedNote.isPinned}
+              size="sm"
+              onClick={() =>
+                setEditedNote((currentEditedNote) => {
+                  const newNoteData = {
+                    ...currentEditedNote,
+                    isPinned: !editedNote.isPinned,
+                  };
+
+                  return newNoteData;
+                })
+              }
+              iconName="pushPin"
+            />
+
+            <Toggle
+              isToggled={editedNote.isFlagged}
+              size="sm"
+              onClick={() =>
+                setEditedNote((currentEditedNote) => {
+                  const newNoteData = {
+                    ...currentEditedNote,
+                    isFlagged: !editedNote.isFlagged,
+                  };
+
+                  return newNoteData;
+                })
+              }
+              iconName="flag"
+            />
+          </div>
+
+          <Dialog.Close asChild>
+            <Button
+              colour={colours.red}
+              variant="ghost"
+              size="sm"
+              iconName="trash"
+              onClick={onDeleteNote}
+            />
+          </Dialog.Close>
+        </div>
       </Dialog.Content>
     </Dialog.Portal>
   );

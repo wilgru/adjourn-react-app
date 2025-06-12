@@ -7,11 +7,10 @@ import { useCreateTag } from "src/hooks/tags/useCreateTag";
 import { useGetTags } from "src/hooks/tags/useGetTags";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
-import type { Note } from "src/types/Note.type";
 import type { Tag } from "src/types/Tag.type";
 
 type TagMultiSelectProps = {
-  initialNote: Note;
+  initialTags: Tag[];
   onChange: (tags: Tag[]) => void;
 };
 
@@ -27,14 +26,14 @@ const getColourFromTag = (tags: Tag[], tagId: string): Colour => {
 };
 
 export const TagMultiSelect = ({
-  initialNote,
+  initialTags,
   onChange,
 }: TagMultiSelectProps) => {
   const { tags } = useGetTags();
   const { createTag } = useCreateTag();
 
   const [value, setValue] = useState<Option[]>(
-    initialNote.tags.map((tag) => ({
+    initialTags.map((tag) => ({
       value: tag.id,
       label: tag.name,
     }))
@@ -49,9 +48,9 @@ export const TagMultiSelect = ({
         { value: newTag.id, label: newTag.name },
       ]);
 
-      onChange([...initialNote.tags, newTag]);
+      onChange([...initialTags, newTag]);
     },
-    [createTag, initialNote.tags, onChange]
+    [createTag, initialTags, onChange]
   );
 
   const options = tags.map((tag) => ({
