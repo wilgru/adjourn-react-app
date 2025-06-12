@@ -1,4 +1,3 @@
-import { PushPin, Flag } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
@@ -11,7 +10,6 @@ import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
 import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
 import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
-import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
 import { TagPill } from "../TagPill/TagPill";
@@ -41,10 +39,7 @@ export const NoteItem = ({
       key={note.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={cn(
-        "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-colors",
-        colour.backgroundGlow
-      )}
+      className="flex flex-col p-2"
     >
       {note.title && (
         <h1 className="font-title text-2xl font-normal tracking-tight">
@@ -56,7 +51,7 @@ export const NoteItem = ({
         <QuillContentView content={note.content} />
       )}
 
-      <div className="flex items-center flex-wrap">
+      <div className="flex items-center gap-1 flex-wrap -ml-2">
         <Button
           colour={colour}
           variant="ghost"
@@ -82,22 +77,43 @@ export const NoteItem = ({
           />
         ))}
 
-        {note.isPinned && (
-          <PushPin weight="fill" className="w-5 h-4 mr-1 text-red-400" />
+        {(note.isPinned || isHovered) && (
+          <Toggle
+            colour={colours.red}
+            isToggled={note.isPinned}
+            size="sm"
+            onClick={() =>
+              updateNote({
+                noteId: note.id,
+                updateNoteData: {
+                  ...note,
+                  isPinned: !note.isPinned,
+                },
+              })
+            }
+            iconName="pushPin"
+          />
         )}
 
-        {note.isFlagged && (
-          <Flag weight="fill" className="w-5 h-4 mr-1 text-orange-400" />
+        {(note.isFlagged || isHovered) && (
+          <Toggle
+            isToggled={note.isFlagged}
+            size="sm"
+            onClick={() =>
+              updateNote({
+                noteId: note.id,
+                updateNoteData: {
+                  ...note,
+                  isFlagged: !note.isFlagged,
+                },
+              })
+            }
+            iconName="flag"
+          />
         )}
-      </div>
 
-      {/* left side quick actions */}
-      <div
-        hidden={!isHovered}
-        className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-      >
-        <div className="flex flex-col gap-2 p-1 bg-white border border-slate-300 rounded-full drop-shadow-md">
-          <Dialog.Root>
+        <Dialog.Root>
+          {isHovered && (
             <Dialog.Trigger asChild>
               <Button
                 colour={colour}
@@ -106,35 +122,22 @@ export const NoteItem = ({
                 size="sm"
               />
             </Dialog.Trigger>
+          )}
 
-            <Toggle
-              onClick={() => {
-                updateNote({
-                  noteId: note.id,
-                  updateNoteData: {
-                    ...note,
-                    isFlagged: !note.isFlagged,
-                  },
-                });
-              }}
-              isToggled={note.isFlagged}
-              iconName="flag"
-              size="sm"
-            />
+          <EditNoteModal note={note} />
+        </Dialog.Root>
 
-            <Button
-              onClick={() => {
-                deleteNote({ noteId: note.id });
-              }}
-              colour={colours.red}
-              iconName="trash"
-              variant="ghost"
-              size="sm"
-            />
-
-            <EditNoteModal note={note} />
-          </Dialog.Root>
-        </div>
+        {isHovered && (
+          <Button
+            onClick={() => {
+              deleteNote({ noteId: note.id });
+            }}
+            colour={colours.red}
+            iconName="trash"
+            variant="ghost"
+            size="sm"
+          />
+        )}
       </div>
     </div>
   );

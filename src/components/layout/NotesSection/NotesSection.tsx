@@ -67,7 +67,7 @@ export const NotesSection = ({
           </div>
         )}
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3">
           {noteGroup.notes.map((note) => (
             <NoteItem
               createdDateFormat={createdDateFormat}
