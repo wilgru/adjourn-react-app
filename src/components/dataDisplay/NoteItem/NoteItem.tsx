@@ -10,6 +10,7 @@ import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
 import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
 import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
+import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
 import { TagPill } from "../TagPill/TagPill";
@@ -33,13 +34,17 @@ export const NoteItem = ({
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
   const [isHovered, setIsHovered] = useState(false);
 
+  // TODO: would it be more efficient to use the edit modal in the section rather than on each item?
   return (
     <div
       id={note.id}
       key={note.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="flex flex-col p-2"
+      className={cn(
+        "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-colors",
+        colour.backgroundGlow
+      )}
     >
       {note.title && (
         <h1 className="font-title text-2xl font-normal tracking-tight">
