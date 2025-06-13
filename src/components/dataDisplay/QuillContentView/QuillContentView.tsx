@@ -37,6 +37,6 @@ export default function QuillContentView({ content }: QuillContentVIewProps) {
       id="quill-editor"
       ref={containerRef}
       className="h-fit placeholder-slate-500"
-    ></div>
+    />
   );
 }

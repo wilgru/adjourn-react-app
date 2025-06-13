@@ -20,6 +20,7 @@ type TaskAndNotesLayoutProps = {
   notes: Note[];
   showNoteCreateTimeOnly?: boolean;
   description?: React.ReactNode;
+  prefillNewTaskData?: Partial<Task>;
   prefillNewNoteData?: Partial<Note>;
   groupNotesBy?: "created" | "tag";
 };
@@ -34,6 +35,7 @@ export const TaskAndNotesLayout = ({
   notes,
   showNoteCreateTimeOnly = false,
   description,
+  prefillNewTaskData,
   prefillNewNoteData,
   groupNotesBy,
 }: TaskAndNotesLayoutProps) => {
@@ -68,7 +70,11 @@ export const TaskAndNotesLayout = ({
 
         {description && <section className="px-2">{description}</section>}
 
-        <TasksSection tasks={tasks} colour={colour} />
+        <TasksSection
+          tasks={tasks}
+          relevantTaskData={prefillNewTaskData}
+          colour={colour}
+        />
 
         {noteGroups.map((noteGroup) => (
           <NotesSection

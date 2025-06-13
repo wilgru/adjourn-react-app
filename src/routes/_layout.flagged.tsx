@@ -47,6 +47,7 @@ function RouteComponent() {
         title="Flagged"
         notes={notes}
         tasks={tasks}
+        prefillNewTaskData={{ isFlagged: true }}
         prefillNewNoteData={{ isFlagged: true }}
       />
     </div>

@@ -1,8 +1,12 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { Button } from "src/components/controls/Button/Button";
+import { Toggle } from "src/components/controls/Toggle/Toggle";
 import { TagPill } from "src/components/dataDisplay/TagPill/TagPill";
 import { Icon } from "src/components/general/Icon/Icon";
+import { EditTaskModal } from "src/components/modals/EditTaskModal/EditTaskModal";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateTask } from "src/hooks/tasks/useUpdateTask";
 import { cn } from "src/utils/cn";
@@ -18,12 +22,16 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
   const navigate = useNavigate();
   const { updateTask } = useUpdateTask();
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div
       className={cn(
         "w-full p-1 flex gap-2 items-start rounded-2xl",
         colour.backgroundGlow
       )}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <button
         className="pt-px pl-px"
@@ -78,7 +86,39 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
             )}
           </div>
 
-          <div className="flex gap-1 items-center ">
+          <div className="flex gap-1 items-center">
+            <Dialog.Root>
+              {isHovered && (
+                <Dialog.Trigger asChild>
+                  <Button
+                    colour={colour}
+                    iconName="pencil"
+                    variant="ghost"
+                    size="sm"
+                  />
+                </Dialog.Trigger>
+              )}
+
+              <EditTaskModal task={task} />
+            </Dialog.Root>
+
+            {(task.isFlagged || isHovered) && (
+              <Toggle
+                isToggled={task.isFlagged}
+                size="sm"
+                onClick={() =>
+                  updateTask({
+                    taskId: task.id,
+                    updateTaskData: {
+                      ...task,
+                      isFlagged: !task.isFlagged,
+                    },
+                  })
+                }
+                iconName="flag"
+              />
+            )}
+
             {task.tags.map((tag) => (
               <TagPill
                 variant="ghost"
@@ -89,10 +129,6 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
                 }}
               />
             ))}
-
-            {task.isFlagged && (
-              <Icon iconName="flag" size="sm" className="fill-orange-400" />
-            )}
 
             {task.dueDate && (
               <p

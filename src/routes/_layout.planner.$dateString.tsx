@@ -101,6 +101,7 @@ function StreamIndexComponent() {
         title={title}
         tasks={tasks}
         notes={notes}
+        prefillNewTaskData={{ dueDate: today }}
         showNoteCreateTimeOnly
       />
     </div>

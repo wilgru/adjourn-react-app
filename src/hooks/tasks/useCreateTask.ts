@@ -1,38 +1,40 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
+import { useUser } from "src/hooks/users/useUser";
 import { mapTask } from "src/utils/tasks/mapTask";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Task } from "src/types/Task.type";
 
-type UpdateTaskProps = {
-  taskId: string;
-  updateTaskData: Task;
+type CreateTaskProps = {
+  createTaskData: Omit<Task, "id" | "created" | "updated">;
 };
 
-type UseUpdateTaskResponse = {
-  updateTask: UseMutateAsyncFunction<
+type UseCreateTaskResponse = {
+  createTask: UseMutateAsyncFunction<
     Task | undefined,
     Error,
-    UpdateTaskProps,
+    CreateTaskProps,
     unknown
   >;
 };
 
-export const useUpdateTask = (): UseUpdateTaskResponse => {
+export const useCreateTask = (): UseCreateTaskResponse => {
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const mutationFn = async ({
-    taskId,
-    updateTaskData,
-  }: UpdateTaskProps): Promise<Task | undefined> => {
-    const tagIds = updateTaskData.tags.map((tag) => tag.id);
+    createTaskData,
+  }: CreateTaskProps): Promise<Task | undefined> => {
+    const createdTask = await pb.collection("tasks").create(
+      {
+        ...createTaskData,
+        tags: createTaskData.tags.map((tag) => tag.id),
+        user: user?.id,
+      },
+      { expand: "tags" }
+    );
 
-    const rawUpdatedTask = await pb.collection("tasks").update(taskId, {
-      ...updateTaskData,
-      tags: tagIds,
-    });
-
-    return mapTask(rawUpdatedTask);
+    return mapTask(createdTask);
   };
 
   const onSuccess = (data: Task | undefined) => {
@@ -51,12 +53,12 @@ export const useUpdateTask = (): UseUpdateTaskResponse => {
 
   // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
-    mutationKey: ["tasks.update"],
+    mutationKey: ["tasks.create"],
     mutationFn,
     onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
 
-  return { updateTask: mutateAsync };
+  return { createTask: mutateAsync };
 };
