@@ -105,7 +105,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 return newNoteData;
               })
             }
-            className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
+            className="h-10 w-full text-2xl font-normal tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
           />
 
           <div className="flex flex-row justify-between w-full">
@@ -157,9 +157,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
                 variant="ghost"
                 size="sm"
                 iconName="paperclip"
-              >
-                Add attachment
-              </Button>
+              />
             </div>
           </div>
         </div>
@@ -185,7 +183,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
         <div className="flex justify-between border-t border-slate-200 pt-3">
           <div className="flex flex-row gap-2 items-center">
             <p
-              className="text-slate-400 text-xs"
+              className="text-slate-500 text-xs"
               onClick={() =>
                 setUpdatedDateVisible(
                   (currentUpdatedDateVisible) => !currentUpdatedDateVisible
@@ -198,7 +196,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
             <p
               className={`${
                 updatedDateVisible ? "visible" : "hidden"
-              } text-slate-400 text-xs italic`}
+              } text-slate-500 text-xs italic`}
             >
               {"(Last edited " +
                 editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +

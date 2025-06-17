@@ -5,7 +5,7 @@ import type { Tag } from "src/types/Tag.type";
 type TagPillProps = {
   tag: Tag;
   size?: "sm" | "md" | "lg";
-  variant?: "block" | "ghost";
+  variant?: "block" | "ghost" | "link";
   closable?: boolean;
   onClick?: (id: string) => void;
 };

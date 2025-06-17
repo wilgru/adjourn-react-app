@@ -70,7 +70,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
                 (task.completedDate ?? task.cancelledDate)
                   ? "text-slate-400"
                   : "text-slate-700",
-                task.cancelledDate ? "line-through" : "font-medium"
+                task.cancelledDate && "line-through"
               )}
             >
               {task.title}

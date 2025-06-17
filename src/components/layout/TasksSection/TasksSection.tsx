@@ -28,7 +28,7 @@ export const TasksSection = ({
           onMouseOver={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
         >
-          <h2 className="text-slate-400 font-title text-3xl">Tasks</h2>
+          <h2 className="font-title text-4xl">Tasks</h2>
 
           <Dialog.Trigger asChild>
             {isTitleHovered && (

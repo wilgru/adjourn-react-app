@@ -28,9 +28,7 @@ export const NotesSection = ({
           onMouseOver={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
         >
-          <h2 className="text-slate-400 font-title text-3xl">
-            {noteGroup.title}
-          </h2>
+          <h2 className="font-title text-4xl">{noteGroup.title}</h2>
 
           <Dialog.Trigger asChild>
             {isTitleHovered && (
@@ -67,7 +65,7 @@ export const NotesSection = ({
           </div>
         )}
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-5">
           {noteGroup.notes.map((note) => (
             <NoteItem
               createdDateFormat={createdDateFormat}
