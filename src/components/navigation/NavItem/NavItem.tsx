@@ -50,6 +50,7 @@ export const NavItem = ({
                     ? colour.textPill
                     : "text-slate-500"
                 }
+                size="sm"
                 weight={isHovered || isActive ? "fill" : "regular"}
               />
             )}

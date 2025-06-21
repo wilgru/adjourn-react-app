@@ -47,7 +47,7 @@ export const NoteItem = ({
       )}
     >
       {note.title && (
-        <h1 className="text-xl font-normal tracking-tight">{note.title}</h1>
+        <h1 className="text-xl font-medium tracking-tight">{note.title}</h1>
       )}
 
       {!isNoteContentEmpty(note.content) && (

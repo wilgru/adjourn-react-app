@@ -147,7 +147,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
 
         <p
           className={cn(
-            "text-sm italic",
+            "text-sm",
             task.completedDate || task.cancelledDate
               ? "text-slate-400"
               : "text-slate-500"
