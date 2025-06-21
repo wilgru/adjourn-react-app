@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
 import { pb } from "src/connections/pocketbase";
 import { mapNote } from "src/utils/notes/mapNote";
 import type { Note } from "src/types/Note.type";
@@ -6,6 +8,8 @@ import type { Note } from "src/types/Note.type";
 type UseGetNotesResponse = {
   notes: Note[];
 };
+
+dayjs.extend(utc);
 
 export const useGetNotes = ({
   isFlagged,
@@ -17,17 +21,38 @@ export const useGetNotes = ({
   const queryFn = async (): Promise<{
     notes: Note[];
   }> => {
-    let filter = `deleted = null${isFlagged ? " && isFlagged = true" : ""}`;
+    const filters = ["deleted = null"];
+
+    if (isFlagged !== undefined) {
+      filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
+    }
+
     if (createdDateString) {
-      const startOfDay = `${createdDateString} 00:00:00.000Z`;
-      const endOfDay = `${createdDateString} 23:59:59.999Z`;
-      filter += ` && created >= "${startOfDay}" && created <= "${endOfDay}"`;
+      const localCreatedDateMidday = dayjs(createdDateString)
+        .hour(12)
+        .minute(0)
+        .second(0)
+        .millisecond(0);
+
+      const utcStartOfDate = localCreatedDateMidday
+        .utc()
+        .subtract(12, "hour")
+        .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
+
+      const utcEndOfDate = localCreatedDateMidday
+        .utc()
+        .add(12, "hour")
+        .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
+
+      filters.push(
+        `created >= "${utcStartOfDate}" && created <= "${utcEndOfDate}"`
+      );
     }
 
     const rawNotes = await pb
       .collection("notes")
       .getList(undefined, undefined, {
-        filter,
+        filter: filters.join(" && "),
         expand: "tags",
         sort: "-isPinned",
       });

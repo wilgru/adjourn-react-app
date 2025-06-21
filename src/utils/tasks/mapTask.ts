@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
 import { mapTag } from "../tags/mapTag";
 import type { RecordModel } from "pocketbase";
 import type { Task } from "src/types/Task.type";
+
+dayjs.extend(utc);
 
 export const mapTask = (task: RecordModel): Task => {
   return {
@@ -11,10 +14,14 @@ export const mapTask = (task: RecordModel): Task => {
     link: task.link || null,
     isFlagged: task.isFlagged || false,
     tags: task?.expand?.tags ? task.expand.tags.map(mapTag) : [],
-    dueDate: task.dueDate ? dayjs(task.dueDate) : null,
-    completedDate: task.completedDate ? dayjs(task.completedDate) : null,
-    cancelledDate: task.cancelledDate ? dayjs(task.cancelledDate) : null,
-    created: dayjs(task.created),
-    updated: dayjs(task.updated),
+    dueDate: task.dueDate ? dayjs.utc(task.dueDate).local() : null,
+    completedDate: task.completedDate
+      ? dayjs.utc(task.completedDate).local()
+      : null,
+    cancelledDate: task.cancelledDate
+      ? dayjs.utc(task.cancelledDate).local()
+      : null,
+    created: dayjs.utc(task.created).local(),
+    updated: dayjs(task.updated).local(),
   };
 };

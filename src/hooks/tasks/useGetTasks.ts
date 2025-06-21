@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { pb } from "src/connections/pocketbase";
 import { mapTask } from "src/utils/tasks/mapTask";
 import type {
@@ -29,11 +30,24 @@ export const useGetTasks = ({
     }
 
     if (dateString) {
-      const startOfGivenDate = `${dateString} 00:00:00.000Z`;
-      const endOfGivenDate = `${dateString} 23:59:59.999Z`;
+      const localDateMidday = dayjs(dateString)
+        .hour(12)
+        .minute(0)
+        .second(0)
+        .millisecond(0);
+
+      const utcStartOfDate = localDateMidday
+        .utc()
+        .subtract(12, "hour")
+        .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
+
+      const utcEndOfDate = localDateMidday
+        .utc()
+        .add(12, "hour")
+        .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
 
       filters.push(
-        `(dueDate <= "${endOfGivenDate}" && completedDate = "" && cancelledDate = "") || (completedDate >= "${startOfGivenDate}" && completedDate <= "${endOfGivenDate}") || (cancelledDate >= "${startOfGivenDate}" && cancelledDate <= "${endOfGivenDate}")`
+        `(dueDate != "" && dueDate <= "${utcEndOfDate}" && completedDate = "" && cancelledDate = "") || (completedDate >= "${utcStartOfDate}" && completedDate <= "${utcEndOfDate}") || (cancelledDate >= "${utcStartOfDate}" && cancelledDate <= "${utcEndOfDate}")`
       );
     }
 
