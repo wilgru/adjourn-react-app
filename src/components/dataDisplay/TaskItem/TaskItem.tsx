@@ -63,7 +63,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
 
       <div className="w-full flex flex-col">
         <div className="flex justify-between items-center gap-2">
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-shrink gap-2 items-center">
             <h3
               className={cn(
                 "text-md",
@@ -86,7 +86,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
             )}
           </div>
 
-          <div className="flex gap-1 items-center">
+          <div className="shrink-0 flex gap-1 items-center">
             <Dialog.Root>
               {isHovered && (
                 <Dialog.Trigger asChild>
@@ -133,7 +133,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
             {task.dueDate && (
               <p
                 className={cn(
-                  "text-xs px-2 py-1 ml-2 rounded-full",
+                  "text-xs px-2 py-1 rounded-full",
                   task.dueDate.isBefore(dayjs(), "day") && !task.completedDate
                     ? "bg-red-100 text-red-500"
                     : "bg-gray-100 text-gray-500"
