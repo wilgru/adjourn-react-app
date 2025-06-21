@@ -7,6 +7,7 @@ type PageHeaderProps = {
   colour?: Colour;
   primaryBadges?: string[];
   secondaryBadges?: string[];
+  description?: string;
 };
 
 export const PageHeader = ({
@@ -14,10 +15,13 @@ export const PageHeader = ({
   colour = colours.orange,
   primaryBadges,
   secondaryBadges,
+  description,
 }: PageHeaderProps) => {
   return (
     <div className="flex flex-col gap-1">
       {children}
+
+      {description && <section className="px-2 pb-2">{description}</section>}
 
       <div className="flex gap-2">
         {primaryBadges?.map((primaryBadge, index) => (
