@@ -1,15 +1,13 @@
+import { Flag, PushPin } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
 import { useState } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
-import { Toggle } from "src/components/controls/Toggle/Toggle";
 import QuillContentView from "src/components/dataDisplay/QuillContentView/QuillContentView";
 import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
-import { useDeleteNote } from "src/hooks/notes/useDeleteNote";
-import { useUpdateNote } from "src/hooks/notes/useUpdateNote";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
@@ -29,8 +27,6 @@ export const NoteItem = ({
   colour = colours.orange,
 }: NoteItemProps) => {
   const navigate = useNavigate();
-  const { updateNote } = useUpdateNote();
-  const { deleteNote } = useDeleteNote();
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -42,106 +38,62 @@ export const NoteItem = ({
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-colors",
-        colour.backgroundGlow
+        "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-all"
       )}
     >
-      {note.title && (
-        <h1 className="text-xl font-medium tracking-tight">{note.title}</h1>
-      )}
+      <Dialog.Root>
+        {note.title && (
+          <Dialog.Trigger asChild>
+            <h1 className="text-xl font-medium tracking-tight">{note.title}</h1>
+          </Dialog.Trigger>
+        )}
 
-      {!isNoteContentEmpty(note.content) && (
-        <QuillContentView content={note.content} />
-      )}
+        {!isNoteContentEmpty(note.content) && (
+          <Dialog.Trigger asChild>
+            <span>
+              <QuillContentView content={note.content} />
+            </span>
+          </Dialog.Trigger>
+        )}
 
-      <div className="flex items-center gap-1 flex-wrap -ml-2">
-        <Button
-          colour={colour}
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            navigate({ to: `/planner/${getNavigationDay(note.created)}` });
-            setJumpToAtom(note.created);
-          }}
-        >
-          {note.created.format(createdDateFormat)}
-        </Button>
-
-        {note.tags.map((tag) => (
-          <TagPill
-            key={tag.id}
-            tag={tag}
-            size="sm"
+        <div className="flex items-center gap-1 flex-wrap -ml-2">
+          <Button
+            colour={colour}
             variant="ghost"
-            closable={false}
-            onClick={(tagId) => {
-              navigate({ to: `/tags/${tagId}` });
+            size="sm"
+            onClick={() => {
+              navigate({ to: `/planner/${getNavigationDay(note.created)}` });
+              setJumpToAtom(note.created);
             }}
-          />
-        ))}
+          >
+            {note.created.format(createdDateFormat)}
+          </Button>
 
-        {(note.isPinned || isHovered) && (
-          <Toggle
-            colour={colours.red}
-            isToggled={note.isPinned}
-            size="sm"
-            onClick={() =>
-              updateNote({
-                noteId: note.id,
-                updateNoteData: {
-                  ...note,
-                  isPinned: !note.isPinned,
-                },
-              })
-            }
-            iconName="pushPin"
-          />
-        )}
+          {note.tags.map((tag) => (
+            <TagPill
+              key={tag.id}
+              tag={tag}
+              size="sm"
+              variant="ghost"
+              closable={false}
+              collapsed={!isHovered}
+              onClick={(tagId) => {
+                navigate({ to: `/tags/${tagId}` });
+              }}
+            />
+          ))}
 
-        {(note.isFlagged || isHovered) && (
-          <Toggle
-            isToggled={note.isFlagged}
-            size="sm"
-            onClick={() =>
-              updateNote({
-                noteId: note.id,
-                updateNoteData: {
-                  ...note,
-                  isFlagged: !note.isFlagged,
-                },
-              })
-            }
-            iconName="flag"
-          />
-        )}
-
-        <Dialog.Root>
-          {isHovered && (
-            <Dialog.Trigger asChild>
-              <Button
-                colour={colour}
-                iconName="pencil"
-                variant="ghost"
-                size="sm"
-              />
-            </Dialog.Trigger>
+          {note.isPinned && (
+            <PushPin className="fill-red-400 m-1" weight="fill" size={18} />
           )}
 
-          <EditNoteModal note={note} />
-        </Dialog.Root>
+          {note.isFlagged && (
+            <Flag className="fill-orange-400 m-1" weight="fill" size={18} />
+          )}
+        </div>
 
-        {isHovered && (
-          <Button
-            onClick={() => {
-              deleteNote({ noteId: note.id });
-            }}
-            colour={colours.red}
-            iconName="trash"
-            variant="ghost"
-            size="sm"
-          />
-        )}
-      </div>
+        <EditNoteModal note={note} />
+      </Dialog.Root>
     </div>
   );
 };
