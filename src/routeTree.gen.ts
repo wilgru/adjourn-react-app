@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutTasksImport } from './routes/_layout.tasks'
 import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
 import { Route as LayoutTagsTagIdImport } from './routes/_layout.tags.$tagId'
 import { Route as LayoutPlannerDateStringImport } from './routes/_layout.planner.$dateString'
@@ -35,6 +36,12 @@ const LoginRoute = LoginImport.update({
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutTasksRoute = LayoutTasksImport.update({
+  id: '/tasks',
+  path: '/tasks',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutFlaggedRoute = LayoutFlaggedImport.update({
@@ -87,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFlaggedImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/tasks': {
+      id: '/_layout/tasks'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof LayoutTasksImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/planner/$dateString': {
       id: '/_layout/planner/$dateString'
       path: '/planner/$dateString'
@@ -108,12 +122,14 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutFlaggedRoute: typeof LayoutFlaggedRoute
+  LayoutTasksRoute: typeof LayoutTasksRoute
   LayoutPlannerDateStringRoute: typeof LayoutPlannerDateStringRoute
   LayoutTagsTagIdRoute: typeof LayoutTagsTagIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutFlaggedRoute: LayoutFlaggedRoute,
+  LayoutTasksRoute: LayoutTasksRoute,
   LayoutPlannerDateStringRoute: LayoutPlannerDateStringRoute,
   LayoutTagsTagIdRoute: LayoutTagsTagIdRoute,
 }
@@ -126,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
+  '/tasks': typeof LayoutTasksRoute
   '/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
@@ -135,6 +152,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
+  '/tasks': typeof LayoutTasksRoute
   '/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
@@ -145,6 +163,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_layout/flagged': typeof LayoutFlaggedRoute
+  '/_layout/tasks': typeof LayoutTasksRoute
   '/_layout/planner/$dateString': typeof LayoutPlannerDateStringRoute
   '/_layout/tags/$tagId': typeof LayoutTagsTagIdRoute
 }
@@ -156,6 +175,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/flagged'
+    | '/tasks'
     | '/planner/$dateString'
     | '/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +184,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/flagged'
+    | '/tasks'
     | '/planner/$dateString'
     | '/tags/$tagId'
   id:
@@ -172,6 +193,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_layout/flagged'
+    | '/_layout/tasks'
     | '/_layout/planner/$dateString'
     | '/_layout/tags/$tagId'
   fileRoutesById: FileRoutesById
@@ -208,6 +230,7 @@ export const routeTree = rootRoute
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/flagged",
+        "/_layout/tasks",
         "/_layout/planner/$dateString",
         "/_layout/tags/$tagId"
       ]
@@ -220,6 +243,10 @@ export const routeTree = rootRoute
     },
     "/_layout/flagged": {
       "filePath": "_layout.flagged.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/tasks": {
+      "filePath": "_layout.tasks.tsx",
       "parent": "/_layout"
     },
     "/_layout/planner/$dateString": {

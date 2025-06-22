@@ -14,3 +14,9 @@ export type Task = {
   created: Dayjs;
   updated: Dayjs;
 };
+
+export type TasksGroup = {
+  title: string;
+  tasks: Task[];
+  relevantTaskData: Partial<Task>;
+};
