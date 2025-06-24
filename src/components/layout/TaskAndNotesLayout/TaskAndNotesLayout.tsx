@@ -41,6 +41,15 @@ export const TaskAndNotesLayout = ({
 }: TaskAndNotesLayoutProps) => {
   const [navigationId, setNavigationId] = useState("");
 
+  // for this layout, we'll only show one task group that contains all the tasks no matter what
+  const taskGroup = useMemo(() => {
+    return {
+      title: "Tasks",
+      tasks: tasks,
+      relevantTaskData: prefillNewTaskData ?? {},
+    };
+  }, [tasks, prefillNewTaskData]);
+
   const noteGroups = useMemo<NotesGroup[]>(() => {
     if (!groupNotesBy) {
       return [
@@ -69,11 +78,7 @@ export const TaskAndNotesLayout = ({
           {header}
         </PageHeader>
 
-        <TasksSection
-          tasks={tasks}
-          relevantTaskData={prefillNewTaskData}
-          colour={colour}
-        />
+        <TasksSection taskGroup={taskGroup} colour={colour} />
 
         {noteGroups.map((noteGroup) => (
           <NotesSection
