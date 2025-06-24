@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
-import { PageHeader } from "src/components/layout/PageHeader/PageHeader";
+import { PageHeader } from "src/components/dataDisplay/PageHeader/PageHeader";
 import TableOfContents from "src/components/navigation/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
 import { groupTasks } from "src/utils/tasks/groupTasks";
-import { TasksSection } from "../TasksSection/TasksSection";
+import { TasksSection } from "../../dataDisplay/TasksSection/TasksSection";
 import type { Colour } from "src/types/Colour.type";
 import type { Task } from "src/types/Task.type";
 

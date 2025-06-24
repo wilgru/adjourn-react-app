@@ -67,7 +67,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
                   className={cn(
                     "text-md",
                     (task.completedDate ?? task.cancelledDate)
-                      ? "text-slate-400"
+                      ? "text-slate-500"
                       : "text-slate-700",
                     task.cancelledDate && "line-through"
                   )}
@@ -124,7 +124,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
                 "text-sm cursor-pointer",
                 task.completedDate || task.cancelledDate
                   ? "text-slate-400"
-                  : "text-slate-500"
+                  : "text-slate-600"
               )}
             >
               {task.description}

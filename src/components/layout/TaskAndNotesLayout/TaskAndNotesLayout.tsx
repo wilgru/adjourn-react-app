@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { PageHeader } from "src/components/layout/PageHeader/PageHeader";
+import { PageHeader } from "src/components/dataDisplay/PageHeader/PageHeader";
 import TableOfContents from "src/components/navigation/TableOfContents/TableOfContents";
 import { colours } from "src/constants/colours.constant";
 import { useTaskAndNotesTOCItems } from "src/hooks/useTaskAndNotesTOCItems";
 import { groupNotes } from "src/utils/notes/groupNotes";
-import { NotesSection } from "../NotesSection/NotesSection";
-import { TasksSection } from "../TasksSection/TasksSection";
+import { NotesSection } from "../../dataDisplay/NotesSection/NotesSection";
+import { TasksSection } from "../../dataDisplay/TasksSection/TasksSection";
 import type { Colour } from "src/types/Colour.type";
 import type { Note, NotesGroup } from "src/types/Note.type";
 import type { Task } from "src/types/Task.type";

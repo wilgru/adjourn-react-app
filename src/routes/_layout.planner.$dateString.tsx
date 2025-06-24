@@ -4,7 +4,7 @@ import { useSetAtom } from "jotai";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
-import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
+import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { getNavigationDay } from "src/utils/getNavigationDay";

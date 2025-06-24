@@ -68,6 +68,7 @@ export const NotesSection = ({
         <div className="flex flex-col gap-5">
           {noteGroup.notes.map((note) => (
             <NoteItem
+              key={note.id}
               createdDateFormat={createdDateFormat}
               colour={colour}
               note={note}
