@@ -17,8 +17,6 @@ type TasksLayoutProps = {
   header: React.ReactNode;
   title: string;
   colour?: Colour;
-  primaryBadges?: string[];
-  secondaryBadges?: string[];
   showNoteCreateTimeOnly?: boolean;
   description?: string;
   tasks: Task[];
@@ -28,14 +26,16 @@ export const TasksLayout = ({
   header,
   title,
   colour = colours.orange,
-  primaryBadges = [],
-  secondaryBadges = [],
   description,
   tasks,
 }: TasksLayoutProps) => {
   const [navigationId, setNavigationId] = useState("");
 
   const groupedTasks = groupTasks(tasks, "tag", {});
+
+  const secondaryBadges = useMemo(() => {
+    return [`${tasks.length} tasks`];
+  }, [tasks.length]);
 
   const tableOfContentItems = useMemo(() => {
     const noteTOCItems = groupedTasks.map((group) => {
@@ -54,7 +54,6 @@ export const TasksLayout = ({
       <div className="h-full w-full p-12 flex flex-col gap-14 overflow-y-scroll">
         <PageHeader
           colour={colour}
-          primaryBadges={primaryBadges}
           secondaryBadges={secondaryBadges}
           description={description}
         >

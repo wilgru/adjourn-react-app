@@ -193,7 +193,6 @@ export default function TagComponent() {
           </div>
         }
         title={tag.name}
-        secondaryBadges={[`${tasks.length} tasks`, `${notes.length} notes`]}
         colour={tag.colour}
         tasks={tasks}
         notes={notes}

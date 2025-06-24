@@ -14,8 +14,7 @@ type TaskAndNotesLayoutProps = {
   header: React.ReactNode;
   title: string;
   colour?: Colour;
-  primaryBadges?: string[];
-  secondaryBadges?: string[];
+  badges?: string[];
   tasks: Task[];
   notes: Note[];
   showNoteCreateTimeOnly?: boolean;
@@ -29,8 +28,7 @@ export const TaskAndNotesLayout = ({
   header,
   title,
   colour = colours.orange,
-  primaryBadges = [],
-  secondaryBadges = [],
+  badges = [],
   tasks,
   notes,
   showNoteCreateTimeOnly = false,
@@ -63,6 +61,10 @@ export const TaskAndNotesLayout = ({
     return groupNotes(notes, groupNotesBy, title, prefillNewNoteData ?? {});
   }, [notes, groupNotesBy, title, prefillNewNoteData]);
 
+  const secondaryBadges = useMemo(() => {
+    return [`${tasks.length} tasks`, `${notes.length} notes`];
+  }, [notes.length, tasks.length]);
+
   const tableOfContentItems = useTaskAndNotesTOCItems(noteGroups);
 
   // FIXME: pb-16 is the height of the toolbar to fix issue with scrolling body getting cut off. Issue to do with not having a fixed height on consuming element and children elements before this one pushing this one down.
@@ -71,7 +73,7 @@ export const TaskAndNotesLayout = ({
       <div className="h-full w-full p-12 flex flex-col gap-14 overflow-y-scroll">
         <PageHeader
           colour={colour}
-          primaryBadges={primaryBadges}
+          primaryBadges={badges}
           secondaryBadges={secondaryBadges}
           description={description}
         >
