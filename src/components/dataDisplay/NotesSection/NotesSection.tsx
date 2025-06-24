@@ -24,7 +24,7 @@ export const NotesSection = ({
     <section id={noteGroup.title}>
       <Dialog.Root>
         <div
-          className="flex gap-2 p-2"
+          className="flex p-2 gap-2 items-center"
           onMouseOver={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
         >

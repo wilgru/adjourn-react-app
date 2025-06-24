@@ -60,7 +60,7 @@ export const NavItem = ({
 
           <p
             className={cn(
-              "text-xs font-medium w-2 mr-1 text-center",
+              "text-xs text-start font-medium mr-1",
               isHovered || isActive ? colour.textPill : "text-slate-400"
             )}
           >

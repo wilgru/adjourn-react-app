@@ -56,7 +56,12 @@ export const NoteItem = ({
           </Dialog.Trigger>
         )}
 
-        <div className="flex items-center gap-1 flex-wrap -ml-2">
+        <div
+          className={cn(
+            "flex items-center flex-wrap -ml-2 duration-300 transition-all",
+            isHovered ? "gap-1" : "gap-0"
+          )}
+        >
           <Button
             colour={colour}
             variant="ghost"

@@ -19,10 +19,10 @@ type ButtonProps = {
 
 const buttonVariants = cva(
   [
+    "w-fit",
     "flex",
     "items-center",
     "gap-2",
-    "h-full",
     "rounded-full",
     "transition-colors",
     "focus-visible:outline",
