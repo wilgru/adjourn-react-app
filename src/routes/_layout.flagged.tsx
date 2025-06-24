@@ -1,10 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Icon } from "src/components/general/Icon/Icon";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { SectionalLayout } from "src/components/layout/SectionalLayout/SectionalLayout";
 import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
+import { useGetSectionData } from "src/hooks/useGetSectionData";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -28,11 +29,19 @@ function RouteComponent() {
     isFlagged: true,
   });
 
+  const sections = useGetSectionData({
+    tasks,
+    notes,
+    relevantData: {
+      isFlagged: true,
+    },
+  });
+
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar iconName="flag" title={"Flagged"} titleItems={[]} />
 
-      <TaskAndNotesLayout
+      <SectionalLayout
         header={
           <div className="flex gap-3">
             <Icon
@@ -45,10 +54,7 @@ function RouteComponent() {
           </div>
         }
         title="Flagged"
-        notes={notes}
-        tasks={tasks}
-        prefillNewTaskData={{ isFlagged: true }}
-        prefillNewNoteData={{ isFlagged: true }}
+        sections={sections}
       />
     </div>
   );

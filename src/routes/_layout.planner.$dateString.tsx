@@ -3,10 +3,11 @@ import dayjs from "dayjs";
 import { useSetAtom } from "jotai";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { SectionalLayout } from "src/components/layout/SectionalLayout/SectionalLayout";
 import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
+import { useGetSectionData } from "src/hooks/useGetSectionData";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -35,6 +36,11 @@ function StreamIndexComponent() {
     isFlagged: false,
     createdDateString: dateString,
   });
+  const sections = useGetSectionData({
+    tasks,
+    notes,
+  });
+
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
@@ -86,7 +92,7 @@ function StreamIndexComponent() {
         ]}
       />
 
-      <TaskAndNotesLayout
+      <SectionalLayout
         header={
           <div className="flex items-baseline gap-3">
             <h1 className="text-5xl font-title text-slate-800">
@@ -99,9 +105,7 @@ function StreamIndexComponent() {
           </div>
         }
         title={title}
-        tasks={tasks}
-        notes={notes}
-        prefillNewTaskData={{ dueDate: today }}
+        sections={sections}
         showNoteCreateTimeOnly
       />
     </div>

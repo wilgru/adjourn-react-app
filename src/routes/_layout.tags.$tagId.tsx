@@ -4,11 +4,12 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Button } from "src/components/controls/Button/Button";
 import { Icon } from "src/components/general/Icon/Icon";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { SectionalLayout } from "src/components/layout/SectionalLayout/SectionalLayout";
 import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { EditTagModal } from "src/components/modals/EditTagModal/EditTagModal";
 import { useGetTag } from "src/hooks/tags/useGetTag";
 import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
+import { useGetSectionData } from "src/hooks/useGetSectionData";
 import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
@@ -31,6 +32,14 @@ export default function TagComponent() {
   const { tagId } = Route.useParams();
   const { tag, tasks, notes } = useGetTag(tagId ?? "");
   const { updateTag } = useUpdateTag();
+  const sections = useGetSectionData({
+    tasks,
+    notes,
+    groupBy: tag?.groupBy ?? null,
+    relevantData: {
+      tags: tag ? [tag] : [],
+    },
+  });
 
   if (!tag) {
     return null;
@@ -180,7 +189,7 @@ export default function TagComponent() {
         ]}
       />
 
-      <TaskAndNotesLayout
+      <SectionalLayout
         header={
           <div className="flex gap-3">
             <Icon
@@ -193,14 +202,10 @@ export default function TagComponent() {
           </div>
         }
         title={tag.name}
+        description={tag.description ? tag.description : undefined}
         secondaryBadges={[`${tasks.length} tasks`, `${notes.length} notes`]}
         colour={tag.colour}
-        tasks={tasks}
-        notes={notes}
-        description={tag.description ? <p>{tag.description}</p> : undefined}
-        prefillNewTaskData={{ tags: [tag] }}
-        prefillNewNoteData={{ tags: [tag] }}
-        groupNotesBy={tag.groupBy ?? undefined}
+        sections={sections}
       />
     </div>
   );

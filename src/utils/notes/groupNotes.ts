@@ -79,10 +79,20 @@ const mergeTagArrays = (tagsArray1: Tag[] = [], tagsArray2: Tag[] = []) => {
 
 export function groupNotes(
   notes: Note[],
-  groupBy: "created" | "tag",
+  groupBy: "created" | "tag" | null,
   defaultGroupTitle: string | undefined = undefined,
   relevantNoteData: Partial<Note>
 ): NotesGroup[] {
+  if (groupBy === null) {
+    return [
+      {
+        title: "Notes",
+        notes,
+        relevantNoteData,
+      },
+    ];
+  }
+
   const groupedNotes = notes.reduce((acc: NotesGroup[], note: Note) => {
     const groups = getGroup(note, groupBy, defaultGroupTitle);
 

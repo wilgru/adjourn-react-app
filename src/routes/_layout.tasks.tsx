@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { TaskItem } from "src/components/dataDisplay/TaskItem/TaskItem";
 import { Icon } from "src/components/general/Icon/Icon";
-import { SectionalLayout } from "src/components/layout/TaskAndNotesLayout/SectionalLayout";
+import { SectionalLayout } from "src/components/layout/SectionalLayout/SectionalLayout";
 import { Toolbar } from "src/components/layout/Toolbar/Toolbar";
 import { colours } from "src/constants/colours.constant";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";

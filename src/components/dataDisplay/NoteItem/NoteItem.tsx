@@ -6,7 +6,6 @@ import { useState } from "react";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import QuillContentView from "src/components/dataDisplay/QuillContentView/QuillContentView";
-import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
@@ -41,59 +40,55 @@ export const NoteItem = ({
         "flex flex-col gap-0.5 relative p-2 rounded-2xl transition-all"
       )}
     >
-      <Dialog.Root>
-        {note.title && (
-          <Dialog.Trigger asChild>
-            <h1 className="text-xl font-medium tracking-tight">{note.title}</h1>
-          </Dialog.Trigger>
-        )}
+      {note.title && (
+        <Dialog.Trigger asChild>
+          <h1 className="text-xl font-medium tracking-tight">{note.title}</h1>
+        </Dialog.Trigger>
+      )}
 
-        {!isNoteContentEmpty(note.content) && (
-          <Dialog.Trigger asChild>
-            <span>
-              <QuillContentView content={note.content} />
-            </span>
-          </Dialog.Trigger>
-        )}
+      {!isNoteContentEmpty(note.content) && (
+        <Dialog.Trigger asChild>
+          <span>
+            <QuillContentView content={note.content} />
+          </span>
+        </Dialog.Trigger>
+      )}
 
-        <div className="flex items-center gap-1 flex-wrap -ml-2">
-          <Button
-            colour={colour}
-            variant="ghost"
+      <div className="flex items-center gap-1 flex-wrap -ml-2">
+        <Button
+          colour={colour}
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            navigate({ to: `/planner/${getNavigationDay(note.created)}` });
+            setJumpToAtom(note.created);
+          }}
+        >
+          {note.created.format(createdDateFormat)}
+        </Button>
+
+        {note.tags.map((tag) => (
+          <TagPill
+            key={tag.id}
+            tag={tag}
             size="sm"
-            onClick={() => {
-              navigate({ to: `/planner/${getNavigationDay(note.created)}` });
-              setJumpToAtom(note.created);
+            variant="ghost"
+            closable={false}
+            collapsed={!isHovered}
+            onClick={(tagId) => {
+              navigate({ to: `/tags/${tagId}` });
             }}
-          >
-            {note.created.format(createdDateFormat)}
-          </Button>
+          />
+        ))}
 
-          {note.tags.map((tag) => (
-            <TagPill
-              key={tag.id}
-              tag={tag}
-              size="sm"
-              variant="ghost"
-              closable={false}
-              collapsed={!isHovered}
-              onClick={(tagId) => {
-                navigate({ to: `/tags/${tagId}` });
-              }}
-            />
-          ))}
+        {note.isPinned && (
+          <PushPin className="fill-red-400 m-1" weight="fill" size={18} />
+        )}
 
-          {note.isPinned && (
-            <PushPin className="fill-red-400 m-1" weight="fill" size={18} />
-          )}
-
-          {note.isFlagged && (
-            <Flag className="fill-orange-400 m-1" weight="fill" size={18} />
-          )}
-        </div>
-
-        <EditNoteModal note={note} />
-      </Dialog.Root>
+        {note.isFlagged && (
+          <Flag className="fill-orange-400 m-1" weight="fill" size={18} />
+        )}
+      </div>
     </div>
   );
 };
