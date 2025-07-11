@@ -19,6 +19,7 @@ type ButtonProps = {
 
 const buttonVariants = cva(
   [
+    "h-fit",
     "w-fit",
     "flex",
     "items-center",
