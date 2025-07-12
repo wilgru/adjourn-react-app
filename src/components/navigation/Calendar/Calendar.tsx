@@ -10,7 +10,9 @@ import { getNavigationDay } from "src/utils/getNavigationDay";
 import type { Dayjs } from "dayjs";
 import type { DateWithNotes } from "src/types/Note.type";
 
-// type CalendarProps = {};
+type CalendarProps = {
+  journalId: string;
+};
 
 type CalendarDay = {
   day: Dayjs;
@@ -34,6 +36,7 @@ const MONTH_NAMES = [
 
 type CalendarItem = {
   key: number;
+  journalId: string;
   datesWithNotes: DateWithNotes[];
   today: Dayjs;
   calendarDay: CalendarDay;
@@ -42,6 +45,7 @@ type CalendarItem = {
 
 const CalendarItem = ({
   key,
+  journalId,
   datesWithNotes,
   today,
   calendarDay,
@@ -59,7 +63,7 @@ const CalendarItem = ({
       )}
     >
       <Link
-        to={`/planner/${getNavigationDay(calendarDay.day)}`}
+        to={`/${journalId}/planner/${getNavigationDay(calendarDay.day)}`}
         key={key}
         className={cn(
           "h-6 w-6 text-sm text-center leading-6 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",
@@ -91,7 +95,7 @@ const CalendarItem = ({
   );
 };
 
-export const Calendar = (): JSX.Element => {
+export const Calendar = ({ journalId }: CalendarProps): JSX.Element => {
   const { datesWithNotes } = useGetDatesWithNotes();
   const [jumpToDate, setJumpToDate] = useAtom(jumpToDateAtom);
 
@@ -233,6 +237,7 @@ export const Calendar = (): JSX.Element => {
         {calendarDays.map((calendarDay, index) => (
           <CalendarItem
             key={index}
+            journalId={journalId}
             calendarDay={calendarDay}
             datesWithNotes={datesWithNotes}
             today={today}

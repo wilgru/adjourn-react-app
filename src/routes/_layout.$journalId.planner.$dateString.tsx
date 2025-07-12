@@ -3,29 +3,32 @@ import dayjs from "dayjs";
 import { useSetAtom } from "jotai";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
 import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
+import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import { useGetTasks } from "src/hooks/tasks/useGetTasks";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute("/_layout/planner/$dateString")({
-  component: StreamIndexComponent,
-  beforeLoad: async ({ location }) => {
-    if (!isAuthenticated()) {
-      throw redirect({
-        to: "/login",
-        search: {
-          // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
-          redirect: location.href,
-        },
-      });
-    }
-  },
-});
+export const Route = createFileRoute("/_layout/$journalId/planner/$dateString")(
+  {
+    component: StreamIndexComponent,
+    beforeLoad: async ({ location }) => {
+      if (!isAuthenticated()) {
+        throw redirect({
+          to: "/login",
+          search: {
+            // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
+            redirect: location.href,
+          },
+        });
+      }
+    },
+  }
+);
 
 function StreamIndexComponent() {
+  const { journalId } = Route.useParams();
   const { dateString } = Route.useParams();
   const navigate = useNavigate();
   const { tasks } = useGetTasks({
@@ -57,7 +60,9 @@ function StreamIndexComponent() {
               iconName="arrowArcLeft"
               onClick={() => {
                 setJumpToAtom(yesterday);
-                navigate({ to: `/planner/${getNavigationDay(yesterday)}` });
+                navigate({
+                  to: `/${journalId}/planner/${getNavigationDay(yesterday)}`,
+                });
               }}
             />
           </div>,
@@ -68,7 +73,9 @@ function StreamIndexComponent() {
               iconName="calendarDot"
               onClick={() => {
                 setJumpToAtom(today);
-                navigate({ to: `/planner/${getNavigationDay(today)}` });
+                navigate({
+                  to: `/${journalId}/planner/${getNavigationDay(today)}`,
+                });
               }}
             />
           </div>,
@@ -79,7 +86,9 @@ function StreamIndexComponent() {
               iconName="arrowArcRight"
               onClick={() => {
                 setJumpToAtom(tomorrow);
-                navigate({ to: `/planner/${getNavigationDay(tomorrow)}` });
+                navigate({
+                  to: `/${journalId}/planner/${getNavigationDay(tomorrow)}`,
+                });
               }}
             />
           </div>,

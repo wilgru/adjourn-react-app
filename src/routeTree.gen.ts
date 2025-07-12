@@ -13,11 +13,12 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
+import { Route as CreateJournalImport } from './routes/create-journal'
 import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutTasksImport } from './routes/_layout.tasks'
-import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
-import { Route as LayoutTagsTagIdImport } from './routes/_layout.tags.$tagId'
-import { Route as LayoutPlannerDateStringImport } from './routes/_layout.planner.$dateString'
+import { Route as LayoutJournalIdTasksImport } from './routes/_layout.$journalId.tasks'
+import { Route as LayoutJournalIdFlaggedImport } from './routes/_layout.$journalId.flagged'
+import { Route as LayoutJournalIdTagsTagIdImport } from './routes/_layout.$journalId.tags.$tagId'
+import { Route as LayoutJournalIdPlannerDateStringImport } from './routes/_layout.$journalId.planner.$dateString'
 
 // Create/Update Routes
 
@@ -33,34 +34,41 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CreateJournalRoute = CreateJournalImport.update({
+  id: '/create-journal',
+  path: '/create-journal',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutTasksRoute = LayoutTasksImport.update({
-  id: '/tasks',
-  path: '/tasks',
+const LayoutJournalIdTasksRoute = LayoutJournalIdTasksImport.update({
+  id: '/$journalId/tasks',
+  path: '/$journalId/tasks',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutFlaggedRoute = LayoutFlaggedImport.update({
-  id: '/flagged',
-  path: '/flagged',
+const LayoutJournalIdFlaggedRoute = LayoutJournalIdFlaggedImport.update({
+  id: '/$journalId/flagged',
+  path: '/$journalId/flagged',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutTagsTagIdRoute = LayoutTagsTagIdImport.update({
-  id: '/tags/$tagId',
-  path: '/tags/$tagId',
+const LayoutJournalIdTagsTagIdRoute = LayoutJournalIdTagsTagIdImport.update({
+  id: '/$journalId/tags/$tagId',
+  path: '/$journalId/tags/$tagId',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutPlannerDateStringRoute = LayoutPlannerDateStringImport.update({
-  id: '/planner/$dateString',
-  path: '/planner/$dateString',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutJournalIdPlannerDateStringRoute =
+  LayoutJournalIdPlannerDateStringImport.update({
+    id: '/$journalId/planner/$dateString',
+    path: '/$journalId/planner/$dateString',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -71,6 +79,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof LayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/create-journal': {
+      id: '/create-journal'
+      path: '/create-journal'
+      fullPath: '/create-journal'
+      preLoaderRoute: typeof CreateJournalImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -87,32 +102,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/flagged': {
-      id: '/_layout/flagged'
-      path: '/flagged'
-      fullPath: '/flagged'
-      preLoaderRoute: typeof LayoutFlaggedImport
+    '/_layout/$journalId/flagged': {
+      id: '/_layout/$journalId/flagged'
+      path: '/$journalId/flagged'
+      fullPath: '/$journalId/flagged'
+      preLoaderRoute: typeof LayoutJournalIdFlaggedImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/tasks': {
-      id: '/_layout/tasks'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof LayoutTasksImport
+    '/_layout/$journalId/tasks': {
+      id: '/_layout/$journalId/tasks'
+      path: '/$journalId/tasks'
+      fullPath: '/$journalId/tasks'
+      preLoaderRoute: typeof LayoutJournalIdTasksImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/planner/$dateString': {
-      id: '/_layout/planner/$dateString'
-      path: '/planner/$dateString'
-      fullPath: '/planner/$dateString'
-      preLoaderRoute: typeof LayoutPlannerDateStringImport
+    '/_layout/$journalId/planner/$dateString': {
+      id: '/_layout/$journalId/planner/$dateString'
+      path: '/$journalId/planner/$dateString'
+      fullPath: '/$journalId/planner/$dateString'
+      preLoaderRoute: typeof LayoutJournalIdPlannerDateStringImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/tags/$tagId': {
-      id: '/_layout/tags/$tagId'
-      path: '/tags/$tagId'
-      fullPath: '/tags/$tagId'
-      preLoaderRoute: typeof LayoutTagsTagIdImport
+    '/_layout/$journalId/tags/$tagId': {
+      id: '/_layout/$journalId/tags/$tagId'
+      path: '/$journalId/tags/$tagId'
+      fullPath: '/$journalId/tags/$tagId'
+      preLoaderRoute: typeof LayoutJournalIdTagsTagIdImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -121,17 +136,17 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutRouteChildren {
-  LayoutFlaggedRoute: typeof LayoutFlaggedRoute
-  LayoutTasksRoute: typeof LayoutTasksRoute
-  LayoutPlannerDateStringRoute: typeof LayoutPlannerDateStringRoute
-  LayoutTagsTagIdRoute: typeof LayoutTagsTagIdRoute
+  LayoutJournalIdFlaggedRoute: typeof LayoutJournalIdFlaggedRoute
+  LayoutJournalIdTasksRoute: typeof LayoutJournalIdTasksRoute
+  LayoutJournalIdPlannerDateStringRoute: typeof LayoutJournalIdPlannerDateStringRoute
+  LayoutJournalIdTagsTagIdRoute: typeof LayoutJournalIdTagsTagIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutFlaggedRoute: LayoutFlaggedRoute,
-  LayoutTasksRoute: LayoutTasksRoute,
-  LayoutPlannerDateStringRoute: LayoutPlannerDateStringRoute,
-  LayoutTagsTagIdRoute: LayoutTagsTagIdRoute,
+  LayoutJournalIdFlaggedRoute: LayoutJournalIdFlaggedRoute,
+  LayoutJournalIdTasksRoute: LayoutJournalIdTasksRoute,
+  LayoutJournalIdPlannerDateStringRoute: LayoutJournalIdPlannerDateStringRoute,
+  LayoutJournalIdTagsTagIdRoute: LayoutJournalIdTagsTagIdRoute,
 }
 
 const LayoutRouteWithChildren =
@@ -139,74 +154,82 @@ const LayoutRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof LayoutRouteWithChildren
+  '/create-journal': typeof CreateJournalRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/flagged': typeof LayoutFlaggedRoute
-  '/tasks': typeof LayoutTasksRoute
-  '/planner/$dateString': typeof LayoutPlannerDateStringRoute
-  '/tags/$tagId': typeof LayoutTagsTagIdRoute
+  '/$journalId/flagged': typeof LayoutJournalIdFlaggedRoute
+  '/$journalId/tasks': typeof LayoutJournalIdTasksRoute
+  '/$journalId/planner/$dateString': typeof LayoutJournalIdPlannerDateStringRoute
+  '/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof LayoutRouteWithChildren
+  '/create-journal': typeof CreateJournalRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/flagged': typeof LayoutFlaggedRoute
-  '/tasks': typeof LayoutTasksRoute
-  '/planner/$dateString': typeof LayoutPlannerDateStringRoute
-  '/tags/$tagId': typeof LayoutTagsTagIdRoute
+  '/$journalId/flagged': typeof LayoutJournalIdFlaggedRoute
+  '/$journalId/tasks': typeof LayoutJournalIdTasksRoute
+  '/$journalId/planner/$dateString': typeof LayoutJournalIdPlannerDateStringRoute
+  '/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_layout': typeof LayoutRouteWithChildren
+  '/create-journal': typeof CreateJournalRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/_layout/flagged': typeof LayoutFlaggedRoute
-  '/_layout/tasks': typeof LayoutTasksRoute
-  '/_layout/planner/$dateString': typeof LayoutPlannerDateStringRoute
-  '/_layout/tags/$tagId': typeof LayoutTagsTagIdRoute
+  '/_layout/$journalId/flagged': typeof LayoutJournalIdFlaggedRoute
+  '/_layout/$journalId/tasks': typeof LayoutJournalIdTasksRoute
+  '/_layout/$journalId/planner/$dateString': typeof LayoutJournalIdPlannerDateStringRoute
+  '/_layout/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/create-journal'
     | '/login'
     | '/signup'
-    | '/flagged'
-    | '/tasks'
-    | '/planner/$dateString'
-    | '/tags/$tagId'
+    | '/$journalId/flagged'
+    | '/$journalId/tasks'
+    | '/$journalId/planner/$dateString'
+    | '/$journalId/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/create-journal'
     | '/login'
     | '/signup'
-    | '/flagged'
-    | '/tasks'
-    | '/planner/$dateString'
-    | '/tags/$tagId'
+    | '/$journalId/flagged'
+    | '/$journalId/tasks'
+    | '/$journalId/planner/$dateString'
+    | '/$journalId/tags/$tagId'
   id:
     | '__root__'
     | '/_layout'
+    | '/create-journal'
     | '/login'
     | '/signup'
-    | '/_layout/flagged'
-    | '/_layout/tasks'
-    | '/_layout/planner/$dateString'
-    | '/_layout/tags/$tagId'
+    | '/_layout/$journalId/flagged'
+    | '/_layout/$journalId/tasks'
+    | '/_layout/$journalId/planner/$dateString'
+    | '/_layout/$journalId/tags/$tagId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
+  CreateJournalRoute: typeof CreateJournalRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
+  CreateJournalRoute: CreateJournalRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
 }
@@ -222,6 +245,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_layout",
+        "/create-journal",
         "/login",
         "/signup"
       ]
@@ -229,11 +253,14 @@ export const routeTree = rootRoute
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
-        "/_layout/flagged",
-        "/_layout/tasks",
-        "/_layout/planner/$dateString",
-        "/_layout/tags/$tagId"
+        "/_layout/$journalId/flagged",
+        "/_layout/$journalId/tasks",
+        "/_layout/$journalId/planner/$dateString",
+        "/_layout/$journalId/tags/$tagId"
       ]
+    },
+    "/create-journal": {
+      "filePath": "create-journal.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
@@ -241,20 +268,20 @@ export const routeTree = rootRoute
     "/signup": {
       "filePath": "signup.tsx"
     },
-    "/_layout/flagged": {
-      "filePath": "_layout.flagged.tsx",
+    "/_layout/$journalId/flagged": {
+      "filePath": "_layout.$journalId.flagged.tsx",
       "parent": "/_layout"
     },
-    "/_layout/tasks": {
-      "filePath": "_layout.tasks.tsx",
+    "/_layout/$journalId/tasks": {
+      "filePath": "_layout.$journalId.tasks.tsx",
       "parent": "/_layout"
     },
-    "/_layout/planner/$dateString": {
-      "filePath": "_layout.planner.$dateString.tsx",
+    "/_layout/$journalId/planner/$dateString": {
+      "filePath": "_layout.$journalId.planner.$dateString.tsx",
       "parent": "/_layout"
     },
-    "/_layout/tags/$tagId": {
-      "filePath": "_layout.tags.$tagId.tsx",
+    "/_layout/$journalId/tags/$tagId": {
+      "filePath": "_layout.$journalId.tags.$tagId.tsx",
       "parent": "/_layout"
     }
   }

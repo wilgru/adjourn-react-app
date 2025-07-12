@@ -1,28 +1,28 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { Icon } from "src/components/general/Icon/Icon";
-import { TasksLayout } from "src/components/layout/TasksLayout/TasksLayout";
-import { colours } from "src/constants/colours.constant";
-import { useGetTasks } from "src/hooks/tasks/useGetTasks";
-import { cn } from "src/utils/cn";
-import isAuthenticated from "src/utils/users/isAuthenticated";
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { Toolbar } from 'src/components/controls/Toolbar/Toolbar'
+import { Icon } from 'src/components/general/Icon/Icon'
+import { TasksLayout } from 'src/components/layout/TasksLayout/TasksLayout'
+import { colours } from 'src/constants/colours.constant'
+import { useGetTasks } from 'src/hooks/tasks/useGetTasks'
+import { cn } from 'src/utils/cn'
+import isAuthenticated from 'src/utils/users/isAuthenticated'
 
-export const Route = createFileRoute("/_layout/tasks")({
+export const Route = createFileRoute('/_layout/$journalId/tasks')({
   component: RouteComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: "/login",
+        to: '/login',
         search: {
           redirect: location.href,
         },
-      });
+      })
     }
   },
-});
+})
 
 function RouteComponent() {
-  const { tasks } = useGetTasks({});
+  const { tasks } = useGetTasks({})
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -37,7 +37,7 @@ function RouteComponent() {
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn("pb-1", colours.grey.text)}
+              className={cn('pb-1', colours.grey.text)}
               iconName="listChecks"
               size="xl"
             />
@@ -49,5 +49,5 @@ function RouteComponent() {
         tasks={tasks}
       />
     </div>
-  );
+  )
 }
