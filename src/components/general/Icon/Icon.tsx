@@ -27,6 +27,7 @@ import {
   ArrowArcLeft,
   ArrowArcRight,
   Paperclip,
+  Info,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -117,6 +118,8 @@ const Icon = ({
       return <ArrowArcLeft {...iconProps} />;
     case "arrowArcRight":
       return <ArrowArcRight {...iconProps} />;
+    case "info":
+      return <Info {...iconProps} />;
     default:
       return <></>;
   }

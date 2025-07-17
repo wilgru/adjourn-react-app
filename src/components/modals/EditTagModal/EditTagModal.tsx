@@ -39,7 +39,7 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
 
         <div className="flex flex-col gap-3">
           <div>
-            <h3 className="text-sm">Name</h3>
+            <Label title="Name" />
             <Input
               size="md"
               id={tag.id}
@@ -53,7 +53,7 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
           </div>
 
           <div>
-            <h3 className="text-sm">Description (optional)</h3>
+            <Label title="Description" />
             <textarea
               name="description"
               value={editedTag.description ?? undefined}
@@ -68,7 +68,7 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
           </div>
 
           <div>
-            <h3 className="text-sm">Colour</h3>
+            <Label title="Colour" />
             <ColourPicker
               selectedColourName={editedTag.colour.name}
               onSelectColour={(colour) => {
@@ -80,7 +80,7 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
           </div>
 
           <div>
-            <h3 className="text-sm">Icon</h3>
+            <Label title="Icon" />
             <IconPicker
               selectedIconName={editedTag.icon}
               colour={editedTag.colour}
