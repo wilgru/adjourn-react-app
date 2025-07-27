@@ -83,12 +83,12 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0 bg-black opacity-25" />
+      <Dialog.Overlay className="fixed inset-0 bg-black opacity-25 data-[state=open]:animate-overlayShow" />
       <Dialog.Content
         onInteractOutside={onSaveNote}
         onEscapeKeyDown={onSaveNote}
         onFocusOutside={onSaveNote}
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-3 p-3 border border-slate-300 rounded-2xl shadow-2xl"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-3/4 max-w-[800px] bg-white flex flex-col gap-3 p-3 border border-slate-300 rounded-2xl shadow-2xl data-[state=open]:animate-contentShow"
       >
         <div className="flex flex-col gap-1">
           <textarea

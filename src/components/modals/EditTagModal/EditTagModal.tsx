@@ -4,6 +4,7 @@ import { Button } from "src/components/controls/Button/Button";
 import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
 import IconPicker from "src/components/dataEntry/IconPicker/IconPicker";
 import { Input } from "src/components/dataEntry/Input/Input";
+import { Label } from "src/components/general/Label/Label";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
 import { DeleteTagModal } from "../DeleteTagModal/DeleteTagModal";
@@ -33,8 +34,8 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black opacity-25 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl">
+      <Dialog.Overlay className="bg-black opacity-25 fixed inset-0 data-[state=open]:animate-overlayShow" />
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl  data-[state=open]:animate-contentShow">
         <Dialog.Title className="mb-5">Edit tag</Dialog.Title>
 
         <div className="flex flex-col gap-3">
