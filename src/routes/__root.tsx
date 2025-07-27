@@ -2,6 +2,7 @@ import { createRootRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { getNavigationDay } from "src/utils/getNavigationDay";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createRootRoute({
   component: () => (
@@ -13,6 +14,10 @@ export const Route = createRootRoute({
   notFoundComponent: () => {
     const today = getNavigationDay();
     const { journals, isFetching } = useGetJournals();
+
+    if (!isAuthenticated()) {
+      return <Navigate to="/login" replace={true} />;
+    }
 
     if (isFetching) {
       return <div>Loading journals...</div>; // or a spinner/loading component
