@@ -6,6 +6,7 @@ type InputType = {
   type?: HTMLInputTypeAttribute;
   required?: boolean;
   value: string;
+  placeholder?: string;
   size?: "md" | "lg";
   onChange: (e: { target: { name: string; value: string } }) => void;
 };
@@ -22,6 +23,7 @@ export const Input = ({
   required = false,
   value,
   onChange,
+  placeholder,
 }: InputType): JSX.Element => {
   return (
     <input
@@ -30,10 +32,11 @@ export const Input = ({
       name={type}
       type={type}
       autoComplete={type}
-      onChange={onChange}
       value={value}
+      onChange={onChange}
+      placeholder={placeholder}
       className={cn(
-        "block w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-500",
+        "block w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-400",
         InputSize[size]
       )}
     />
