@@ -10,6 +10,7 @@ export const mapTag = (tag: RecordModel): Tag => {
     icon: tag.icon,
     description: tag.description ?? null,
     noteCount: tag.totalNotes,
+    badges: tag.badges || [],
     groupBy: tag.groupBy,
     created: tag.createdAt,
     updated: tag.updatedAt,
