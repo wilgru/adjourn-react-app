@@ -26,10 +26,16 @@ export const useUpdateTag = (): UseUpdateTagResponse => {
     tagId,
     updateTagData,
   }: UpdateTagProps): Promise<Tag | undefined> => {
-    const rawUpdatedTag = await pb.collection("tags").update(tagId, {
-      ...updateTagData,
-      colour: updateTagData.colour.name,
-    });
+    const rawUpdatedTag = await pb.collection("tags").update(
+      tagId,
+      {
+        ...updateTagData,
+        colour: updateTagData.colour.name,
+      },
+      {
+        expand: "badges",
+      }
+    );
 
     return mapTag(rawUpdatedTag);
   };

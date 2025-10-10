@@ -1,39 +1,39 @@
-import { Check } from '@phosphor-icons/react'
-import * as Dialog from '@radix-ui/react-dialog'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { Button } from 'src/components/controls/Button/Button'
-import { Toolbar } from 'src/components/controls/Toolbar/Toolbar'
-import { Icon } from 'src/components/general/Icon/Icon'
-import { TaskAndNotesLayout } from 'src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout'
-import { EditTagModal } from 'src/components/modals/EditTagModal/EditTagModal'
-import { useGetTag } from 'src/hooks/tags/useGetTag'
-import { useUpdateTag } from 'src/hooks/tags/useUpdateTag'
-import { cn } from 'src/utils/cn'
-import isAuthenticated from 'src/utils/users/isAuthenticated'
+import { Check } from "@phosphor-icons/react";
+import * as Dialog from "@radix-ui/react-dialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Button } from "src/components/controls/Button/Button";
+import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
+import { Icon } from "src/components/general/Icon/Icon";
+import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { EditTagModal } from "src/components/modals/EditTagModal/EditTagModal";
+import { useGetTag } from "src/hooks/tags/useGetTag";
+import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
+import { cn } from "src/utils/cn";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute('/_layout/$journalId/tags/$tagId')({
+export const Route = createFileRoute("/_layout/$journalId/tags/$tagId")({
   component: TagComponent,
   // loader: ({ params }) => fetch(params.tagId),
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: '/login',
+        to: "/login",
         search: {
           redirect: location.href,
         },
-      })
+      });
     }
   },
-})
+});
 
 export default function TagComponent() {
-  const { tagId } = Route.useParams()
-  const { tag, tasks, notes } = useGetTag(tagId ?? '')
-  const { updateTag } = useUpdateTag()
+  const { tagId } = Route.useParams();
+  const { tag, tasks, notes } = useGetTag(tagId ?? "");
+  const { updateTag } = useUpdateTag();
 
   if (!tag) {
-    return null
+    return null;
   }
 
   return (
@@ -76,20 +76,20 @@ export default function TagComponent() {
                 align="start"
               >
                 <DropdownMenu.RadioGroup
-                  value={tag.groupBy || 'null'}
+                  value={tag.groupBy || "null"}
                   onValueChange={(value) => {
                     if (
-                      value === 'null' ||
-                      value === 'created' ||
-                      value === 'tag'
+                      value === "null" ||
+                      value === "created" ||
+                      value === "tag"
                     ) {
                       updateTag({
                         tagId: tag.id,
                         updateTagData: {
                           ...tag,
-                          groupBy: value === 'null' ? null : value,
+                          groupBy: value === "null" ? null : value,
                         },
-                      })
+                      });
                     }
                   }}
                 >
@@ -99,9 +99,9 @@ export default function TagComponent() {
 
                   <DropdownMenu.RadioItem
                     className={cn(
-                      'leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors',
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="null"
                   >
@@ -113,9 +113,9 @@ export default function TagComponent() {
 
                   <DropdownMenu.RadioItem
                     className={cn(
-                      'leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors',
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="created"
                   >
@@ -126,9 +126,9 @@ export default function TagComponent() {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      'leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors',
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="tag"
                   >
@@ -140,7 +140,7 @@ export default function TagComponent() {
                 </DropdownMenu.RadioGroup>
 
                 <DropdownMenu.RadioGroup
-                  value={'created'}
+                  value={"created"}
                   onValueChange={() => {}}
                 >
                   <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
@@ -149,9 +149,9 @@ export default function TagComponent() {
 
                   <DropdownMenu.RadioItem
                     className={cn(
-                      'leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors',
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="created"
                   >
@@ -162,9 +162,9 @@ export default function TagComponent() {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      'leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors',
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`,
+                      `data-[highlighted]:${tag.colour.textPill}`
                     )}
                     value="title"
                   >
@@ -184,7 +184,7 @@ export default function TagComponent() {
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn('pb-1', tag.colour.text)}
+              className={cn("pb-1", tag.colour.text)}
               iconName={tag.icon}
               size="xl"
             />
@@ -193,14 +193,15 @@ export default function TagComponent() {
           </div>
         }
         title={tag.name}
+        description={tag.description ? tag.description : undefined}
+        badges={tag.badges.map((badge) => badge.title)}
         colour={tag.colour}
         tasks={tasks}
         notes={notes}
-        description={tag.description ? tag.description : undefined}
         prefillNewTaskData={{ tags: [tag] }}
         prefillNewNoteData={{ tags: [tag] }}
         groupNotesBy={tag.groupBy ?? undefined}
       />
     </div>
-  )
+  );
 }

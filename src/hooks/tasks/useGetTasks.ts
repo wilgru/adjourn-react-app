@@ -51,13 +51,15 @@ export const useGetTasks = ({
       );
     }
 
-    const rawTags = await pb.collection("tasks").getList(undefined, undefined, {
-      filter: filters.join(" && "),
-      expand: "tags",
-      sort: "-dueDate",
-    });
+    const rawTasks = await pb
+      .collection("tasks")
+      .getList(undefined, undefined, {
+        filter: filters.join(" && "),
+        expand: "tags",
+        sort: "-dueDate",
+      });
 
-    const mappedTasks = rawTags.items.map(mapTask);
+    const mappedTasks = rawTasks.items.map(mapTask);
 
     return mappedTasks;
   };

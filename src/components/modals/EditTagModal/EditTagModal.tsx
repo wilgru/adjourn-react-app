@@ -4,11 +4,13 @@ import { Button } from "src/components/controls/Button/Button";
 import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
 import IconPicker from "src/components/dataEntry/IconPicker/IconPicker";
 import { Input } from "src/components/dataEntry/Input/Input";
+import { MultiBadgeInput } from "src/components/dataEntry/MultiBadgeInput/MultiBadgeInput";
 import { Label } from "src/components/general/Label/Label";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
+import { generateId } from "src/utils/generateId";
 import { DeleteTagModal } from "../DeleteTagModal/DeleteTagModal";
-import type { Tag } from "src/types/Tag.type";
+import type { Tag, TagBadge } from "src/types/Tag.type";
 
 type EditTagModalProps = {
   tag: Tag;
@@ -27,15 +29,40 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
     if (tag?.id) {
       await updateTag({
         tagId: editedTag.id,
-        updateTagData: editedTag,
+        updateTagData: {
+          ...editedTag,
+          badges: editedTag.badges.filter((badge) => badge.title.trim() !== ""),
+        },
       });
     }
+  };
+
+  const onAddBadge = () => {
+    setEditedTag((currentTagToEdit) => {
+      return {
+        ...currentTagToEdit,
+        badges: [
+          ...currentTagToEdit.badges,
+          { id: generateId(), title: "", link: "" },
+        ],
+      };
+    });
+  };
+
+  const onEditBadges = (updatedBadge: TagBadge) => {
+    setEditedTag((currentTagToEdit) => {
+      const updatedBadges = currentTagToEdit.badges.map((badge) =>
+        badge.id === updatedBadge.id ? updatedBadge : badge
+      );
+
+      return { ...currentTagToEdit, badges: updatedBadges };
+    });
   };
 
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-25 fixed inset-0 data-[state=open]:animate-overlayShow" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl  data-[state=open]:animate-contentShow">
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] overflow-y-scroll p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl  data-[state=open]:animate-contentShow">
         <Dialog.Title className="mb-5">Edit tag</Dialog.Title>
 
         <div className="flex flex-col gap-3">
@@ -65,6 +92,19 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
                 })
               }
               className="block p-1 text-sm w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-500"
+            />
+          </div>
+
+          <div>
+            <Label
+              title="Badges"
+              tooltipContent="You can add badges to highlight important information at the top of this tag's page"
+            />
+
+            <MultiBadgeInput
+              badges={editedTag.badges}
+              onChange={onEditBadges}
+              onAddBadge={onAddBadge}
             />
           </div>
 
