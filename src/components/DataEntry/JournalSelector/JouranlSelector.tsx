@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "src/components/controls/Button/Button";
 import { Icon } from "src/components/general/Icon/Icon";
 import { cn } from "src/utils/cn";
+import { getNavigationDay } from "src/utils/getNavigationDay";
 import type { Journal } from "src/types/Journal.type";
 
 type JournalSelectorProps = {
@@ -64,7 +65,10 @@ export const JournalSelector = ({
             {journals.map((journal) => (
               <DropdownMenu.Item key={journal.id}>
                 <Link
-                  to={`/${journal.id}/planner`}
+                  to={`/${journal.id}/planner/${getNavigationDay()}`}
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
                   className={cn(
                     "flex items-center gap-2 leading-none text-sm p-2 outline-none rounded-xl cursor-pointer transition-colors",
                     currentJournal.id === journal.id
