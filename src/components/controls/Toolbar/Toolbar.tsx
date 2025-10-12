@@ -43,9 +43,9 @@ export const Toolbar = ({
         )}
 
         <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-full drop-shadow-md p-1">
-          <Button size="sm" variant="ghost" iconName={iconName} colour={colour}>
+          {/* <Button size="sm" variant="ghost" iconName={iconName} colour={colour}>
             {title}
-          </Button>
+          </Button> */}
 
           {titleItems.map((titleItem) => titleItem)}
         </div>
