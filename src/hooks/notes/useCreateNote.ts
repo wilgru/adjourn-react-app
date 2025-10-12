@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { useUser } from "src/hooks/users/useUser";
 import { mapNote } from "src/utils/notes/mapNote";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Note } from "src/types/Note.type";
 
@@ -19,6 +20,7 @@ type UseCreateNoteResponse = {
 };
 
 export const useCreateNote = (): UseCreateNoteResponse => {
+  const { journalId } = useCurrentJournalId();
   const queryClient = useQueryClient();
   const { user } = useUser();
 
@@ -29,6 +31,7 @@ export const useCreateNote = (): UseCreateNoteResponse => {
       {
         ...createNoteData,
         tags: createNoteData.tags.map((tag) => tag.id),
+        journal: journalId,
         user: user?.id,
       },
       { expand: "tags" }

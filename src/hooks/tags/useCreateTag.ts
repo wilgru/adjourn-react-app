@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { useUser } from "src/hooks/users/useUser";
 import { mapTag } from "src/utils/tags/mapTag";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Tag } from "src/types/Tag.type";
 
@@ -10,6 +11,7 @@ type UseCreateTagResponse = {
 };
 
 export const useCreateTag = (): UseCreateTagResponse => {
+  const { journalId } = useCurrentJournalId();
   const queryClient = useQueryClient();
   const { user } = useUser();
 
@@ -18,6 +20,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
       name: tagName,
       colour: "orange",
       icon: "tag",
+      journal: journalId,
       user: user?.id,
       groupBy: null,
     });

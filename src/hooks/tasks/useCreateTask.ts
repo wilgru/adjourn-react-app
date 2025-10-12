@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { useUser } from "src/hooks/users/useUser";
 import { mapTask } from "src/utils/tasks/mapTask";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Task } from "src/types/Task.type";
 
@@ -19,6 +20,7 @@ type UseCreateTaskResponse = {
 };
 
 export const useCreateTask = (): UseCreateTaskResponse => {
+  const { journalId } = useCurrentJournalId();
   const queryClient = useQueryClient();
   const { user } = useUser();
 
@@ -29,6 +31,7 @@ export const useCreateTask = (): UseCreateTaskResponse => {
       {
         ...createTaskData,
         tags: createTaskData.tags.map((tag) => tag.id),
+        journal: journalId,
         user: user?.id,
       },
       { expand: "tags" }
