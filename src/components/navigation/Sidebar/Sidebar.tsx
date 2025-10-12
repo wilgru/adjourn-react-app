@@ -1,4 +1,3 @@
-import { useParams } from "@tanstack/react-router";
 import { useSetAtom } from "jotai";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
@@ -7,9 +6,11 @@ import { Calendar } from "src/components/navigation/Calendar/Calendar";
 import { NavItem } from "src/components/navigation/NavItem/NavItem";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useGetTags } from "src/hooks/tags/useGetTags";
+import { useCurrentJournalId } from "src/hooks/useCurrentJournalId";
+import { getNavigationDay } from "src/utils/getNavigationDay";
 
 export const Sidebar = () => {
-  const { journalId } = useParams({ strict: false }); // {strict: false} option means that you want to access the params from an ambiguous location
+  const { journalId } = useCurrentJournalId();
   const { tags } = useGetTags();
   const { journals } = useGetJournals();
 
@@ -47,7 +48,7 @@ export const Sidebar = () => {
               ghost
               iconName="calendarDots"
               title="Planner"
-              to={`/${journalId}/planner/`}
+              to={`/${journalId}/planner/${getNavigationDay()}`}
               expanded={true}
             />
 

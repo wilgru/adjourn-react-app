@@ -15,7 +15,7 @@ export const useGetNotes = ({
   isFlagged,
   createdDateString,
 }: {
-  isFlagged: boolean;
+  isFlagged?: boolean;
   createdDateString?: string;
 }): UseGetNotesResponse => {
   const queryFn = async (): Promise<{

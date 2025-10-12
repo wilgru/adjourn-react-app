@@ -35,7 +35,6 @@ function StreamIndexComponent() {
     dateString: dateString,
   });
   const { notes } = useGetNotes({
-    isFlagged: false,
     createdDateString: dateString,
   });
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
