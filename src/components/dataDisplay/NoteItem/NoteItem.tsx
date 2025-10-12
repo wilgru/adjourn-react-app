@@ -8,6 +8,7 @@ import { Button } from "src/components/controls/Button/Button";
 import QuillContentView from "src/components/dataDisplay/QuillContentView/QuillContentView";
 import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
 import { colours } from "src/constants/colours.constant";
+import { useCurrentJournalId } from "src/hooks/useCurrentJournalId";
 import { cn } from "src/utils/cn";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import { isNoteContentEmpty } from "src/utils/notes/isNoteContentEmpty";
@@ -27,6 +28,7 @@ export const NoteItem = ({
   colour = colours.orange,
 }: NoteItemProps) => {
   const navigate = useNavigate();
+  const { journalId } = useCurrentJournalId();
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -67,7 +69,9 @@ export const NoteItem = ({
             variant="ghost"
             size="sm"
             onClick={() => {
-              navigate({ to: `/planner/${getNavigationDay(note.created)}` });
+              navigate({
+                to: `/${journalId}/planner/${getNavigationDay(note.created)}`,
+              });
               setJumpToAtom(note.created);
             }}
           >
@@ -83,7 +87,7 @@ export const NoteItem = ({
               closable={false}
               collapsed={!isHovered}
               onClick={(tagId) => {
-                navigate({ to: `/tags/${tagId}` });
+                navigate({ to: `/${journalId}/tags/${tagId}` });
               }}
             />
           ))}

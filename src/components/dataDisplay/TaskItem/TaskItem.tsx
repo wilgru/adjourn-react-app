@@ -9,6 +9,7 @@ import { Icon } from "src/components/general/Icon/Icon";
 import { EditTaskModal } from "src/components/modals/EditTaskModal/EditTaskModal";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateTask } from "src/hooks/tasks/useUpdateTask";
+import { useCurrentJournalId } from "src/hooks/useCurrentJournalId";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
 import type { Task } from "src/types/Task.type";
@@ -19,6 +20,7 @@ type TaskProps = {
 };
 
 export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
+  const { journalId } = useCurrentJournalId();
   const navigate = useNavigate();
   const { updateTask } = useUpdateTask();
 
@@ -94,7 +96,7 @@ export const TaskItem = ({ task, colour = colours.orange }: TaskProps) => {
                   tag={tag}
                   collapsed={!isHovered}
                   onClick={(tagId) => {
-                    navigate({ to: `/tags/${tagId}` });
+                    navigate({ to: `/${journalId}/tags/${tagId}` });
                   }}
                 />
               ))}
