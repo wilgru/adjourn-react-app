@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { pb } from "src/connections/pocketbase";
 import { mapTask } from "src/utils/tasks/mapTask";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type {
   QueryObserverResult,
   RefetchOptions,
@@ -22,8 +23,10 @@ export const useGetTasks = ({
   isFlagged?: boolean;
   dateString?: string;
 }): UseGetTacksResponse => {
+  const { journalId } = useCurrentJournalId();
+
   const queryFn = async (): Promise<Task[]> => {
-    const filters = [];
+    const filters = [`journal = '${journalId}'`];
 
     if (isFlagged !== undefined) {
       filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
@@ -66,7 +69,7 @@ export const useGetTasks = ({
 
   // TODO: consider time caching for better performance
   const { data, refetch } = useQuery({
-    queryKey: ["tasks.list", isFlagged, dateString],
+    queryKey: ["tasks.list", journalId, isFlagged, dateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

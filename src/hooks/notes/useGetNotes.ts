@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import { pb } from "src/connections/pocketbase";
 import { mapNote } from "src/utils/notes/mapNote";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type { Note } from "src/types/Note.type";
 
 type UseGetNotesResponse = {
@@ -18,10 +19,12 @@ export const useGetNotes = ({
   isFlagged?: boolean;
   createdDateString?: string;
 }): UseGetNotesResponse => {
+  const { journalId } = useCurrentJournalId();
+
   const queryFn = async (): Promise<{
     notes: Note[];
   }> => {
-    const filters = ["deleted = null"];
+    const filters = [`journal = '${journalId}'`, "deleted = null"];
 
     if (isFlagged !== undefined) {
       filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
@@ -64,7 +67,7 @@ export const useGetNotes = ({
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["notes.list", isFlagged, createdDateString],
+    queryKey: ["notes.list", journalId, isFlagged, createdDateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

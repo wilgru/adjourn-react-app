@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { mapTag } from "src/utils/tags/mapTag";
+import { useCurrentJournalId } from "../useCurrentJournalId";
 import type {
   QueryObserverResult,
   RefetchOptions,
@@ -15,10 +16,16 @@ type UseGetTagsResponse = {
 };
 
 export const useGetTags = (): UseGetTagsResponse => {
+  const { journalId } = useCurrentJournalId();
+
   const queryFn = async (): Promise<Tag[]> => {
+    const filters = [`journal = '${journalId}'`];
+
     const rawTags = await pb
       .collection("tagsWithNoteCounts")
-      .getList(undefined, undefined);
+      .getList(undefined, undefined, {
+        filter: filters.join(" && "),
+      });
 
     const mappedTags = rawTags.items.map(mapTag);
 
@@ -27,7 +34,7 @@ export const useGetTags = (): UseGetTagsResponse => {
 
   // TODO: consider time caching for better performance
   const { data, refetch } = useQuery({
-    queryKey: ["tags.list"],
+    queryKey: ["tags.list", journalId],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
