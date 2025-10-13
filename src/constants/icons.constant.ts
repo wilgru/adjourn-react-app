@@ -54,6 +54,8 @@ import {
   MathOperations,
   ShieldCheckered,
   BookmarkSimple,
+  Signpost,
+  Bug,
 } from "@phosphor-icons/react";
 
 export const icons = [
@@ -86,6 +88,7 @@ export const icons = [
   { name: "sailboat", icon: Sailboat },
   { name: "bread", icon: Bread },
   { name: "pottedPlant", icon: PottedPlant },
+  { name: "bug", icon: Bug },
   { name: "penNibStraight", icon: PenNibStraight },
   { name: "eyeglasses", icon: Eyeglasses },
   { name: "tShirt", icon: TShirt },
@@ -96,6 +99,7 @@ export const icons = [
   { name: "swatches", icon: Swatches },
   { name: "city", icon: City },
   { name: "globeHemisphereWest", icon: GlobeHemisphereWest },
+  { name: "signpost", icon: Signpost },
   { name: "camera", icon: Camera },
   { name: "brain", icon: Brain },
   { name: "chatCircle", icon: ChatCircle },
