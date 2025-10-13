@@ -105,9 +105,9 @@ const Icon = ({
     case "circle":
       return <Circle {...iconProps} />;
     case "link":
-      return <Link {...iconProps} weight="bold" />;
+      return <Link {...iconProps} weight="regular" />;
     case "paperclip":
-      return <Paperclip {...iconProps} />;
+      return <Paperclip {...iconProps} weight="regular" />;
     case "checkCircle":
       return <CheckCircle {...iconProps} />;
     case "minusCircle":
