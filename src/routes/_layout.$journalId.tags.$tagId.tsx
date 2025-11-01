@@ -194,7 +194,7 @@ export default function TagComponent() {
         }
         title={tag.name}
         description={tag.description ? tag.description : undefined}
-        badges={tag.badges.map((badge) => badge.title)}
+        badges={tag.badges}
         colour={tag.colour}
         tasks={tasks}
         notes={notes}

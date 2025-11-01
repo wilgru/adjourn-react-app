@@ -8,13 +8,14 @@ import { NotesSection } from "../../dataDisplay/NotesSection/NotesSection";
 import { TasksSection } from "../../dataDisplay/TasksSection/TasksSection";
 import type { Colour } from "src/types/Colour.type";
 import type { Note, NotesGroup } from "src/types/Note.type";
+import type { TagBadge } from "src/types/Tag.type";
 import type { Task } from "src/types/Task.type";
 
 type TaskAndNotesLayoutProps = {
   header: React.ReactNode;
   title: string;
   colour?: Colour;
-  badges?: string[];
+  badges?: TagBadge[];
   tasks: Task[];
   notes: Note[];
   showNoteCreateTimeOnly?: boolean;
