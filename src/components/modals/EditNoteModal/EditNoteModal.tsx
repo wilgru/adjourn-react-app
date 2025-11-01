@@ -181,7 +181,7 @@ const EditNoteModal = ({ note, onSave }: EditNoteModalProps) => {
         />
 
         <div className="flex justify-between border-t border-slate-200 pt-3">
-          <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row flex-wrap gap-2 items-center">
             <p
               className="text-slate-500 text-xs"
               onClick={() =>

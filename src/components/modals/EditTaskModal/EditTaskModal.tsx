@@ -9,6 +9,7 @@ import { colours } from "src/constants/colours.constant";
 import { useCreateTask } from "src/hooks/tasks/useCreateTask";
 import { useDeleteTask } from "src/hooks/tasks/useDeleteTask";
 import { useUpdateTask } from "src/hooks/tasks/useUpdateTask";
+import { cn } from "src/utils/cn";
 import type { Task } from "src/types/Task.type";
 
 type EditTaskModalProps = {
@@ -140,10 +141,23 @@ export const EditTaskModal = ({ task, onSave }: EditTaskModalProps) => {
           />
 
           <div className="flex justify-between border-t border-slate-200 pt-3">
-            <div className="flex flex-row items-center gap-2">
-              <Button variant="ghost" size="sm">
-                Due date
-              </Button>
+            <div className="flex flex-row flex-wrap items-center gap-2">
+              {initialTask.dueDate ? (
+                <Button
+                  size="sm"
+                  className={cn(
+                    "text-xs px-2 py-1 rounded-full",
+                    initialTask.dueDate.isBefore(dayjs(), "day") &&
+                      !initialTask.completedDate
+                      ? "bg-red-100 text-red-500"
+                      : "bg-gray-100 text-gray-500"
+                  )}
+                >
+                  {initialTask.dueDate.format("MMM D, YYYY")}
+                </Button>
+              ) : (
+                <Button iconName="calendarDots" variant="ghost" size="sm" />
+              )}
 
               <TagMultiSelect
                 initialTags={initialTask.tags}
@@ -160,11 +174,10 @@ export const EditTaskModal = ({ task, onSave }: EditTaskModalProps) => {
               />
 
               <Button
-                colour={colours.red}
+                colour={colours.blue}
                 variant="ghost"
                 size="sm"
                 iconName="link"
-                onClick={onDeleteTask}
               />
 
               <Toggle
