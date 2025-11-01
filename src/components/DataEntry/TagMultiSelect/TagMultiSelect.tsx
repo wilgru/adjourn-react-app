@@ -1,28 +1,16 @@
-import { Plus, X } from "@phosphor-icons/react";
-import { useCallback, useState } from "react";
-import { components } from "react-select";
-import CreatableSelect from "react-select/creatable";
-import { colours } from "src/constants/colours.constant";
+import { Plus } from "@phosphor-icons/react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useState } from "react";
+import { Button } from "src/components/controls/Button/Button";
+import { TagPill } from "src/components/dataDisplay/TagPill/TagPill";
+import { Icon } from "src/components/general/Icon/Icon";
 import { useCreateTag } from "src/hooks/tags/useCreateTag";
 import { useGetTags } from "src/hooks/tags/useGetTags";
-import { cn } from "src/utils/cn";
-import type { Colour } from "src/types/Colour.type";
 import type { Tag } from "src/types/Tag.type";
 
 type TagMultiSelectProps = {
   initialTags: Tag[];
   onChange: (tags: Tag[]) => void;
-};
-
-type Option = {
-  label: string;
-  value: string;
-};
-
-const getColourFromTag = (tags: Tag[], tagId: string): Colour => {
-  const tag = tags.find((tag) => tag.id === tagId);
-
-  return tag ? tag.colour : colours.orange;
 };
 
 export const TagMultiSelect = ({
@@ -32,180 +20,106 @@ export const TagMultiSelect = ({
   const { tags } = useGetTags();
   const { createTag } = useCreateTag();
 
-  const [value, setValue] = useState<Option[]>(
-    initialTags.map((tag) => ({
-      value: tag.id,
-      label: tag.name,
-    }))
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(initialTags);
+  const [search, setSearch] = useState("");
+
+  const filteredTags = tags.filter(
+    (tag) =>
+      tag.name.toLowerCase().includes(search.toLowerCase()) &&
+      !selectedTags.some((selectedTag) => selectedTag.id === tag.id)
   );
 
-  const onCreateNewTag = useCallback(
-    async (tagToCreate: string) => {
-      const newTag = await createTag(tagToCreate);
+  const handleSelectTag = (tag: Tag) => {
+    const newTags = [...selectedTags, tag];
 
-      setValue((currentValue) => [
-        ...currentValue,
-        { value: newTag.id, label: newTag.name },
-      ]);
+    setSelectedTags(newTags);
+    onChange(newTags);
+    setSearch("");
+  };
 
-      onChange([...initialTags, newTag]);
-    },
-    [createTag, initialTags, onChange]
-  );
+  const handleCreateTag = async () => {
+    if (!search.trim()) {
+      return;
+    }
 
-  const options = tags.map((tag) => ({
-    value: tag.id,
-    label: tag.name,
-    colour: tag.colour,
-  }));
+    const newTag = await createTag(search.trim());
+    const newTags = [...selectedTags, newTag];
+
+    setSelectedTags(newTags);
+    onChange(newTags);
+    setSearch("");
+  };
+
+  const handleRemoveTag = (tagId: string) => {
+    const newTags = selectedTags.filter((tag) => tag.id !== tagId);
+
+    setSelectedTags(newTags);
+    onChange(newTags);
+  };
 
   return (
-    <div className="flex flex-row gap-2">
-      <CreatableSelect
-        isMulti
-        options={options}
-        placeholder="Add tag"
-        value={value}
-        onChange={(selectedTags) => {
-          setValue([...selectedTags]);
+    <div className="flex flex-row gap-2 relative">
+      {selectedTags.map((tag) => (
+        <TagPill
+          key={tag.id}
+          tag={tag}
+          closable
+          onClick={() => handleRemoveTag(tag.id)}
+        />
+      ))}
 
-          onChange(
-            selectedTags.reduce((acc: Tag[], selectedTag) => {
-              const tag = tags.find((tag) => tag.id === selectedTag.value);
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <div>
+            <Button variant="ghost" size="sm" iconName="tag" />
+          </div>
+        </DropdownMenu.Trigger>
 
-              if (tag) {
-                acc.push(tag);
-              }
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            className="flex flex-col gap-2 bg-white border border-slate-200 text-sm rounded-2xl p-2 w-40 drop-shadow"
+            sideOffset={2}
+            align="start"
+          >
+            <input
+              type="text"
+              className="rounded-lg px-2 py-1 text-xs border border-slate-300 focus:outline-none focus:border-orange-400"
+              placeholder="search for a topic"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
 
-              return acc;
-            }, [])
-          );
-        }}
-        onCreateOption={onCreateNewTag}
-        components={{
-          DropdownIndicator: (props) => {
-            return (
-              <components.DropdownIndicator {...props}>
-                <Plus weight="bold" />
-              </components.DropdownIndicator>
-            );
-          },
-          MultiValueRemove: (props) => {
-            return (
-              <components.MultiValueRemove {...props}>
-                <X weight="bold" size={12} />
-              </components.MultiValueRemove>
-            );
-          },
-        }}
-        closeMenuOnSelect={false}
-        isClearable={false}
-        classNames={{
-          control: ({ isFocused }) => {
-            return cn(
-              "bg-white",
-              "rounded-full",
-              "hover:bg-orange-100",
-              isFocused && "bg-orange-100"
-            );
-          },
-          placeholder: () => {
-            return cn("text-xs", "text-slate-500", "cursor-pointer");
-          },
-          multiValue: (props) => {
-            const { backgroundPill, text } = getColourFromTag(
-              tags,
-              props.data.value
-            );
-            return cn(
-              "rounded-full",
-              "text-xs",
-              "cursor-text",
-              backgroundPill,
-              text // TODO: This only styles the 'X' for some reason
-            );
-          },
-          multiValueRemove: () => {
-            return cn("rounded-full");
-          },
-          input: () => {
-            return cn("text-xs");
-          },
-          dropdownIndicator: () => {
-            return cn(
-              "text-slate-500",
-              "hover:text-orange-500",
-              "rounded-md",
-              "p-1",
-              "cursor-pointer"
-            );
-          },
-          menuList: () => cn("bg-white", "rounded-md", "p-1"),
-          option: () =>
-            cn(
-              "leading-none",
-              "text-sm",
-              "p-1",
-              "hover:bg-orange-100",
-              "hover:text-orange-500",
-              "outline-none",
-              "rounded-sm",
-              "cursor-pointer"
-            ),
-          noOptionsMessage: () => {
-            return cn("text-sm", "text-slate-500", "p-1");
-          },
-        }}
-        styles={{
-          control: (base) => ({
-            ...base,
-            boxShadow: undefined,
-            backgroundColor: undefined,
-            borderWidth: undefined,
-            borderRadius: undefined,
-            minHeight: undefined,
-          }),
-          placeholder: (base) => ({
-            ...base,
-            cursor: undefined,
-            fontSize: undefined,
-            color: undefined,
-          }),
-          valueContainer: (base) => ({
-            ...base,
-            padding: undefined,
-          }),
-          multiValue: (base) => ({
-            ...base,
-            backgroundColor: undefined,
-            color: undefined,
-            borderRadius: undefined,
-          }),
-          multiValueRemove: (base) => ({
-            ...base,
-            borderRadius: undefined,
-          }),
-          input: (base) => ({
-            ...base,
-            font: undefined,
-            paddingTop: undefined,
-            paddingBottom: undefined,
-            margin: undefined,
-          }),
-          indicatorSeparator: (base) => ({
-            ...base,
-            display: "none",
-          }),
-          dropdownIndicator: () => ({}),
-          option: () => ({}),
-          noOptionsMessage: (base) => ({
-            ...base,
-            padding: undefined,
-            fontSize: undefined,
-            color: undefined,
-          }),
-        }}
-      />
+            {filteredTags.map((tag) => (
+              <DropdownMenu.Item
+                key={tag.id}
+                className="rounded-lg flex items-center gap-2 px-2 py-1 cursor-pointer hover:bg-orange-100 text-sm"
+                onClick={() => handleSelectTag(tag)}
+              >
+                <Icon
+                  iconName={tag.icon}
+                  size="sm"
+                  className={tag.colour.textPill}
+                  weight="regular"
+                />
+                {tag.name}
+              </DropdownMenu.Item>
+            ))}
+
+            {search.trim().length > 0 &&
+              !tags.some((tag) => tag.name === search) && (
+                <DropdownMenu.Item
+                  className="rounded-lg flex items-center gap-2 px-2 py-1 cursor-pointer hover:bg-orange-100 text-sm"
+                  onMouseDown={handleCreateTag}
+                >
+                  <Plus className="fill-slate-500" size={18} />
+                  Create "{search.trim()}"
+                </DropdownMenu.Item>
+              )}
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
     </div>
   );
 };
