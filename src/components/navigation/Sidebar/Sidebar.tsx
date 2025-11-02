@@ -18,10 +18,8 @@ export const Sidebar = () => {
 
   const setIsSidebarVisible = useSetAtom(isSideBarVisibleAtom);
 
-  console.log("Sidebar currentJournal", journals, currentJournal);
-
   if (!journalId || !currentJournal) {
-    return null; // or a loading state, or a message indicating no journal is selected
+    return <div>Error trying to load journal...</div>; // TODO: handle this better, use a loading state or a message indicating no journal is selected
   }
 
   return (

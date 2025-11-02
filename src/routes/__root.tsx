@@ -13,11 +13,10 @@ const NotFoundComponent = () => {
   }
 
   if (isFetching) {
-    return <div>Loading journals...</div>; // or a spinner/loading component
+    return <div>Loading journals...</div>; // TODO: handle this better, use a spinner/loading component?
   }
 
-  console.log("RootRoute journals", journals);
-  const firstJournalId = journals[0]?.id;
+  const firstJournalId = journals.at(0)?.id;
 
   if (!firstJournalId) {
     return <Navigate to="/create-journal" replace={true} />;
