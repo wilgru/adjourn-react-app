@@ -5,13 +5,13 @@ import { JournalSelector } from "src/components/dataEntry/JournalSelector/Jouran
 import { Calendar } from "src/components/navigation/Calendar/Calendar";
 import { NavItem } from "src/components/navigation/NavItem/NavItem";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
-import { useGetTags } from "src/hooks/tags/useGetTags";
+import { useGetTopicGroups } from "src/hooks/tags/useGetTopicGroups";
 import { useCurrentJournalId } from "src/hooks/useCurrentJournalId";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 
 export const Sidebar = () => {
   const { journalId } = useCurrentJournalId();
-  const { tags } = useGetTags();
+  const { ungroupedTopics, topicGroups } = useGetTopicGroups();
   const { journals } = useGetJournals();
 
   const currentJournal = journals.find((journal) => journal.id === journalId);
@@ -70,7 +70,7 @@ export const Sidebar = () => {
           <section className="flex flex-col gap-1">
             <h1 className="font-title text-slate-400 text-md">Tags</h1>
 
-            {tags.map((tag) => (
+            {ungroupedTopics.map((tag) => (
               <NavItem
                 iconName={tag.icon}
                 colour={tag.colour}
@@ -81,6 +81,28 @@ export const Sidebar = () => {
               />
             ))}
           </section>
+
+          {topicGroups.map((topicGroup) => (
+            <section className="flex flex-col gap-1">
+              <div key={topicGroup.id}>
+                <h1 className="font-title text-slate-400 text-md">
+                  {topicGroup.title}
+                </h1>
+                <div className="flex flex-col gap-1 mt-1">
+                  {topicGroup.topics.map((tag) => (
+                    <NavItem
+                      iconName={tag.icon}
+                      colour={tag.colour}
+                      title={tag.name}
+                      preview={tag.noteCount}
+                      to={`/${journalId}/tags/${tag.id}`}
+                      expanded={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
         </div>
 
         <Calendar journalId={journalId} />
