@@ -28,7 +28,7 @@ import {
   Money,
   MaskHappy,
   PaintBrush,
-  PenNibStraight,
+  PenNib,
   Planet,
   PottedPlant,
   Sailboat,
@@ -56,6 +56,8 @@ import {
   BookmarkSimple,
   Signpost,
   Bug,
+  Binoculars,
+  Tray,
 } from "@phosphor-icons/react";
 
 export const icons = [
@@ -89,7 +91,7 @@ export const icons = [
   { name: "bread", icon: Bread },
   { name: "pottedPlant", icon: PottedPlant },
   { name: "bug", icon: Bug },
-  { name: "penNibStraight", icon: PenNibStraight },
+  { name: "PenNib", icon: PenNib },
   { name: "eyeglasses", icon: Eyeglasses },
   { name: "tShirt", icon: TShirt },
   { name: "briefcase", icon: Briefcase },
@@ -99,6 +101,7 @@ export const icons = [
   { name: "swatches", icon: Swatches },
   { name: "city", icon: City },
   { name: "globeHemisphereWest", icon: GlobeHemisphereWest },
+  { name: "binoculars", icon: Binoculars },
   { name: "signpost", icon: Signpost },
   { name: "camera", icon: Camera },
   { name: "brain", icon: Brain },
@@ -113,6 +116,7 @@ export const icons = [
   { name: "listNumbers", icon: ListNumbers },
   { name: "noteBlank", icon: NoteBlank },
   { name: "folder", icon: Folder },
+  { name: "tray", icon: Tray },
   { name: "cardsThree", icon: CardsThree },
   { name: "cube", icon: Cube },
   { name: "questionMark", icon: QuestionMark },
