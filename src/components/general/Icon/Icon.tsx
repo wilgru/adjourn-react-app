@@ -33,12 +33,13 @@ import { icons } from "src/constants/icons.constant";
 
 type IconProps = {
   iconName: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
   weight?: "fill" | "regular";
 };
 
 enum IconSize {
+  "xs" = 14,
   "sm" = 18,
   "md" = 24,
   "lg" = 32,

@@ -9,7 +9,7 @@ type ButtonProps = {
   children?: React.ReactNode;
   variant?: "block" | "ghost" | "ghost-strong" | "link";
   colour?: Colour;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   type?: "button" | "submit";
   className?: string;
   disabled?: boolean;
@@ -40,6 +40,7 @@ const buttonVariants = cva(
         link: "underline-offset-4 hover:underline",
       },
       size: {
+        xs: "text-[0.625rem] font-normal",
         sm: "text-xs font-normal",
         md: "text-sm font-medium",
         lg: "text-md font-medium",
@@ -52,6 +53,12 @@ const buttonVariants = cva(
     },
     compoundVariants: [
       // text only
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "text",
+        size: "xs",
+        className: "py-0.5 px-1",
+      },
       {
         variant: ["block", "ghost", "ghost-strong"],
         content: "text",
@@ -74,6 +81,12 @@ const buttonVariants = cva(
       {
         variant: ["block", "ghost", "ghost-strong"],
         content: "icon",
+        size: "xs",
+        className: "p-0.5",
+      },
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "icon",
         size: "sm",
         className: "p-1",
       },
@@ -90,6 +103,12 @@ const buttonVariants = cva(
         className: "p-3",
       },
       //  icons and text
+      {
+        variant: ["block", "ghost", "ghost-strong"],
+        content: "iconAndText",
+        size: "xs",
+        className: "py-0.5 pl-0.5 pr-1",
+      },
       {
         variant: ["block", "ghost", "ghost-strong"],
         content: "iconAndText",
