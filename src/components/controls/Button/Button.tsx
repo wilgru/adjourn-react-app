@@ -36,7 +36,7 @@ const buttonVariants = cva(
       variant: {
         block: null,
         ghost: "text-slate-500",
-        "ghost-strong": "text-slate-300",
+        "ghost-strong": "text-slate-400",
         link: "underline-offset-4 hover:underline",
       },
       size: {
