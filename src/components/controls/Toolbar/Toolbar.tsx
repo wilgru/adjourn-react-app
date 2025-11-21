@@ -18,8 +18,8 @@ type ToolbarProps = {
 };
 
 export const Toolbar = ({
-  iconName,
-  title,
+  // iconName,
+  // title,
   colour = colours.orange,
   titleItems,
 }: ToolbarProps) => {

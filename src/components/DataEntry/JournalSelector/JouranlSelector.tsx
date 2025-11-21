@@ -65,8 +65,13 @@ export const JournalSelector = ({
             {journals.map((journal) => (
               <DropdownMenu.Item key={journal.id}>
                 <Link
-                  to={`/${journal.id}/planner/${getNavigationDay()}`}
+                  to="/$journalId/planner/$dateString"
+                  params={{
+                    journalId: journal.id,
+                    dateString: getNavigationDay(),
+                  }}
                   onClick={() => {
+                    localStorage.setItem("lastUsedJournalId", journal.id);
                     setIsOpen(false);
                   }}
                   className={cn(

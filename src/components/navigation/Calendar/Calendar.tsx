@@ -63,7 +63,11 @@ const CalendarItem = ({
       )}
     >
       <Link
-        to={`/${journalId}/planner/${getNavigationDay(calendarDay.day)}`}
+        to="/$journalId/planner/$dateString"
+        params={{
+          journalId: journalId,
+          dateString: getNavigationDay(calendarDay.day),
+        }}
         key={key}
         className={cn(
           "h-6 w-6 text-sm text-center leading-6 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",

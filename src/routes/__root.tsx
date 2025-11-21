@@ -1,12 +1,11 @@
 import { createRootRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { useGetJournals } from "src/hooks/journals/useGetJournals";
+import { useNavigateToLastUsedJournal } from "src/hooks/journals/useGetLastUsedJournal";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
 const NotFoundComponent = () => {
-  const today = getNavigationDay();
-  const { journals, isFetching } = useGetJournals();
+  const { lastUsedJournal, isFetching } = useNavigateToLastUsedJournal();
 
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace={true} />;
@@ -16,13 +15,17 @@ const NotFoundComponent = () => {
     return <div>Loading journals...</div>; // TODO: handle this better, use a spinner/loading component?
   }
 
-  const firstJournalId = journals.at(0)?.id;
-
-  if (!firstJournalId) {
+  if (!lastUsedJournal) {
     return <Navigate to="/create-journal" replace={true} />;
   }
 
-  return <Navigate to={`/${firstJournalId}/planner/${today}`} replace={true} />;
+  return (
+    <Navigate
+      to="/$journalId/planner/$dateString"
+      params={{ journalId: lastUsedJournal.id, dateString: getNavigationDay() }}
+      replace={true}
+    />
+  );
 };
 
 export const Route = createRootRoute({
