@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for slipstream-react-app on 2025-03-06T20:24:36+11:00
+# fly.toml app configuration file generated for adjourn-react-app on 2025-11-22T10:41:30+11:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'slipstream-react-app'
+app = 'adjourn-react-app'
 primary_region = 'syd'
 
 [build]

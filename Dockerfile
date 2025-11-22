@@ -2,7 +2,7 @@
 
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=18.14.0
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Vite"
 
@@ -13,10 +13,10 @@ WORKDIR /app
 ENV NODE_ENV="production"
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Build arguments/env variables
-ARG VITE_POCKETBASE_URL="https://slipstream-pocketbase.fly.dev"
+ARG VITE_POCKETBASE_URL="https://adjourn-pocketbase.fly.dev"
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \

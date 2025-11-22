@@ -8,8 +8,8 @@ export default create({
   fontCode: "monospace",
 
   brandTitle: "Adjourn",
-  brandUrl: "https://github.com/wilgru/slipstream-react-app",
-  // brandImage: "https://github.com/wilgru/slipstream-react-app",
+  brandUrl: "https://github.com/wilgru/adjourn-react-app",
+  // brandImage: "https://github.com/wilgru/adjourn-react-app",
   brandTarget: "_self",
 
   //

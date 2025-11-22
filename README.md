@@ -75,8 +75,8 @@ Adjourn is configured to deploy to Fly.io.
 
 1. Test Dockerfile works locally first
    ```sh
-   docker build . -t "slipstream-react-app"
-   docker run -p 3000:80 slipstream-react-app
+   docker build . -t "adjourn-react-app"
+   docker run -p 3000:80 adjourn-react-app
    ```
 2. Run flyctl launch on first deployment. when it asks, use the existing configuration, and dont edit it any further on the web
    ```sh

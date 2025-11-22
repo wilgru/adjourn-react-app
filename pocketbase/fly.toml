@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for slipstream-pocketbase on 2025-03-06T20:21:12+11:00
+# fly.toml app configuration file generated for adjourn-pocketbase on 2025-11-22T10:45:51+11:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'slipstream-pocketbase'
+app = 'adjourn-pocketbase'
 primary_region = 'syd'
 
 [build]
