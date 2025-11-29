@@ -41,7 +41,12 @@ export const NavItem = ({
     >
       {({ isActive }: { isActive: boolean }) => (
         <>
-          <div className="flex items-center gap-2">
+          <div
+            className={cn(
+              "flex items-center gap-2",
+              (isHovered || isActive) && colour.textPill
+            )}
+          >
             {iconName && (
               <Icon
                 iconName={iconName}

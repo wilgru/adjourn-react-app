@@ -1,0 +1,162 @@
+import * as Dialog from "@radix-ui/react-dialog";
+import { useState } from "react";
+import { Button } from "src/components/controls/Button/Button";
+import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
+import IconPicker from "src/components/dataEntry/IconPicker/IconPicker";
+import { Input } from "src/components/dataEntry/Input/Input";
+// import { MultiBadgeInput } from "src/components/dataEntry/MultiBadgeInput/MultiBadgeInput";
+import { Label } from "src/components/general/Label/Label";
+import { colours } from "src/constants/colours.constant";
+import { useCreateTag } from "src/hooks/tags/useCreateTag";
+import type { Tag } from "src/types/Tag.type";
+
+type NewTag = Omit<Tag, "id" | "noteCount" | "groupBy" | "created" | "updated">;
+
+type CreateTagModalProps = {
+  topicGroupId?: string;
+};
+
+const getInitialTag = (topicGroupId?: string): NewTag => ({
+  name: "",
+  description: null,
+  colour: colours.orange,
+  icon: "tag",
+  badges: [],
+  topicGroupId: topicGroupId ?? null,
+});
+
+export const CreateTagModal = ({ topicGroupId }: CreateTagModalProps) => {
+  const [editedTag, setEditedTag] = useState<NewTag>(
+    getInitialTag(topicGroupId)
+  );
+  const { createTag } = useCreateTag();
+
+  const onSaveEdit = async () => {
+    createTag({
+      createTagData: {
+        ...editedTag,
+        badges: editedTag.badges.filter((badge) => badge.title.trim() !== ""),
+      },
+    });
+  };
+
+  // const onAddBadge = () => {
+  //   setEditedTag((currentTagToEdit) => {
+  //     return {
+  //       ...currentTagToEdit,
+  //       badges: [
+  //         ...currentTagToEdit.badges,
+  //         { id: generateId(), title: "", link: "" },
+  //       ],
+  //     };
+  //   });
+  // };
+
+  // const onEditBadges = (updatedBadge: TagBadge) => {
+  //   setEditedTag((currentTagToEdit) => {
+  //     const updatedBadges = currentTagToEdit.badges.map((badge) =>
+  //       badge.id === updatedBadge.id ? updatedBadge : badge
+  //     );
+
+  //     return { ...currentTagToEdit, badges: updatedBadges };
+  //   });
+  // };
+
+  return (
+    <Dialog.Portal>
+      <Dialog.Overlay className="bg-black opacity-25 fixed inset-0 data-[state=open]:animate-overlayShow" />
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] overflow-y-scroll p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl  data-[state=open]:animate-contentShow">
+        <Dialog.Title className="mb-5">Create Tag</Dialog.Title>
+
+        <div className="flex flex-col gap-3">
+          <div>
+            <Label title="Name" />
+            <Input
+              size="md"
+              value={editedTag.name}
+              onChange={(e) =>
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, name: e.target.value };
+                })
+              }
+            />
+          </div>
+
+          <div>
+            <Label title="Description" />
+            <textarea
+              name="description"
+              value={editedTag.description ?? undefined}
+              placeholder="No description"
+              onChange={(e) =>
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, description: e.target.value };
+                })
+              }
+              className="block p-1 text-sm w-full bg-white rounded-md border border-slate-300 placeholder:text-slate-500"
+            />
+          </div>
+
+          {/* <div>
+            <Label
+              title="Badges"
+              tooltipContent="You can add badges to highlight important information at the top of this tag's page"
+            />
+
+            <MultiBadgeInput
+              badges={editedTag.badges}
+              onChange={onEditBadges}
+              onAddBadge={onAddBadge}
+            />
+          </div> */}
+
+          <div>
+            <Label title="Colour" />
+            <ColourPicker
+              selectedColourName={editedTag.colour.name}
+              onSelectColour={(colour) => {
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, colour: colour };
+                });
+              }}
+            />
+          </div>
+
+          <div>
+            <Label title="Icon" />
+            <IconPicker
+              selectedIconName={editedTag.icon}
+              colour={editedTag.colour}
+              onSelectIcon={(iconName) => {
+                setEditedTag((currentTagToEdit) => {
+                  return { ...currentTagToEdit, icon: iconName };
+                });
+              }}
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <div className="flex gap-2 justify-end">
+              <Dialog.Close asChild>
+                <Button aria-label="Close" size="sm" variant="ghost">
+                  Discard
+                </Button>
+              </Dialog.Close>
+
+              <Dialog.Close asChild>
+                <Button
+                  aria-label="Confirm"
+                  colour={colours.green}
+                  size="sm"
+                  onClick={onSaveEdit}
+                >
+                  Save
+                </Button>
+              </Dialog.Close>
+            </div>
+          </div>
+        </div>
+      </Dialog.Content>
+    </Dialog.Portal>
+  );
+};

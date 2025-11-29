@@ -1,13 +1,16 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import { useSetAtom } from "jotai";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { JournalSelector } from "src/components/dataEntry/JournalSelector/JouranlSelector";
+import { CreateTopicGroupModal } from "src/components/modals/CreateTopicGroupModal/CreateTopicGroupModal";
 import { Calendar } from "src/components/navigation/Calendar/Calendar";
 import { NavItem } from "src/components/navigation/NavItem/NavItem";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useGetTopicGroups } from "src/hooks/tags/useGetTopicGroups";
 import { useCurrentJournalId } from "src/hooks/useCurrentJournalId";
 import { getNavigationDay } from "src/utils/getNavigationDay";
+import { SidebarTagSection } from "./SidebarTagSection";
 
 export const Sidebar = () => {
   const { journalId } = useCurrentJournalId();
@@ -67,9 +70,7 @@ export const Sidebar = () => {
             />
           </section>
 
-          <section className="flex flex-col gap-1">
-            <h1 className="font-title text-slate-400 text-md">Tags</h1>
-
+          <SidebarTagSection title={"Topics"}>
             {ungroupedTopics.map((tag) => (
               <NavItem
                 iconName={tag.icon}
@@ -80,29 +81,43 @@ export const Sidebar = () => {
                 expanded={true}
               />
             ))}
-          </section>
+          </SidebarTagSection>
 
           {topicGroups.map((topicGroup) => (
-            <section className="flex flex-col gap-1">
-              <div key={topicGroup.id}>
-                <h1 className="font-title text-slate-400 text-md">
-                  {topicGroup.title}
-                </h1>
-                <div className="flex flex-col gap-1 mt-1">
-                  {topicGroup.topics.map((tag) => (
-                    <NavItem
-                      iconName={tag.icon}
-                      colour={tag.colour}
-                      title={tag.name}
-                      preview={tag.noteCount}
-                      to={`/${journalId}/tags/${tag.id}`}
-                      expanded={true}
-                    />
-                  ))}
-                </div>
+            <SidebarTagSection
+              title={topicGroup.title}
+              topicGroupId={topicGroup.id}
+              key={topicGroup.id}
+            >
+              <div className="flex flex-col gap-1 mt-1">
+                {topicGroup.topics.map((tag) => (
+                  <NavItem
+                    iconName={tag.icon}
+                    colour={tag.colour}
+                    title={tag.name}
+                    preview={tag.noteCount}
+                    to={`/${journalId}/tags/${tag.id}`}
+                    expanded={true}
+                  />
+                ))}
               </div>
-            </section>
+            </SidebarTagSection>
           ))}
+
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <Button
+                className="mt-1"
+                variant="ghost-strong"
+                size="sm"
+                iconName="plus"
+              >
+                Add section
+              </Button>
+            </Dialog.Trigger>
+
+            <CreateTopicGroupModal />
+          </Dialog.Root>
         </div>
 
         <Calendar journalId={journalId} />
