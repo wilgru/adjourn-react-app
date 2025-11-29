@@ -6,8 +6,21 @@ import { useCurrentJournalId } from "../useCurrentJournalId";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Tag } from "src/types/Tag.type";
 
+type CreateTagProps = {
+  createTagData: Omit<
+    Tag,
+    | "id"
+    | "journalId"
+    | "groupBy"
+    | "user"
+    | "noteCount"
+    | "created"
+    | "updated"
+  >;
+};
+
 type UseCreateTagResponse = {
-  createTag: UseMutateAsyncFunction<Tag, Error, string, unknown>;
+  createTag: UseMutateAsyncFunction<Tag, Error, CreateTagProps, unknown>;
 };
 
 export const useCreateTag = (): UseCreateTagResponse => {
@@ -15,11 +28,13 @@ export const useCreateTag = (): UseCreateTagResponse => {
   const queryClient = useQueryClient();
   const { user } = useUser();
 
-  const mutationFn = async (tagName: string): Promise<Tag> => {
+  const mutationFn = async ({
+    createTagData,
+  }: CreateTagProps): Promise<Tag> => {
     const newTag = await pb.collection("tags").create({
-      name: tagName,
-      colour: "orange",
-      icon: "tag",
+      ...createTagData,
+      colour: createTagData.colour.name,
+      topicGroup: createTagData.topicGroupId ?? null,
       journal: journalId,
       user: user?.id,
       groupBy: null,
@@ -33,6 +48,9 @@ export const useCreateTag = (): UseCreateTagResponse => {
   const onSuccess = () => {
     queryClient.refetchQueries({
       queryKey: ["tags.list"],
+    });
+    queryClient.refetchQueries({
+      queryKey: ["topicGroups.list"],
     });
   };
 

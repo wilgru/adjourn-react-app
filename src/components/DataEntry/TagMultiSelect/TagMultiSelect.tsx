@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "src/components/controls/Button/Button";
 import { TagPill } from "src/components/dataDisplay/TagPill/TagPill";
 import { Icon } from "src/components/general/Icon/Icon";
+import { colours } from "src/constants/colours.constant";
 import { useCreateTag } from "src/hooks/tags/useCreateTag";
 import { useGetTags } from "src/hooks/tags/useGetTags";
 import type { Tag } from "src/types/Tag.type";
@@ -42,7 +43,16 @@ export const TagMultiSelect = ({
       return;
     }
 
-    const newTag = await createTag(search.trim());
+    const newTag = await createTag({
+      createTagData: {
+        name: search.trim(),
+        description: null,
+        badges: [],
+        topicGroupId: null,
+        colour: colours.orange,
+        icon: "tag",
+      },
+    });
     const newTags = [...selectedTags, newTag];
 
     setSelectedTags(newTags);
