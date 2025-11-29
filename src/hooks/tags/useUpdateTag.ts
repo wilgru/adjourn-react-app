@@ -53,6 +53,10 @@ export const useUpdateTag = (): UseUpdateTagResponse => {
       queryKey: ["tags.get"],
     });
 
+    queryClient.refetchQueries({
+      queryKey: ["topicGroups.list"],
+    });
+
     // update tag in any notes that have it
     queryClient.setQueryData(["notes.list"], (currentNotes: Note[]) => {
       return currentNotes.map((note) => {
