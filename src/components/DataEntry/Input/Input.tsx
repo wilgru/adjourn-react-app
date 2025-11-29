@@ -2,7 +2,7 @@ import { cn } from "src/utils/cn";
 import type { HTMLInputTypeAttribute } from "react";
 
 type InputType = {
-  id: string;
+  id?: string;
   type?: HTMLInputTypeAttribute;
   required?: boolean;
   value: string;
