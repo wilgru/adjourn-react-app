@@ -1,3 +1,4 @@
+import type { Task } from "./Task.type";
 import type { Dayjs } from "dayjs";
 import type Delta from "quill-delta";
 import type { Tag } from "src/types/Tag.type";
@@ -6,6 +7,7 @@ export type Note = {
   id: string;
   isDraft: boolean; // TODO: remove
   title: string | null;
+  tasks: Task[];
   content: Delta;
   isPinned: boolean;
   isFlagged: boolean;
@@ -16,7 +18,7 @@ export type Note = {
 };
 
 export type NotesGroup = {
-  title: string;
+  title: string | null;
   notes: Note[];
   relevantNoteData: Partial<Note>;
 };

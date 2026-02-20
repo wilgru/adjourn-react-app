@@ -1,5 +1,6 @@
 #quill-editor p {
   font-family: "Helvetica Neue";
+  font-size: 16px;
 }
 
 #quill-editor .ql-editor {

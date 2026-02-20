@@ -7,15 +7,18 @@ import { Icon } from "src/components/general/Icon/Icon";
 import { colours } from "src/constants/colours.constant";
 import { useCreateTag } from "src/hooks/tags/useCreateTag";
 import { useGetTags } from "src/hooks/tags/useGetTags";
+import type { Colour } from "src/types/Colour.type";
 import type { Tag } from "src/types/Tag.type";
 
 type TagMultiSelectProps = {
   initialTags: Tag[];
+  colour?: Colour;
   onChange: (tags: Tag[]) => void;
 };
 
 export const TagMultiSelect = ({
   initialTags,
+  colour = colours.orange,
   onChange,
 }: TagMultiSelectProps) => {
   const { tags } = useGetTags();
@@ -27,7 +30,7 @@ export const TagMultiSelect = ({
   const filteredTags = tags.filter(
     (tag) =>
       tag.name.toLowerCase().includes(search.toLowerCase()) &&
-      !selectedTags.some((selectedTag) => selectedTag.id === tag.id)
+      !selectedTags.some((selectedTag) => selectedTag.id === tag.id),
   );
 
   const handleSelectTag = (tag: Tag) => {
@@ -81,7 +84,7 @@ export const TagMultiSelect = ({
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <div>
-            <Button variant="ghost" size="sm" iconName="tag" />
+            <Button variant="ghost" size="sm" colour={colour} iconName="tag" />
           </div>
         </DropdownMenu.Trigger>
 

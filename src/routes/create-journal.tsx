@@ -41,7 +41,7 @@ function RouteComponent() {
       return;
     }
 
-    navigate({ to: `/${createdJournal.id}/planner/${getNavigationDay()}` });
+    navigate({ to: `/${createdJournal.id}/logbook/${getNavigationDay()}` });
   };
 
   return (

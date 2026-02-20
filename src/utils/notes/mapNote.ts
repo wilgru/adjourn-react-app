@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import Delta from "quill-delta";
 import { mapTag } from "../tags/mapTag";
+import { mapTask } from "../tasks/mapTask";
 import type { RecordModel } from "pocketbase";
 import type { Note } from "src/types/Note.type";
 
@@ -12,6 +13,9 @@ export const mapNote = (note: RecordModel): Note => {
     id: note.id,
     isDraft: false,
     title: note.title,
+    tasks: note?.expand?.tasks_via_note
+      ? note.expand.tasks_via_note.map(mapTask)
+      : [],
     content: note.content ? new Delta(note.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: note.isPinned,
     isFlagged: note.isFlagged,

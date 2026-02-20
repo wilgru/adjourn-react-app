@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
-import { mapTag } from "../tags/mapTag";
+import { mapNote } from "../notes/mapNote";
 import type { RecordModel } from "pocketbase";
 import type { Task } from "src/types/Task.type";
 
@@ -13,7 +13,7 @@ export const mapTask = (task: RecordModel): Task => {
     description: task.description || null,
     link: task.link || null,
     isFlagged: task.isFlagged || false,
-    tags: task?.expand?.tags ? task.expand.tags.map(mapTag) : [],
+    note: task?.expand?.note ? mapNote(task.expand.note) : null,
     dueDate: task.dueDate ? dayjs.utc(task.dueDate).local() : null,
     completedDate: task.completedDate
       ? dayjs.utc(task.completedDate).local()

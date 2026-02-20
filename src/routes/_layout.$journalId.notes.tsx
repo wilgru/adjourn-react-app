@@ -1,17 +1,19 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
 import { NotesLayout } from "src/components/layout/NotesLayout/NotesLayout";
+import { colours } from "src/constants/colours.constant";
 import { useGetNote } from "src/hooks/notes/useGetNote";
 import { useGetNotes } from "src/hooks/notes/useGetNotes";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute("/_layout/$journalId/flagged")({
-  component: RouteComponent,
+export const Route = createFileRoute("/_layout/$journalId/notes")({
+  component: NotesComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
         to: "/login",
         search: {
+          // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
           redirect: location.href,
         },
       });
@@ -26,21 +28,27 @@ export const Route = createFileRoute("/_layout/$journalId/flagged")({
   },
 });
 
-function RouteComponent() {
+function NotesComponent() {
   const { notes } = useGetNotes({
-    isFlagged: true,
+    createdDateString: undefined,
+    isFlagged: undefined,
   });
   const { noteId } = Route.useSearch(); // TODO: use in loaders?
   const { note } = useGetNote({ noteId });
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="flag" title={"Flagged"} titleItems={[]} />
+      <Toolbar
+        iconName="pencil"
+        title={"Notes"}
+        colour={colours.grey}
+        titleItems={[]}
+      />
 
       <NotesLayout
-        title="Flagged"
+        title={"Notes"}
         notes={notes}
-        prefillNewNoteData={{ isFlagged: true }}
+        colour={colours.grey}
         selectedNote={note || null}
         description={null}
       />

@@ -1,0 +1,72 @@
+import { PushPin, Flag } from "@phosphor-icons/react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { useState } from "react";
+import { colours } from "src/constants/colours.constant";
+import { cn } from "src/utils/cn";
+import { TagPill } from "../TagPill/TagPill";
+import type { Colour } from "src/types/Colour.type";
+import type { Note } from "src/types/Note.type";
+
+type NoteListItemProps = {
+  note: Note;
+
+  createdDateFormat?: string;
+  colour?: Colour;
+};
+
+export const NoteListItem = ({
+  note,
+  createdDateFormat = "ddd MMM D, YYYY",
+  colour = colours.orange,
+}: NoteListItemProps) => {
+  const location = useLocation();
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Link
+      to={location.pathname}
+      search={(old) => ({ ...old, noteId: note.id })}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      activeProps={{
+        className: cn(colour.textPill, colour.backgroundPill),
+      }}
+      className={cn(
+        "w-full flex justify-between items-center gap-2 px-2 py-1 rounded-xl text-sm transition-colors",
+        isHovered && colour.textPill,
+        isHovered && colour.backgroundPill,
+      )}
+    >
+      <div key={note.id} className="w-full flex flex-col gap-2 p-1">
+        <p className={cn("truncate")}>
+          {note.title === "" ? "Untitled Note" : note.title}
+        </p>
+
+        <div className="flex items-center gap-1">
+          <p className="text-xs text-slate-400">
+            {note.created.format(createdDateFormat)}
+          </p>
+
+          {note.tags.map((tag) => (
+            <TagPill
+              key={tag.id}
+              tag={tag}
+              size="xs"
+              variant="ghost"
+              closable={false}
+              collapsed={true}
+            />
+          ))}
+
+          {note.isPinned && (
+            <PushPin className="fill-red-400 m-1" weight="fill" size={14} />
+          )}
+
+          {note.isFlagged && (
+            <Flag className="fill-orange-400 m-1" weight="fill" size={14} />
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};

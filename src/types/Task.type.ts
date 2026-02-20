@@ -1,5 +1,5 @@
+import type { Note } from "./Note.type";
 import type { Dayjs } from "dayjs";
-import type { Tag } from "src/types/Tag.type";
 
 export type Task = {
   id: string;
@@ -7,7 +7,7 @@ export type Task = {
   description: string;
   link: string | null;
   isFlagged: boolean;
-  tags: Tag[];
+  note: Note | null;
   dueDate: Dayjs | null;
   completedDate: Dayjs | null;
   cancelledDate: Dayjs | null;

@@ -4,9 +4,9 @@ import type { Tag } from "src/types/Tag.type";
 const getGroup = (
   note: Note,
   groupBy: "created" | "tag",
-  defaultGroupTitle: string | undefined = undefined
+  defaultGroupTitle: string | undefined = undefined,
 ): {
-  title: string;
+  title: string | null;
   relevantNoteData: Partial<Note>;
 }[] => {
   switch (groupBy) {
@@ -23,12 +23,12 @@ const getGroup = (
         note.tags.at(0)?.name === defaultGroupTitle
       ) {
         const defaultTag = note.tags.find(
-          (tag) => tag.name === defaultGroupTitle
+          (tag) => tag.name === defaultGroupTitle,
         );
 
         return [
           {
-            title: "Notes",
+            title: null,
             relevantNoteData: {
               tags: defaultTag ? [defaultTag] : [],
             },
@@ -42,7 +42,7 @@ const getGroup = (
             title: string;
             relevantNoteData: Partial<Note>;
           }[],
-          tag
+          tag,
         ) => {
           if (tag.name === defaultGroupTitle) {
             return acc;
@@ -58,7 +58,7 @@ const getGroup = (
             },
           ];
         },
-        []
+        [],
       );
     }
 
@@ -81,14 +81,14 @@ export function groupNotes(
   notes: Note[],
   groupBy: "created" | "tag",
   defaultGroupTitle: string | undefined = undefined,
-  relevantNoteData: Partial<Note>
+  relevantNoteData: Partial<Note>, // TODO: might not need this anymore?
 ): NotesGroup[] {
   const groupedNotes = notes.reduce((acc: NotesGroup[], note: Note) => {
     const groups = getGroup(note, groupBy, defaultGroupTitle);
 
     for (const group of groups) {
       const existingGroup = acc.find(
-        (accGroup) => accGroup.title === group.title
+        (accGroup) => accGroup.title === group.title,
       );
 
       if (existingGroup) {
@@ -100,12 +100,16 @@ export function groupNotes(
           relevantNoteData: {
             tags: mergeTagArrays(
               relevantNoteData?.tags ?? [],
-              group.relevantNoteData.tags
+              group.relevantNoteData.tags,
             ),
           },
         };
 
-        acc.push(newGroup);
+        if (group.title === null) {
+          acc.unshift(newGroup);
+        } else {
+          acc.push(newGroup);
+        }
       }
     }
 

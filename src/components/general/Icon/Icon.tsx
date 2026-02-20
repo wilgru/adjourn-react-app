@@ -28,7 +28,9 @@ import {
   ArrowArcRight,
   Paperclip,
   Info,
+  Notebook,
 } from "@phosphor-icons/react";
+import { ChatCenteredText } from "@phosphor-icons/react/dist/ssr";
 import { icons } from "src/constants/icons.constant";
 
 type IconProps = {
@@ -71,6 +73,8 @@ const Icon = ({
       return <Trash {...iconProps} />;
     case "pencil":
       return <Pencil {...iconProps} />;
+    case "chatCenteredText":
+      return <ChatCenteredText {...iconProps} />;
     case "x":
       return <X {...iconProps} weight="bold" />;
     case "gear":
@@ -87,6 +91,8 @@ const Icon = ({
       return <ArrowsDownUp {...iconProps} />;
     case "house":
       return <House {...iconProps} />;
+    case "notebook":
+      return <Notebook {...iconProps} />;
     case "calendarDot":
       return <CalendarDot {...iconProps} />;
     case "calendarDots":

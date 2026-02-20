@@ -4,15 +4,13 @@ import { useSetAtom } from "jotai";
 import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
-import { useGetNotes } from "src/hooks/notes/useGetNotes";
-import { useGetTasks } from "src/hooks/tasks/useGetTasks";
+import { Calendar } from "src/components/navigation/Calendar/Calendar";
 import { getNavigationDay } from "src/utils/getNavigationDay";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute("/_layout/$journalId/planner/$dateString")(
+export const Route = createFileRoute("/_layout/$journalId/logbook/$dateString")(
   {
-    component: StreamIndexComponent,
+    component: LogbookComponent,
     beforeLoad: async ({ location }) => {
       if (!isAuthenticated()) {
         throw redirect({
@@ -24,19 +22,14 @@ export const Route = createFileRoute("/_layout/$journalId/planner/$dateString")(
         });
       }
     },
-  }
+  },
 );
 
-function StreamIndexComponent() {
+function LogbookComponent() {
   const { journalId } = Route.useParams();
   const { dateString } = Route.useParams();
+
   const navigate = useNavigate();
-  const { tasks } = useGetTasks({
-    dateString: dateString,
-  });
-  const { notes } = useGetNotes({
-    createdDateString: dateString,
-  });
   const setJumpToAtom = useSetAtom(jumpToDateAtom);
 
   const date = dayjs(dateString, "YYYY-MM-DD");
@@ -49,7 +42,7 @@ function StreamIndexComponent() {
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
-        iconName="calendarDots"
+        iconName="notebook"
         title={title}
         titleItems={[
           <div>
@@ -60,7 +53,7 @@ function StreamIndexComponent() {
               onClick={() => {
                 setJumpToAtom(yesterday);
                 navigate({
-                  to: `/${journalId}/planner/${getNavigationDay(yesterday)}`,
+                  to: `/${journalId}/logbook/${getNavigationDay(yesterday)}`,
                 });
               }}
             />
@@ -73,7 +66,7 @@ function StreamIndexComponent() {
               onClick={() => {
                 setJumpToAtom(today);
                 navigate({
-                  to: `/${journalId}/planner/${getNavigationDay(today)}`,
+                  to: `/${journalId}/logbook/${getNavigationDay(today)}`,
                 });
               }}
             />
@@ -86,7 +79,7 @@ function StreamIndexComponent() {
               onClick={() => {
                 setJumpToAtom(tomorrow);
                 navigate({
-                  to: `/${journalId}/planner/${getNavigationDay(tomorrow)}`,
+                  to: `/${journalId}/logbook/${getNavigationDay(tomorrow)}`,
                 });
               }}
             />
@@ -94,24 +87,7 @@ function StreamIndexComponent() {
         ]}
       />
 
-      <TaskAndNotesLayout
-        header={
-          <div className="flex items-baseline gap-3">
-            <h1 className="text-5xl font-title text-slate-800">
-              {date.format("dddd")}
-            </h1>
-
-            <h3 className="text-2xl text-slate-400">
-              {date.format("MMMM D, YYYY")}
-            </h3>
-          </div>
-        }
-        title={title}
-        tasks={tasks}
-        notes={notes}
-        prefillNewTaskData={{ dueDate: today }}
-        showNoteCreateTimeOnly
-      />
+      <Calendar journalId={journalId} />
     </div>
   );
 }

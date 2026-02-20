@@ -7,7 +7,10 @@ import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Note } from "src/types/Note.type";
 
 type CreateNoteProps = {
-  createNoteData: Omit<Note, "id" | "created" | "updated">;
+  createNoteData: Omit<
+    Note,
+    "id" | "created" | "updated" | "deleted" | "tasks"
+  >;
 };
 
 type UseCreateNoteResponse = {
@@ -34,7 +37,7 @@ export const useCreateNote = (): UseCreateNoteResponse => {
         journal: journalId,
         user: user?.id,
       },
-      { expand: "tags" }
+      { expand: "tags" },
     );
 
     return mapNote(createdNote);

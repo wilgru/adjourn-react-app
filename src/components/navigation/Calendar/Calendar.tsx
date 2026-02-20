@@ -59,11 +59,11 @@ const CalendarItem = ({
     <div
       className={cn(
         "flex flex-col gap-0.5 items-center",
-        !dateWithNotes && "pb-1.5"
+        !dateWithNotes && "pb-1.5",
       )}
     >
       <Link
-        to="/$journalId/planner/$dateString"
+        to="/$journalId/logbook/$dateString"
         params={{
           journalId: journalId,
           dateString: getNavigationDay(calendarDay.day),
@@ -71,14 +71,14 @@ const CalendarItem = ({
         key={key}
         className={cn(
           "h-6 w-6 text-sm text-center leading-6 rounded-full cursor-pointer select-none hover:bg-orange-200 hover:text-orange-500",
-          !calendarDay.isCurrentMonth && "text-slate-400 bg-transparent"
+          !calendarDay.isCurrentMonth && "text-slate-400 bg-transparent",
         )}
         activeProps={{ className: "bg-orange-200 text-orange-500" }}
         inactiveProps={{
           className: cn(
             calendarDay.day.isSame(today, "day")
               ? "text-orange-500"
-              : calendarDay.isCurrentMonth && "text-slate-700"
+              : calendarDay.isCurrentMonth && "text-slate-700",
           ),
         }}
         onClick={() => handleSelectDay(calendarDay)}
@@ -91,7 +91,7 @@ const CalendarItem = ({
         <div
           className={cn(
             "h-1 w-1 rounded-full",
-            dateWithNotes.hasFlagged ? "bg-orange-400" : "bg-slate-400"
+            dateWithNotes.hasFlagged ? "bg-orange-400" : "bg-slate-400",
           )}
         />
       )}

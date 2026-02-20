@@ -1,13 +1,12 @@
-import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtom } from "jotai";
-import { useState } from "react";
 import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
-import EditNoteModal from "src/components/modals/EditNoteModal/EditNoteModal";
+import { Icon } from "src/components/general/Icon/Icon";
 import { colours } from "src/constants/colours.constant";
 import { useLogin } from "src/hooks/users/useLogin";
+import { cn } from "src/utils/cn";
 import type { Colour } from "src/types/Colour.type";
 
 type ToolbarProps = {
@@ -18,8 +17,8 @@ type ToolbarProps = {
 };
 
 export const Toolbar = ({
-  // iconName,
-  // title,
+  iconName,
+  title,
   colour = colours.orange,
   titleItems,
 }: ToolbarProps) => {
@@ -27,7 +26,6 @@ export const Toolbar = ({
   const { logout } = useLogin();
 
   const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
-  const [showEditNoteModal, setShowEditNoteModal] = useState(false);
 
   //TODO: remove h-16 when scrolling issue is fixed
   return (
@@ -42,34 +40,23 @@ export const Toolbar = ({
           />
         )}
 
-        <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-full drop-shadow-md p-1">
-          {/* <Button size="sm" variant="ghost" iconName={iconName} colour={colour}>
-            {title}
-          </Button> */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            {iconName && (
+              <Icon
+                className={cn("pb-1", colour.text)}
+                iconName={iconName}
+                size="md"
+              />
+            )}
+            <h1 className="font-title text-xl">{title}</h1>
+          </div>
 
           {titleItems.map((titleItem) => titleItem)}
         </div>
       </div>
 
       <div className="flex items-center gap-2">
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <Button
-              variant="ghost"
-              colour={colour}
-              iconName="plus"
-              onClick={() => setShowEditNoteModal(true)}
-            />
-          </Dialog.Trigger>
-          {showEditNoteModal && (
-            <EditNoteModal
-              onSave={() => {
-                setShowEditNoteModal(false);
-              }}
-            />
-          )}
-        </Dialog.Root>
-
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>

@@ -1,12 +1,14 @@
 import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import Delta from "quill-delta";
 import { Button } from "src/components/controls/Button/Button";
 import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { Icon } from "src/components/general/Icon/Icon";
-import { TaskAndNotesLayout } from "src/components/layout/TaskAndNotesLayout/TaskAndNotesLayout";
+import { NotesLayout } from "src/components/layout/NotesLayout/NotesLayout";
 import { EditTagModal } from "src/components/modals/EditTagModal/EditTagModal";
+import { useCreateNote } from "src/hooks/notes/useCreateNote";
+import { useGetNote } from "src/hooks/notes/useGetNote";
 import { useGetTag } from "src/hooks/tags/useGetTag";
 import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
 import { cn } from "src/utils/cn";
@@ -25,16 +27,55 @@ export const Route = createFileRoute("/_layout/$journalId/tags/$tagId")({
       });
     }
   },
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { noteId: string | null } => {
+    return {
+      noteId: typeof search.noteId === "string" ? search.noteId : null,
+    };
+  },
 });
 
 export default function TagComponent() {
-  const { tagId } = Route.useParams();
-  const { tag, tasks, notes } = useGetTag(tagId ?? "");
+  const { journalId, tagId } = Route.useParams();
+  const { noteId } = Route.useSearch(); // TODO: use in loaders?
+  const navigate = useNavigate();
+  const { tag, notes } = useGetTag(tagId ?? "");
+  const { note } = useGetNote({ noteId });
+  const { createNote } = useCreateNote();
   const { updateTag } = useUpdateTag();
 
   if (!tag) {
     return null;
   }
+
+  const onCreateNote = async () => {
+    const newNote = await createNote({
+      createNoteData: {
+        title: "",
+        content: new Delta(),
+        tags: [tag],
+        isDraft: false,
+        isPinned: false,
+        isFlagged: false,
+      },
+    });
+
+    if (!newNote) {
+      return;
+    }
+
+    navigate({
+      to: "/$journalId/tags/$tagId",
+      params: {
+        journalId,
+        tagId,
+      },
+      search: {
+        noteId: newNote.id,
+      },
+    });
+  };
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -50,7 +91,7 @@ export default function TagComponent() {
                   variant="ghost"
                   size="sm"
                   colour={tag.colour}
-                  iconName="pencil"
+                  iconName="slidersHorizontal"
                 />
               </Dialog.Trigger>
 
@@ -101,7 +142,7 @@ export default function TagComponent() {
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.textPill}`,
                     )}
                     value="null"
                   >
@@ -115,7 +156,7 @@ export default function TagComponent() {
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.textPill}`,
                     )}
                     value="created"
                   >
@@ -128,7 +169,7 @@ export default function TagComponent() {
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.textPill}`,
                     )}
                     value="tag"
                   >
@@ -151,7 +192,7 @@ export default function TagComponent() {
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.textPill}`,
                     )}
                     value="created"
                   >
@@ -164,7 +205,7 @@ export default function TagComponent() {
                     className={cn(
                       "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${tag.colour.backgroundPill}`,
-                      `data-[highlighted]:${tag.colour.textPill}`
+                      `data-[highlighted]:${tag.colour.textPill}`,
                     )}
                     value="title"
                   >
@@ -177,28 +218,23 @@ export default function TagComponent() {
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>,
+          <Button
+            variant="ghost"
+            size="sm"
+            colour={tag.colour}
+            iconName="plus"
+            onClick={onCreateNote}
+          />,
         ]}
       />
 
-      <TaskAndNotesLayout
-        header={
-          <div className="flex gap-3">
-            <Icon
-              className={cn("pb-1", tag.colour.text)}
-              iconName={tag.icon}
-              size="xl"
-            />
-
-            <h1 className="font-title text-5xl">{tag.name}</h1>
-          </div>
-        }
+      <NotesLayout
         title={tag.name}
-        description={tag.description ? tag.description : undefined}
-        badges={tag.badges}
+        description={tag.description}
+        links={tag.badges}
         colour={tag.colour}
-        tasks={tasks}
         notes={notes}
-        prefillNewTaskData={{ tags: [tag] }}
+        selectedNote={note || null}
         prefillNewNoteData={{ tags: [tag] }}
         groupNotesBy={tag.groupBy ?? undefined}
       />

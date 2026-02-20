@@ -23,7 +23,7 @@ export const JournalSelector = ({
     <div
       className={cn(
         "flex gap-2 justify-between border border-slate-300 rounded-2xl p-1.5 relative",
-        `hover:${currentJournal.colour.backgroundPill}`
+        `hover:${currentJournal.colour.backgroundPill}`,
       )}
     >
       <DropdownMenu.Root open={isOpen}>
@@ -37,7 +37,7 @@ export const JournalSelector = ({
               className={cn(
                 "w-8 h-8 p-1.5 rounded-lg",
                 currentJournal.colour.textPill,
-                currentJournal.colour.backgroundPill
+                currentJournal.colour.backgroundPill,
               )}
             />
 
@@ -65,7 +65,7 @@ export const JournalSelector = ({
             {journals.map((journal) => (
               <DropdownMenu.Item key={journal.id}>
                 <Link
-                  to="/$journalId/planner/$dateString"
+                  to="/$journalId/logbook/$dateString"
                   params={{
                     journalId: journal.id,
                     dateString: getNavigationDay(),
@@ -78,7 +78,7 @@ export const JournalSelector = ({
                     "flex items-center gap-2 leading-none text-sm p-2 outline-none rounded-xl cursor-pointer transition-colors",
                     currentJournal.id === journal.id
                       ? journal.colour.backgroundPill
-                      : `hover:${journal.colour.backgroundPill}`
+                      : `hover:${journal.colour.backgroundPill}`,
                   )}
                 >
                   <Icon
@@ -86,7 +86,7 @@ export const JournalSelector = ({
                     className={cn(
                       "w-8 h-8 p-1.5 rounded-lg",
                       journal.colour.textPill,
-                      journal.colour.backgroundPill
+                      journal.colour.backgroundPill,
                     )}
                   />
 

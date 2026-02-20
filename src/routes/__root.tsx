@@ -21,7 +21,7 @@ const NotFoundComponent = () => {
 
   return (
     <Navigate
-      to="/$journalId/planner/$dateString"
+      to="/$journalId/logbook/$dateString"
       params={{ journalId: lastUsedJournal.id, dateString: getNavigationDay() }}
       replace={true}
     />

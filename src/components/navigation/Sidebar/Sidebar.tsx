@@ -4,7 +4,6 @@ import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom";
 import { Button } from "src/components/controls/Button/Button";
 import { JournalSelector } from "src/components/dataEntry/JournalSelector/JouranlSelector";
 import { CreateTopicGroupModal } from "src/components/modals/CreateTopicGroupModal/CreateTopicGroupModal";
-import { Calendar } from "src/components/navigation/Calendar/Calendar";
 import { NavItem } from "src/components/navigation/NavItem/NavItem";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useGetTopicGroups } from "src/hooks/tags/useGetTopicGroups";
@@ -47,9 +46,17 @@ export const Sidebar = () => {
           <section className="flex flex-col gap-1">
             <NavItem
               ghost
-              iconName="calendarDots"
-              title="Planner"
-              to={`/${journalId}/planner/${getNavigationDay()}`}
+              iconName="notebook"
+              title="Logbook"
+              to={`/${journalId}/logbook/${getNavigationDay()}`}
+              expanded={true}
+            />
+
+            <NavItem
+              ghost
+              iconName="pencil"
+              title="Notes"
+              to={`/${journalId}/notes/`}
               expanded={true}
             />
 
@@ -70,7 +77,7 @@ export const Sidebar = () => {
             />
           </section>
 
-          <SidebarTagSection title={"Topics"}>
+          <SidebarTagSection title={"Tags"}>
             {ungroupedTopics.map((tag) => (
               <NavItem
                 iconName={tag.icon}
@@ -119,8 +126,6 @@ export const Sidebar = () => {
             <CreateTopicGroupModal />
           </Dialog.Root>
         </div>
-
-        <Calendar journalId={journalId} />
       </div>
     </aside>
   );

@@ -58,6 +58,7 @@ import {
   Bug,
   Binoculars,
   Tray,
+  MagnifyingGlass,
 } from "@phosphor-icons/react";
 
 export const icons = [
@@ -92,6 +93,7 @@ export const icons = [
   { name: "pottedPlant", icon: PottedPlant },
   { name: "bug", icon: Bug },
   { name: "PenNib", icon: PenNib },
+  { name: "magnifyingGlass", icon: MagnifyingGlass },
   { name: "eyeglasses", icon: Eyeglasses },
   { name: "tShirt", icon: TShirt },
   { name: "briefcase", icon: Briefcase },

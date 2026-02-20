@@ -31,7 +31,7 @@ export const TasksLayout = ({
 }: TasksLayoutProps) => {
   const [navigationId, setNavigationId] = useState("");
 
-  const groupedTasks = groupTasks(tasks, "tag", {});
+  const groupedTasks = groupTasks(tasks, "note");
 
   const secondaryBadges = useMemo(() => {
     return [`${tasks.length} tasks`];

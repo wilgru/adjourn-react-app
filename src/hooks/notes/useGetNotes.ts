@@ -48,7 +48,7 @@ export const useGetNotes = ({
         .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
 
       filters.push(
-        `created >= "${utcStartOfDate}" && created <= "${utcEndOfDate}"`
+        `created >= "${utcStartOfDate}" && created <= "${utcEndOfDate}"`,
       );
     }
 

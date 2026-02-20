@@ -12,7 +12,7 @@ import type { Task } from "src/types/Task.type";
 type UseGetTacksResponse = {
   tasks: Task[];
   refetchTags: (
-    options?: RefetchOptions | undefined
+    options?: RefetchOptions | undefined,
   ) => Promise<QueryObserverResult<Task[], Error>>;
 };
 
@@ -50,7 +50,7 @@ export const useGetTasks = ({
         .format("YYYY-MM-DD HH:mm:ss.SSS[Z]");
 
       filters.push(
-        `(dueDate != "" && dueDate <= "${utcEndOfDate}" && completedDate = "" && cancelledDate = "") || (completedDate >= "${utcStartOfDate}" && completedDate <= "${utcEndOfDate}") || (cancelledDate >= "${utcStartOfDate}" && cancelledDate <= "${utcEndOfDate}")`
+        `(dueDate != "" && dueDate <= "${utcEndOfDate}" && completedDate = "" && cancelledDate = "") || (completedDate >= "${utcStartOfDate}" && completedDate <= "${utcEndOfDate}") || (cancelledDate >= "${utcStartOfDate}" && cancelledDate <= "${utcEndOfDate}")`,
       );
     }
 
@@ -58,7 +58,7 @@ export const useGetTasks = ({
       .collection("tasks")
       .getList(undefined, undefined, {
         filter: filters.join(" && "),
-        expand: "tags",
+        expand: "note",
         sort: "-dueDate",
       });
 

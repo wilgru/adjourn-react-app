@@ -5,7 +5,7 @@ import type { Tag } from "src/types/Tag.type";
 
 type TagPillProps = {
   tag: Tag;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   variant?: "block" | "ghost" | "link";
   closable?: boolean;
   collapsed?: boolean;
@@ -33,18 +33,18 @@ export const TagPill = ({
         colour={tag.colour}
         size={size}
         onClick={() => onClick && onClick(tag.id)}
+        disabled={!onClick}
         iconName={closable && closeButtonVisible ? "x" : tag.icon}
       >
-        <span
-          className={cn(
-            "inline-block overflow-hidden transition-all duration-300 ease-in-out",
-            collapsed
-              ? "max-w-0 opacity-0 -mr-2 delay-100"
-              : "max-w-[10rem] opacity-100"
-          )}
-        >
-          {tag.name}
-        </span>
+        {!collapsed && (
+          <span
+            className={cn(
+              "inline-block overflow-hidden transition-all duration-300 ease-in-out max-w-[10rem] opacity-100",
+            )}
+          >
+            {tag.name}
+          </span>
+        )}
       </Button>
     </div>
   );

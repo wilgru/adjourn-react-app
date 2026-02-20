@@ -132,7 +132,7 @@ const buttonVariants = cva(
       variant: "block",
       size: "md",
     },
-  }
+  },
 );
 
 export const Button = ({
@@ -168,11 +168,13 @@ export const Button = ({
         variant === "block" && colour.backgroundPill,
         variant === "block" && colour.textPillInverted,
         variant === "block" && colour.backgroundPillInverted,
-        variant === "ghost" && `hover:${colour.textPill}`,
-        variant === "ghost" && `hover:${colour.backgroundPill}`,
-        variant === "ghost-strong" && `hover:${colour.textPill}`,
-        variant === "ghost-strong" && `hover:${colour.backgroundPill}`,
-        className
+        variant === "ghost" && !disabled && `hover:${colour.textPill}`,
+        variant === "ghost" && !disabled && `hover:${colour.backgroundPill}`,
+        variant === "ghost-strong" && !disabled && `hover:${colour.textPill}`,
+        variant === "ghost-strong" &&
+          !disabled &&
+          `hover:${colour.backgroundPill}`,
+        className,
       )}
       disabled={disabled}
       onMouseEnter={() => setIsButtonHovered(true)}

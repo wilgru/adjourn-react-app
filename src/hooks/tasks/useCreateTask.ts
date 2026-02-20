@@ -30,11 +30,11 @@ export const useCreateTask = (): UseCreateTaskResponse => {
     const createdTask = await pb.collection("tasks").create(
       {
         ...createTaskData,
-        tags: createTaskData.tags.map((tag) => tag.id),
+        note: createTaskData.note?.id,
         journal: journalId,
         user: user?.id,
       },
-      { expand: "tags" }
+      { expand: "note" },
     );
 
     return mapTask(createdTask);
