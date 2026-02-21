@@ -15,9 +15,11 @@ dayjs.extend(utc);
 export const useGetNotes = ({
   isFlagged,
   createdDateString,
+  tagId,
 }: {
   isFlagged?: boolean;
   createdDateString?: string;
+  tagId?: string;
 }): UseGetNotesResponse => {
   const { journalId } = useCurrentJournalId();
 
@@ -28,6 +30,10 @@ export const useGetNotes = ({
 
     if (isFlagged !== undefined) {
       filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
+    }
+
+    if (tagId) {
+      filters.push(`tags ~ '${tagId}'`);
     }
 
     if (createdDateString) {
@@ -67,7 +73,7 @@ export const useGetNotes = ({
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["notes.list", journalId, isFlagged, createdDateString],
+    queryKey: ["notes.list", journalId, isFlagged, createdDateString, tagId],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

@@ -8,8 +8,9 @@ import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
-import { useCreateNote } from "src/notes/hooks/useCreateNote";
+import { useCreateNoteDraft } from "src/notes/hooks/useCreateNoteDraft";
 import { useGetNote } from "src/notes/hooks/useGetNote";
+import { useGetNotes } from "src/notes/hooks/useGetNotes";
 import { EditTagModal } from "src/tags/components/EditTagModal/EditTagModal";
 import { useGetTag } from "src/tags/hooks/useGetTag";
 import { useUpdateTag } from "src/tags/hooks/useUpdateTag";
@@ -40,9 +41,12 @@ export default function TagComponent() {
   const { journalId, tagId } = Route.useParams();
   const { noteId } = Route.useSearch(); // TODO: use in loaders?
   const navigate = useNavigate();
-  const { tag, notes } = useGetTag(tagId ?? "");
+  const { tag } = useGetTag(tagId ?? "");
+  const { notes } = useGetNotes({ tagId });
   const { note } = useGetNote({ noteId });
-  const { createNote } = useCreateNote();
+  const { createNoteDraft } = useCreateNoteDraft({
+    tagId,
+  });
   const { updateTag } = useUpdateTag();
 
   if (!tag) {
@@ -50,8 +54,8 @@ export default function TagComponent() {
   }
 
   const onCreateNote = async () => {
-    const newNote = await createNote({
-      createNoteData: {
+    const newNote = await createNoteDraft({
+      createNoteDraftData: {
         title: "",
         content: new Delta(),
         tags: [tag],
