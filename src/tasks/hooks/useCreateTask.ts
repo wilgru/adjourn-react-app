@@ -50,7 +50,7 @@ export const useCreateTask = (): UseCreateTaskResponse => {
     });
 
     queryClient.refetchQueries({
-      queryKey: ["tags.get"],
+      queryKey: ["notes.get", data.note?.id],
     });
   };
 
