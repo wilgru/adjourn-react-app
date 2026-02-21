@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { isSideBarVisibleAtom } from "src/atoms/isSidebarVisibleAtom.ts";
-import { Sidebar } from "../components/navigation/Sidebar/Sidebar.tsx";
+import { isSideBarVisibleAtom } from "src/common/atoms/isSidebarVisibleAtom.ts";
+import { Sidebar } from "../common/components/Sidebar/Sidebar.tsx";
 
 export const Route = createFileRoute("/_layout")({
   component: RouteComponent,

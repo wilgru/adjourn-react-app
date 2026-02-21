@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { NotesLayout } from "src/components/layout/NotesLayout/NotesLayout";
-import { useGetNote } from "src/hooks/notes/useGetNote";
-import { useGetNotes } from "src/hooks/notes/useGetNotes";
-import isAuthenticated from "src/utils/users/isAuthenticated";
+import isAuthenticated from "src/Users/utils/isAuthenticated";
+import { Toolbar } from "src/common/components/Toolbar/Toolbar";
+import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
+import { useGetNote } from "src/notes/hooks/useGetNote";
+import { useGetNotes } from "src/notes/hooks/useGetNotes";
 
 export const Route = createFileRoute("/_layout/$journalId/flagged")({
   component: RouteComponent,

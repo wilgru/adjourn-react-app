@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "src/components/controls/Button/Button";
-import { ColourPicker } from "src/components/dataEntry/ColourPicker/ColourPicker";
-import IconPicker from "src/components/dataEntry/IconPicker/IconPicker";
-import { Input } from "src/components/dataEntry/Input/Input";
-import { colours } from "src/constants/colours.constant";
-import { useCreateJournal } from "src/hooks/journals/useCreateJournal";
-import { getNavigationDay } from "src/utils/getNavigationDay";
-import type { Colour } from "src/types/Colour.type";
+import { colours } from "src/colours/colours.constant";
+import { ColourPicker } from "src/colours/components/ColourPicker/ColourPicker";
+import { Button } from "src/common/components/Button/Button";
+import { Input } from "src/common/components/Input/Input";
+import { getNavigationDay } from "src/common/utils/getNavigationDay";
+import IconPicker from "src/icons/components/IconPicker/IconPicker";
+import { useCreateJournal } from "src/journals/hooks/useCreateJournal";
+import type { Colour } from "src/colours/Colour.type";
 
 export const Route = createFileRoute("/create-journal")({
   component: RouteComponent,

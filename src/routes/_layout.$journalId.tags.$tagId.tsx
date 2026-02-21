@@ -3,16 +3,16 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import Delta from "quill-delta";
-import { Button } from "src/components/controls/Button/Button";
-import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { NotesLayout } from "src/components/layout/NotesLayout/NotesLayout";
-import { EditTagModal } from "src/components/modals/EditTagModal/EditTagModal";
-import { useCreateNote } from "src/hooks/notes/useCreateNote";
-import { useGetNote } from "src/hooks/notes/useGetNote";
-import { useGetTag } from "src/hooks/tags/useGetTag";
-import { useUpdateTag } from "src/hooks/tags/useUpdateTag";
-import { cn } from "src/utils/cn";
-import isAuthenticated from "src/utils/users/isAuthenticated";
+import isAuthenticated from "src/Users/utils/isAuthenticated";
+import { Button } from "src/common/components/Button/Button";
+import { Toolbar } from "src/common/components/Toolbar/Toolbar";
+import { cn } from "src/common/utils/cn";
+import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
+import { useCreateNote } from "src/notes/hooks/useCreateNote";
+import { useGetNote } from "src/notes/hooks/useGetNote";
+import { EditTagModal } from "src/tags/components/EditTagModal/EditTagModal";
+import { useGetTag } from "src/tags/hooks/useGetTag";
+import { useUpdateTag } from "src/tags/hooks/useUpdateTag";
 
 export const Route = createFileRoute("/_layout/$journalId/tags/$tagId")({
   component: TagComponent,

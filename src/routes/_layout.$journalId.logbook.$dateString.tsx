@@ -1,12 +1,12 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { useSetAtom } from "jotai";
-import { jumpToDateAtom } from "src/atoms/jumpToDateAtom";
-import { Button } from "src/components/controls/Button/Button";
-import { Toolbar } from "src/components/controls/Toolbar/Toolbar";
-import { Calendar } from "src/components/navigation/Calendar/Calendar";
-import { getNavigationDay } from "src/utils/getNavigationDay";
-import isAuthenticated from "src/utils/users/isAuthenticated";
+import isAuthenticated from "src/Users/utils/isAuthenticated";
+import { Button } from "src/common/components/Button/Button";
+import { Calendar } from "src/common/components/Calendar/Calendar";
+import { Toolbar } from "src/common/components/Toolbar/Toolbar";
+import { getNavigationDay } from "src/common/utils/getNavigationDay";
+import { jumpToDateAtom } from "src/tableOfContents/atoms/jumpToDateAtom";
 
 export const Route = createFileRoute("/_layout/$journalId/logbook/$dateString")(
   {
