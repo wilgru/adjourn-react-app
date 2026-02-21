@@ -1,0 +1,14 @@
+# Prettier ignore patterns (gitignore-style)
+node_modules/
+dist/
+build/
+.vite/
+.pnp.cjs
+.DS_Store
+
+# PocketBase local data and migrations
+pocketbase/pb_data/
+pocketbase/pb_migrations/
+
+# generated files
+src/routeTree.gen.ts
