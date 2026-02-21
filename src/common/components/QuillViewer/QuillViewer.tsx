@@ -3,11 +3,11 @@ import Quill from "quill";
 import { useEffect, useRef } from "react";
 import type Delta from "quill-delta";
 
-type QuillContentVIewProps = {
+type QuillViewerProps = {
   content: Delta;
 };
 
-export default function QuillContentView({ content }: QuillContentVIewProps) {
+export default function QuillViewer({ content }: QuillViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
