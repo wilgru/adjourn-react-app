@@ -5,11 +5,11 @@ import { CreateTagModal } from "src/tags/components/CreateTagModal/CreateTagModa
 
 export const SidebarTagSection = ({
   title,
-  topicGroupId,
+  tagGroupId,
   children,
 }: {
   title: string;
-  topicGroupId?: string;
+  tagGroupId?: string;
   children: React.ReactNode;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -36,7 +36,7 @@ export const SidebarTagSection = ({
               )}
             </Dialog.Trigger>
 
-            <CreateTagModal topicGroupId={topicGroupId} />
+            <CreateTagModal tagGroupId={tagGroupId} />
           </Dialog.Root>
         </div>
         {children}

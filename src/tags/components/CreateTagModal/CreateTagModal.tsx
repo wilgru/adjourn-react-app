@@ -13,22 +13,20 @@ import type { Tag } from "src/tags/Tag.type";
 type NewTag = Omit<Tag, "id" | "noteCount" | "groupBy" | "created" | "updated">;
 
 type CreateTagModalProps = {
-  topicGroupId?: string;
+  tagGroupId?: string;
 };
 
-const getInitialTag = (topicGroupId?: string): NewTag => ({
+const getInitialTag = (tagGroupId?: string): NewTag => ({
   name: "",
   description: null,
   colour: colours.orange,
   icon: "tag",
   badges: [],
-  topicGroupId: topicGroupId ?? null,
+  tagGroupId: tagGroupId ?? null,
 });
 
-export const CreateTagModal = ({ topicGroupId }: CreateTagModalProps) => {
-  const [editedTag, setEditedTag] = useState<NewTag>(
-    getInitialTag(topicGroupId),
-  );
+export const CreateTagModal = ({ tagGroupId }: CreateTagModalProps) => {
+  const [editedTag, setEditedTag] = useState<NewTag>(getInitialTag(tagGroupId));
   const { createTag } = useCreateTag();
 
   const onSaveEdit = async () => {

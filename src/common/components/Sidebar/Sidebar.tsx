@@ -7,13 +7,13 @@ import { getNavigationDay } from "src/common/utils/getNavigationDay";
 import { JournalSelector } from "src/journals/components/JournalSelector/JouranlSelector";
 import { useCurrentJournalId } from "src/journals/hooks/useCurrentJournalId";
 import { useGetJournals } from "src/journals/hooks/useGetJournals";
-import { CreateTopicGroupModal } from "src/tags/components/CreateTopicGroupModal/CreateTopicGroupModal";
-import { useGetTopicGroups } from "src/tags/hooks/useGetTopicGroups";
+import { CreateTagGroupModal } from "src/tags/components/CreateTagGroupModal/CreateTagGroupModal";
+import { useGetTagGroups } from "src/tags/hooks/useGetTagGroups";
 import { SidebarTagSection } from "./SidebarTagSection";
 
 export const Sidebar = () => {
   const { journalId } = useCurrentJournalId();
-  const { ungroupedTopics, topicGroups } = useGetTopicGroups();
+  const { ungroupedTags, tagGroups } = useGetTagGroups();
   const { journals } = useGetJournals();
 
   const currentJournal = journals.find((journal) => journal.id === journalId);
@@ -78,7 +78,7 @@ export const Sidebar = () => {
           </section>
 
           <SidebarTagSection title={"Tags"}>
-            {ungroupedTopics.map((tag) => (
+            {ungroupedTags.map((tag) => (
               <NavItem
                 iconName={tag.icon}
                 colour={tag.colour}
@@ -90,14 +90,14 @@ export const Sidebar = () => {
             ))}
           </SidebarTagSection>
 
-          {topicGroups.map((topicGroup) => (
+          {tagGroups.map((tagGroup) => (
             <SidebarTagSection
-              title={topicGroup.title}
-              topicGroupId={topicGroup.id}
-              key={topicGroup.id}
+              title={tagGroup.title}
+              tagGroupId={tagGroup.id}
+              key={tagGroup.id}
             >
               <div className="flex flex-col gap-1 mt-1">
-                {topicGroup.topics.map((tag) => (
+                {tagGroup.tags.map((tag) => (
                   <NavItem
                     iconName={tag.icon}
                     colour={tag.colour}
@@ -123,7 +123,7 @@ export const Sidebar = () => {
               </Button>
             </Dialog.Trigger>
 
-            <CreateTopicGroupModal />
+            <CreateTagGroupModal />
           </Dialog.Root>
         </div>
       </div>

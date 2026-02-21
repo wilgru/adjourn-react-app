@@ -1,10 +1,10 @@
 import type { Dayjs } from "dayjs";
 import type { Colour } from "src/colours/Colour.type";
 
-export type TopicGroup = {
+export type TagGroup = {
   id: string;
   title: string;
-  topics: Tag[];
+  tags: Tag[];
   created: Dayjs;
   updated: Dayjs;
 };
@@ -24,7 +24,7 @@ export type Tag = {
   noteCount: number;
   groupBy: "created" | "tag" | null;
   badges: TagBadge[];
-  topicGroupId: string | null;
+  tagGroupId: string | null;
   created: Dayjs;
   updated: Dayjs;
 };

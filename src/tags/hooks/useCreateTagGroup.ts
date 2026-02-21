@@ -2,15 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "src/Users/hooks/useUser";
 import { useCurrentJournalId } from "src/journals/hooks/useCurrentJournalId";
 import { pb } from "src/pocketbase/utils/connection";
-import { mapTopicGroup } from "src/tags/utils/mapTopicGroup";
+import { mapTagGroup } from "src/tags/utils/mapTagGroup";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { TopicGroup } from "src/tags/Tag.type";
+import type { TagGroup } from "src/tags/Tag.type";
 
-type CreateTopicGroupProps = {
-  createTopicGroupData: Omit<
-    TopicGroup,
+type CreateTagGroupProps = {
+  createTagGroupData: Omit<
+    TagGroup,
     | "id"
-    | "topics"
+    | "tags"
     | "journalId"
     | "groupBy"
     | "user"
@@ -20,41 +20,41 @@ type CreateTopicGroupProps = {
   >;
 };
 
-type UseCreateTopicGroupResponse = {
-  createTopicGroup: UseMutateAsyncFunction<
-    TopicGroup,
+type UseCreateTagGroupResponse = {
+  createTagGroup: UseMutateAsyncFunction<
+    TagGroup,
     Error,
-    CreateTopicGroupProps,
+    CreateTagGroupProps,
     unknown
   >;
 };
 
-export const useCreateTopicGroup = (): UseCreateTopicGroupResponse => {
+export const useCreateTagGroup = (): UseCreateTagGroupResponse => {
   const { journalId } = useCurrentJournalId();
   const queryClient = useQueryClient();
   const { user } = useUser();
 
   const mutationFn = async ({
-    createTopicGroupData,
-  }: CreateTopicGroupProps): Promise<TopicGroup> => {
-    const newTopicGroup = await pb.collection("topicGroups").create({
-      ...createTopicGroupData,
+    createTagGroupData,
+  }: CreateTagGroupProps): Promise<TagGroup> => {
+    const newTagGroup = await pb.collection("tagGroups").create({
+      ...createTagGroupData,
       journal: journalId,
       user: user?.id,
       groupBy: null,
     });
 
-    const mappedNewTopicGroup = mapTopicGroup({
-      ...newTopicGroup,
+    const mappedNewTagGroup = mapTagGroup({
+      ...newTagGroup,
       totalNotes: 0,
     });
 
-    return mappedNewTopicGroup;
+    return mappedNewTagGroup;
   };
 
   const onSuccess = () => {
     queryClient.refetchQueries({
-      queryKey: ["topicGroups.list"],
+      queryKey: ["tagGroups.list"],
     });
   };
 
@@ -67,5 +67,5 @@ export const useCreateTopicGroup = (): UseCreateTopicGroupResponse => {
     // gcTime: 2 * 60 * 1000,
   });
 
-  return { createTopicGroup: mutateAsync };
+  return { createTagGroup: mutateAsync };
 };

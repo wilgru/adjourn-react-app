@@ -51,7 +51,7 @@ export const TagMultiSelect = ({
         name: search.trim(),
         description: null,
         badges: [],
-        topicGroupId: null,
+        tagGroupId: null,
         colour: colours.orange,
         icon: "tag",
       },
@@ -97,7 +97,7 @@ export const TagMultiSelect = ({
             <input
               type="text"
               className="rounded-lg px-2 py-1 text-xs border border-slate-300 focus:outline-none focus:border-orange-400"
-              placeholder="search for a topic"
+              placeholder="search for a tag"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);

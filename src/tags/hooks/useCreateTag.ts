@@ -34,7 +34,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
     const newTag = await pb.collection("tags").create({
       ...createTagData,
       colour: createTagData.colour.name,
-      topicGroup: createTagData.topicGroupId ?? null,
+      tagGroup: createTagData.tagGroupId ?? null,
       journal: journalId,
       user: user?.id,
       groupBy: null,
@@ -50,7 +50,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
       queryKey: ["tags.list"],
     });
     queryClient.refetchQueries({
-      queryKey: ["topicGroups.list"],
+      queryKey: ["tagGroups.list"],
     });
   };
 
