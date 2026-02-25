@@ -46,14 +46,6 @@ export const Sidebar = () => {
           <section className="flex flex-col gap-1">
             <NavItem
               ghost
-              iconName="notebook"
-              title="Logbook"
-              to={`/${journalId}/logbook/${getNavigationDay()}`}
-              expanded={true}
-            />
-
-            <NavItem
-              ghost
               iconName="pencil"
               title="Notes"
               to={`/${journalId}/notes/`}
@@ -62,9 +54,17 @@ export const Sidebar = () => {
 
             <NavItem
               ghost
-              iconName="listChecks"
+              iconName="checkCircle"
               title="Tasks"
               to={`/${journalId}/tasks/`}
+              expanded={true}
+            />
+
+            <NavItem
+              ghost
+              iconName="chatCenteredText"
+              title="Updates"
+              to={`/${journalId}/logbook/${getNavigationDay()}`}
               expanded={true}
             />
 
