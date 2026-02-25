@@ -1,4 +1,9 @@
 import {
+  CodeBlock,
+  LinkSimple,
+  ListBullets,
+  ListNumbers,
+  Quotes,
   TextB,
   TextItalic,
   TextStrikethrough,
@@ -7,8 +12,7 @@ import {
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import Delta from "quill-delta";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
@@ -24,28 +28,12 @@ import type { Colour } from "src/colours/Colour.type";
 import type { Note } from "src/notes/Note.type";
 
 type NoteEditorProps = {
-  note?: Partial<Note>;
+  note: Note;
   colour?: Colour;
   onSave?: () => void;
 };
 
 const QUILL_TOOLBAR_ID = "toolbar";
-
-const getInitialNote = (note: Partial<Note> | undefined): Note => {
-  return {
-    id: note?.id || "",
-    title: note?.title || "",
-    tasks: note?.tasks || [],
-    content: note?.content || new Delta(),
-    tags: note?.tags || [],
-    isFlagged: note?.isFlagged || false,
-    isPinned: note?.isPinned || false,
-    created: note?.created || dayjs(),
-    updated: note?.updated || dayjs(),
-    deleted: note?.deleted || null,
-    isDraft: false,
-  };
-};
 
 const NoteEditor = ({
   note,
@@ -60,9 +48,13 @@ const NoteEditor = ({
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [editedNote, setEditedNote] = useState<Note>(getInitialNote(note));
+  const [editedNote, setEditedNote] = useState<Note>(note);
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
-  const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
+  const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEditedNote(note);
+  }, [note]);
 
   const onCreateTask = async () => {
     await createTask({
@@ -81,7 +73,7 @@ const NoteEditor = ({
 
   const onUpdateNote = async (updateNoteData: Partial<Note>) => {
     setEditedNote((currentEditedNote) => {
-      const newNoteData = {
+      const newNoteData: Note = {
         ...currentEditedNote,
         ...updateNoteData,
         updated: dayjs(),
@@ -117,10 +109,6 @@ const NoteEditor = ({
       },
     });
   };
-
-  if (!note) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-4 w-[1000px]">
@@ -214,65 +202,94 @@ const NoteEditor = ({
         </div>
       )}
 
-      <div className="flex flex-row w-full">
-        <div
-          className="h-fit -ml-2 border-r-2 pr-1 border-slate-100"
-          id={QUILL_TOOLBAR_ID}
+      <div className="h-fit" id={QUILL_TOOLBAR_ID}>
+        <ToggleGroup.Root
+          className="font-medium text-sm flex"
+          type="multiple"
+          defaultValue={[]}
+          value={[
+            ...(toolbarFormatting?.bold ? ["bold"] : []),
+            ...(toolbarFormatting?.italic ? ["italic"] : []),
+            ...(toolbarFormatting?.underline ? ["underline"] : []),
+            ...(toolbarFormatting?.strike ? ["strike"] : []),
+            ...(toolbarFormatting?.list === "ordered" ? ["ordered"] : []),
+            ...(toolbarFormatting?.list === "bullet" ? ["bullet"] : []),
+            ...(toolbarFormatting?.align === "center" ? ["center"] : []),
+            ...(toolbarFormatting?.blockquote ? ["blockquote"] : []),
+            ...(toolbarFormatting?.["code-block"] ? ["code-block"] : []),
+            ...(toolbarFormatting?.link ? ["link"] : []),
+          ]}
+          aria-label="Text alignment"
         >
-          <ToggleGroup.Root
-            className="font-medium text-sm"
-            type="multiple"
-            defaultValue={[]}
-            value={[
-              ...(toolbarFormatting?.bold ? ["bold"] : []),
-              ...(toolbarFormatting?.italic ? ["italic"] : []),
-              ...(toolbarFormatting?.underline ? ["underline"] : []),
-              ...(toolbarFormatting?.strike ? ["strike"] : []),
-            ]}
-            aria-label="Text alignment"
-          >
-            <span className="ql-formats flex flex-row gap-1">
-              <ToggleGroup.Item
-                className="ql-bold rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
-                value="bold"
-              >
-                <TextB size={16} weight="bold" />
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                className="ql-italic rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
-                value="italic"
-              >
-                <TextItalic size={16} weight="bold" />
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                className="ql-underline rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
-                value="underline"
-              >
-                <TextUnderline size={16} weight="bold" />
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                className=" ql-strike rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
-                value="strike"
-              >
-                <TextStrikethrough size={16} weight="bold" />
-              </ToggleGroup.Item>
-            </span>
-          </ToggleGroup.Root>
-        </div>
+          <div className="ql-formats flex flex-row gap-1 pr-1 border-r-2 border-slate-100">
+            <ToggleGroup.Item
+              className="ql-bold rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="bold"
+            >
+              <TextB size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className="ql-italic rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="italic"
+            >
+              <TextItalic size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className="ql-underline rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="underline"
+            >
+              <TextUnderline size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className=" ql-strike rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="strike"
+            >
+              <TextStrikethrough size={16} weight="bold" />
+            </ToggleGroup.Item>
+          </div>
 
-        <div className="flex flex-row gap-1 px-1">
-          <Button
-            colour={colours.blue}
-            variant="ghost"
-            size="sm"
-            iconName="paperclip"
-          />
-        </div>
+          <div className="flex flex-row gap-1 px-1 pr-1 border-r-2 border-slate-100">
+            <ToggleGroup.Item
+              className=" ql-list rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="ordered"
+            >
+              <ListNumbers size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className=" ql-list rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="bullet"
+            >
+              <ListBullets size={16} weight="bold" />
+            </ToggleGroup.Item>
+          </div>
+
+          <div className="flex flex-row gap-1 px-1 pr-1">
+            <ToggleGroup.Item
+              className=" ql-blockquote rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="blockquote"
+            >
+              <Quotes size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className=" ql-code-block rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="code-block"
+            >
+              <CodeBlock size={16} weight="bold" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item
+              className=" ql-link rounded-md text-slate-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
+              value="link"
+            >
+              <LinkSimple size={16} weight="bold" />
+            </ToggleGroup.Item>
+          </div>
+        </ToggleGroup.Root>
       </div>
 
       <QuillEditor
+        key={editedNote.id}
         toolbarId={QUILL_TOOLBAR_ID}
-        initialValue={editedNote.content}
+        value={editedNote.content}
         onChange={(delta) => onUpdateNote({ content: delta })}
         onSelectedFormattingChange={(selectionFormatting: StringMap) => {
           setToolbarFormatting(selectionFormatting);

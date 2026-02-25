@@ -1,18 +1,12 @@
 import "./style.css";
 import Quill from "quill";
-import Delta from "quill-delta";
-import {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { RangeStatic, StringMap } from "quill";
+import type Delta from "quill-delta";
 
 type QuillEditorProps = {
   toolbarId: string;
-  initialValue: Delta;
+  value?: Delta;
   onChange: (delta: Delta) => void;
   onSelectedFormattingChange: (selectionFormatting: StringMap) => void;
 };
@@ -22,171 +16,187 @@ type QuillEditorProps = {
 // https://medium.com/@mircea.calugaru/react-quill-editor-with-full-toolbar-options-and-custom-buttons-undo-redo-176d79f8d375
 
 // TODO: override quills internal value updating? make this comp more like textarea, pass value and onChange and use onChange to update a state to pass to the value
-const QuillEditor = forwardRef(
-  ({
-    toolbarId,
-    initialValue,
-    onChange,
-    onSelectedFormattingChange,
-  }: QuillEditorProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const onChangeRef = useRef(onChange);
-    const [quillEditor, setQuillEditor] = useState<Quill | null>();
+const QuillEditor = ({
+  toolbarId,
+  value,
+  onChange,
+  onSelectedFormattingChange,
+}: QuillEditorProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const onChangeRef = useRef(onChange);
+  const [quillEditor, setQuillEditor] = useState<Quill | null>();
 
-    const onChangeInternal = (delta: Delta) => {
-      const contentDelta = delta ?? new Delta();
+  useLayoutEffect(() => {
+    onChangeRef.current = onChange;
+  });
 
-      onChange(contentDelta);
-    };
+  useEffect(() => {
+    if (!quillEditor) return;
+    if (value === undefined) return;
 
-    useLayoutEffect(() => {
-      onChangeRef.current = onChangeInternal;
-    });
+    const current = quillEditor.getContents();
+    try {
+      if (JSON.stringify(current) !== JSON.stringify(value)) {
+        quillEditor.setContents(value, "api");
+      }
+    } catch {
+      quillEditor.setContents(value, "api");
+    }
+  }, [value, quillEditor]);
 
-    useEffect(() => {
-      quillEditor?.setContents(initialValue);
-    }, [initialValue, quillEditor]);
+  useEffect(() => {
+    if (!quillEditor) return;
 
-    useEffect(() => {
-      quillEditor?.on("text-change", () => {
-        const selection = quillEditor.getSelection();
+    const handleTextChange = (
+      _delta: Delta,
+      _oldDelta: Delta,
+      source: string,
+    ) => {
+      const selection = quillEditor.getSelection();
 
-        if (selection) {
-          const selectionFormatting = quillEditor.getFormat(
-            selection.index,
-            selection.length,
-          );
+      if (selection) {
+        const selectionFormatting = quillEditor.getFormat(
+          selection.index,
+          selection.length,
+        );
 
-          onSelectedFormattingChange(selectionFormatting);
-        }
-
-        onChangeRef.current?.(quillEditor?.getContents());
-      });
-
-      quillEditor?.on("selection-change", (range: RangeStatic) => {
-        if (range) {
-          const selectionFormatting = quillEditor.getFormat(
-            range.index,
-            range.length,
-          );
-
-          onSelectedFormattingChange(selectionFormatting);
-        }
-      });
-
-      return () => {
-        quillEditor?.off("text-change", () => {
-          onChangeRef.current?.(quillEditor?.getContents());
-        });
-      };
-    }, [onSelectedFormattingChange, quillEditor]);
-
-    useEffect(() => {
-      const container = containerRef.current;
-
-      if (!container) {
-        return;
+        onSelectedFormattingChange(selectionFormatting);
       }
 
-      const editorContainer = container.appendChild(
-        container.ownerDocument.createElement("div"),
-      );
+      // Only notify consumers for user-driven changes (like a textarea)
+      if (source === "user") {
+        onChangeRef.current?.(quillEditor.getContents());
+      }
+    };
 
-      const quill = new Quill(editorContainer, {
-        // debug: import.meta.env.DEV ? "info" : undefined, // TODO: add back in with dev tools
-        placeholder: "No content",
-        modules: {
-          toolbar: {
-            container: `#${toolbarId}`,
-            handlers: {
-              bold: function () {
-                const selection = quill.getSelection();
+    const handleSelectionChange = (range: RangeStatic) => {
+      if (range) {
+        const selectionFormatting = quillEditor.getFormat(
+          range.index,
+          range.length,
+        );
 
-                if (!selection) {
-                  return;
-                }
+        onSelectedFormattingChange(selectionFormatting);
+      }
+    };
 
-                const selectionFormatting = quill.getFormat(
-                  selection.index,
-                  selection.length,
-                );
+    quillEditor.on("text-change", handleTextChange);
+    quillEditor.on("selection-change", handleSelectionChange);
 
-                quill.format("bold", selectionFormatting.bold ? false : true);
-              },
-              italic: function () {
-                const selection = quill.getSelection();
+    return () => {
+      quillEditor?.off("text-change", handleTextChange);
+      quillEditor?.off("selection-change", handleSelectionChange);
+    };
+  }, [onSelectedFormattingChange, quillEditor]);
 
-                if (!selection) {
-                  return;
-                }
+  useEffect(() => {
+    const container = containerRef.current;
 
-                const selectionFormatting = quill.getFormat(
-                  selection.index,
-                  selection.length,
-                );
+    if (!container) {
+      return;
+    }
 
-                quill.format(
-                  "italic",
-                  selectionFormatting.italic ? false : true,
-                );
-              },
-              underline: function () {
-                const selection = quill.getSelection();
+    const editorContainer = container.appendChild(
+      container.ownerDocument.createElement("div"),
+    );
 
-                if (!selection) {
-                  return;
-                }
+    const quill = new Quill(editorContainer, {
+      // debug: import.meta.env.DEV ? "info" : undefined, // TODO: add back in with dev tools
+      placeholder: "No content",
+      modules: {
+        toolbar: {
+          container: `#${toolbarId}`,
+          handlers: {
+            bold: function () {
+              const selection = quill.getSelection();
 
-                const selectionFormatting = quill.getFormat(
-                  selection.index,
-                  selection.length,
-                );
+              if (!selection) {
+                return;
+              }
 
-                quill.format(
-                  "underline",
-                  selectionFormatting.underline ? false : true,
-                );
-              },
-              strike: function () {
-                const selection = quill.getSelection();
+              const selectionFormatting = quill.getFormat(
+                selection.index,
+                selection.length,
+              );
 
-                if (!selection) {
-                  return;
-                }
+              quill.format("bold", selectionFormatting.bold ? false : true);
+            },
+            italic: function () {
+              const selection = quill.getSelection();
 
-                const selectionFormatting = quill.getFormat(
-                  selection.index,
-                  selection.length,
-                );
+              if (!selection) {
+                return;
+              }
 
-                quill.format(
-                  "strike",
-                  selectionFormatting.strike ? false : true,
-                );
-              },
+              const selectionFormatting = quill.getFormat(
+                selection.index,
+                selection.length,
+              );
+
+              quill.format("italic", selectionFormatting.italic ? false : true);
+            },
+            underline: function () {
+              const selection = quill.getSelection();
+
+              if (!selection) {
+                return;
+              }
+
+              const selectionFormatting = quill.getFormat(
+                selection.index,
+                selection.length,
+              );
+
+              quill.format(
+                "underline",
+                selectionFormatting.underline ? false : true,
+              );
+            },
+            strike: function () {
+              const selection = quill.getSelection();
+
+              if (!selection) {
+                return;
+              }
+
+              const selectionFormatting = quill.getFormat(
+                selection.index,
+                selection.length,
+              );
+
+              quill.format("strike", selectionFormatting.strike ? false : true);
             },
           },
         },
-        formats: ["bold", "italic", "underline", "strike"],
-      });
+      },
+      formats: [
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "list",
+        "blockquote",
+        "code-block",
+        "link",
+      ],
+    });
 
-      setQuillEditor(quill);
+    setQuillEditor(quill);
 
-      return () => {
-        container.innerHTML = "";
+    return () => {
+      container.innerHTML = "";
 
-        setQuillEditor(null);
-      };
-    }, [toolbarId]);
+      setQuillEditor(null);
+    };
+  }, [toolbarId]);
 
-    return (
-      <div
-        id="quill-editor"
-        ref={containerRef}
-        className="h-fit placeholder-slate-500"
-      ></div>
-    );
-  },
-);
+  return (
+    <div
+      id="quill-editor"
+      ref={containerRef}
+      className="h-fit placeholder-slate-500"
+    ></div>
+  );
+};
 
 export { QuillEditor };
