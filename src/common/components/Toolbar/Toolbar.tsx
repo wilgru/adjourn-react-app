@@ -13,14 +13,14 @@ type ToolbarProps = {
   iconName?: string;
   title: string;
   colour?: Colour;
-  titleItems: JSX.Element[];
+  children?: JSX.Element;
 };
 
 export const Toolbar = ({
   iconName,
   title,
   colour = colours.orange,
-  titleItems,
+  children,
 }: ToolbarProps) => {
   const navigate = useNavigate();
   const { logout } = useLogin();
@@ -52,7 +52,7 @@ export const Toolbar = ({
             <h1 className="font-title text-xl">{title}</h1>
           </div>
 
-          {titleItems.map((titleItem) => titleItem)}
+          {children}
         </div>
       </div>
 

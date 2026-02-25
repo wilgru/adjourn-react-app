@@ -41,10 +41,8 @@ function LogbookComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar
-        iconName="notebook"
-        title={title}
-        titleItems={[
+      <Toolbar iconName="notebook" title={title}>
+        <>
           <div>
             <Button
               variant="ghost"
@@ -57,7 +55,7 @@ function LogbookComponent() {
                 });
               }}
             />
-          </div>,
+          </div>
           <div>
             <Button
               variant="ghost"
@@ -70,7 +68,7 @@ function LogbookComponent() {
                 });
               }}
             />
-          </div>,
+          </div>
           <div>
             <Button
               variant="ghost"
@@ -83,9 +81,9 @@ function LogbookComponent() {
                 });
               }}
             />
-          </div>,
-        ]}
-      />
+          </div>
+        </>
+      </Toolbar>
 
       <Calendar journalId={journalId} />
     </div>

@@ -38,12 +38,7 @@ function NotesComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar
-        iconName="pencil"
-        title={"Notes"}
-        colour={colours.grey}
-        titleItems={[]}
-      />
+      <Toolbar iconName="pencil" title={"Notes"} colour={colours.grey} />
 
       <NotesLayout
         title={"Notes"}

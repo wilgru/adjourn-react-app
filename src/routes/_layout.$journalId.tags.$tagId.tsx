@@ -79,11 +79,8 @@ export default function TagComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar
-        iconName={tag.icon}
-        title={tag.name}
-        colour={tag.colour}
-        titleItems={[
+      <Toolbar iconName={tag.icon} title={tag.name} colour={tag.colour}>
+        <>
           <div>
             <Dialog.Root>
               <Dialog.Trigger asChild>
@@ -97,7 +94,7 @@ export default function TagComponent() {
 
               <EditTagModal tag={tag} />
             </Dialog.Root>
-          </div>,
+          </div>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <div>
@@ -217,16 +214,16 @@ export default function TagComponent() {
                 </DropdownMenu.RadioGroup>
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
-          </DropdownMenu.Root>,
+          </DropdownMenu.Root>
           <Button
             variant="ghost"
             size="sm"
             colour={tag.colour}
             iconName="plus"
             onClick={onCreateNote}
-          />,
-        ]}
-      />
+          />
+        </>
+      </Toolbar>
 
       <NotesLayout
         title={tag.name}

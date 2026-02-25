@@ -15,7 +15,7 @@ export const NotesList = ({
   colour,
 }: NotesListProps) => {
   return (
-    <section id={noteGroup.title ?? undefined}>
+    <section>
       <div className="flex flex-col gap-1 items-start">
         {noteGroup.title && (
           <p className="text-slate-400 text-xs">{noteGroup.title}</p>

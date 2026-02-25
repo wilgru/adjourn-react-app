@@ -26,12 +26,7 @@ function RouteComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar
-        iconName="listChecks"
-        title="Tasks"
-        colour={colours.grey}
-        titleItems={[]}
-      />
+      <Toolbar iconName="listChecks" title="Tasks" colour={colours.grey} />
 
       <TasksLayout
         header={

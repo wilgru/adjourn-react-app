@@ -75,6 +75,7 @@ export const NotesLayout = ({
 
         {noteGroups.map((noteGroup) => (
           <NotesList
+            key={noteGroup.title ?? "no-title"}
             noteGroup={noteGroup}
             colour={colour}
             createdDateFormat={

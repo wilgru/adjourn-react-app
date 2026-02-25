@@ -35,7 +35,7 @@ function RouteComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="flag" title={"Flagged"} titleItems={[]} />
+      <Toolbar iconName="flag" title={"Flagged"} />
 
       <NotesLayout
         title="Flagged"
