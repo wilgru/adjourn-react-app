@@ -7,7 +7,8 @@ import { groupNotes } from "src/notes/utils/groupNotes";
 import { NotesList } from "../NotesList/NotesList";
 import type { Colour } from "src/colours/Colour.type";
 import type { Note, NotesGroup } from "src/notes/Note.type";
-import type { TagBadge } from "src/tags/Tag.type";
+import { getDisplayUrl } from "src/tags/utils/getDisplayUrl";
+import type { TagLink } from "src/tags/Tag.type";
 
 type NotesLayoutProps = {
   title: string;
@@ -16,7 +17,7 @@ type NotesLayoutProps = {
   selectedNote: Note | null;
   showNoteCreateTimeOnly?: boolean;
   description: string | null;
-  links?: TagBadge[];
+  links?: TagLink[];
   prefillNewNoteData?: Partial<Note>;
   groupNotesBy?: "created" | "tag";
   groupSortDirection?: "asc" | "desc";
@@ -75,7 +76,7 @@ export const NotesLayout = ({
                   )}
                 >
                   <Icon iconName="link" size="sm" />
-                  {link.title}
+                  {link.title || getDisplayUrl(link.link)}
                 </a>
               ))}
           </div>
