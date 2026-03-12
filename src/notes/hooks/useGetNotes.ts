@@ -13,10 +13,10 @@ type UseGetNotesResponse = {
 dayjs.extend(utc);
 
 export const useGetNotes = ({
-  isFlagged,
+  isBookmarked,
   createdDateString,
 }: {
-  isFlagged?: boolean;
+  isBookmarked?: boolean;
   createdDateString?: string;
 }): UseGetNotesResponse => {
   const { journalId } = useCurrentJournalId();
@@ -26,8 +26,10 @@ export const useGetNotes = ({
   }> => {
     const filters = [`journal = '${journalId}'`, "deleted = null"];
 
-    if (isFlagged !== undefined) {
-      filters.push(isFlagged ? "isFlagged = true" : "isFlagged = false");
+    if (isBookmarked !== undefined) {
+      filters.push(
+        isBookmarked ? "isBookmarked = true" : "isBookmarked = false",
+      );
     }
 
     if (createdDateString) {
@@ -57,7 +59,6 @@ export const useGetNotes = ({
       .getList(undefined, undefined, {
         filter: filters.join(" && "),
         expand: "tags",
-        sort: "-isPinned",
       });
 
     const notes = rawNotes.items.map(mapNote);
@@ -67,7 +68,7 @@ export const useGetNotes = ({
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["notes.list", journalId, isFlagged, createdDateString],
+    queryKey: ["notes.list", journalId, isBookmarked, createdDateString],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

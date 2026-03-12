@@ -19,7 +19,7 @@ type UseDeleteNoteResponse = {
 
 export const useDeleteNote = (): UseDeleteNoteResponse => {
   const queryClient = useQueryClient();
-  const { notes } = useGetNotes({ isFlagged: false });
+  const { notes } = useGetNotes({ isBookmarked: false });
   const { refetchTags } = useGetTags();
 
   const mutationFn = async ({

@@ -12,7 +12,6 @@ type NavItemProps = {
   title: string;
   preview?: string | number;
   to: string;
-  expanded: boolean;
 };
 
 export const NavItem = ({

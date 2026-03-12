@@ -9,8 +9,7 @@ export type Note = {
   title: string | null;
   tasks: Task[];
   content: Delta;
-  isPinned: boolean;
-  isFlagged: boolean;
+  isBookmarked: boolean;
   tags: Tag[];
   deleted: Dayjs | null;
   created: Dayjs;
@@ -27,5 +26,5 @@ export type NotesGroup = {
 export type DateWithNotes = {
   id: string;
   created: Dayjs;
-  hasFlagged: boolean;
+  hasBookmarked: boolean;
 };

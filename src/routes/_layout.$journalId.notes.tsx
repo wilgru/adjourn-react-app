@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_layout/$journalId/notes")({
 function NotesComponent() {
   const { notes } = useGetNotes({
     createdDateString: undefined,
-    isFlagged: undefined,
+    isBookmarked: undefined,
   });
   const { noteId } = Route.useSearch(); // TODO: use in loaders?
   const { note } = useGetNote({ noteId });

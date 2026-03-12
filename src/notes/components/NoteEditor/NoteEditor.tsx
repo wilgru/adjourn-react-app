@@ -139,21 +139,6 @@ const NoteEditor = ({
               onChange={(tags) => onUpdateNote({ tags })}
             />
 
-            {/* <Toggle
-            colour={colours.red}
-            isToggled={editedNote.isPinned}
-            size="sm"
-            onClick={() => onUpdateNote({ isPinned: !editedNote.isPinned })}
-            iconName="pushPin"
-          /> */}
-
-            <Toggle
-              isToggled={editedNote.isFlagged}
-              size="sm"
-              onClick={() => onUpdateNote({ isFlagged: !editedNote.isFlagged })}
-              iconName="flag"
-            />
-
             <Button
               size="sm"
               variant="ghost"
@@ -168,6 +153,16 @@ const NoteEditor = ({
               colour={colour}
               onClick={() => {}}
               iconName="chatCenteredText"
+            />
+
+            <Toggle
+              isToggled={editedNote.isBookmarked}
+              size="sm"
+              colour={colours.red}
+              onClick={() =>
+                onUpdateNote({ isBookmarked: !editedNote.isBookmarked })
+              }
+              iconName="bookmark"
             />
 
             <p

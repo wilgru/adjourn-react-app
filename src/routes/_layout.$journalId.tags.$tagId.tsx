@@ -56,8 +56,7 @@ export default function TagComponent() {
         content: new Delta(),
         tags: [tag],
         isDraft: false,
-        isPinned: false,
-        isFlagged: false,
+        isBookmarked: false,
       },
     });
 

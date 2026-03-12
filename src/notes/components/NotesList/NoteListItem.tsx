@@ -1,4 +1,4 @@
-import { PushPin, Flag } from "@phosphor-icons/react";
+import { Bookmark } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
@@ -58,12 +58,8 @@ export const NoteListItem = ({
             />
           ))}
 
-          {note.isPinned && (
-            <PushPin className="fill-red-400 m-1" weight="fill" size={14} />
-          )}
-
-          {note.isFlagged && (
-            <Flag className="fill-orange-400 m-1" weight="fill" size={14} />
+          {note.isBookmarked && (
+            <Bookmark className="fill-red-400 m-1" weight="fill" size={14} />
           )}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useSetAtom } from "jotai";
+import { colours } from "src/colours/colours.constant";
 import { isSideBarVisibleAtom } from "src/common/atoms/isSidebarVisibleAtom";
 import { Button } from "src/common/components/Button/Button";
 import { NavItem } from "src/common/components/NavItem/NavItem";
@@ -49,7 +50,7 @@ export const Sidebar = () => {
               iconName="pencil"
               title="Notes"
               to={`/${journalId}/notes/`}
-              expanded={true}
+              colour={colours.grey}
             />
 
             <NavItem
@@ -57,7 +58,7 @@ export const Sidebar = () => {
               iconName="checkCircle"
               title="Tasks"
               to={`/${journalId}/tasks/`}
-              expanded={true}
+              colour={colours.grey}
             />
 
             <NavItem
@@ -65,15 +66,15 @@ export const Sidebar = () => {
               iconName="chatCenteredText"
               title="Updates"
               to={`/${journalId}/logbook/${getNavigationDay()}`}
-              expanded={true}
+              colour={colours.grey}
             />
 
             <NavItem
               ghost
-              iconName="flag"
-              title={"Flagged"}
-              to={`/${journalId}/flagged/`}
-              expanded={true}
+              iconName="bookmark"
+              title={"Bookmarked"}
+              to={`/${journalId}/bookmarked/`}
+              colour={colours.red}
             />
           </section>
 
@@ -85,7 +86,6 @@ export const Sidebar = () => {
                 title={tag.name}
                 preview={tag.noteCount}
                 to={`/${journalId}/tags/${tag.id}`}
-                expanded={true}
               />
             ))}
           </SidebarTagSection>
@@ -104,7 +104,6 @@ export const Sidebar = () => {
                     title={tag.name}
                     preview={tag.noteCount}
                     to={`/${journalId}/tags/${tag.id}`}
-                    expanded={true}
                   />
                 ))}
               </div>

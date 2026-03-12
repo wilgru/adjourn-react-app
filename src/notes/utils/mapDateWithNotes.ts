@@ -6,6 +6,6 @@ export const mapDateWithNotes = (dateWithNotes: RecordModel): DateWithNotes => {
   return {
     id: dateWithNotes.id,
     created: dayjs(dateWithNotes.created),
-    hasFlagged: dateWithNotes.hasFlagged === 1 ? true : false,
+    hasBookmarked: dateWithNotes.hasBookmarked === 1 ? true : false,
   };
 };

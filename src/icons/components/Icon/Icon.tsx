@@ -4,7 +4,7 @@ import {
   Plus,
   PlusSquare,
   X,
-  Flag,
+  Bookmark,
   PushPin,
   Trash,
   DotsThree,
@@ -67,8 +67,8 @@ const Icon = ({
   switch (iconName) {
     case "pushPin":
       return <PushPin {...iconProps} />;
-    case "flag":
-      return <Flag {...iconProps} />;
+    case "bookmark":
+      return <Bookmark {...iconProps} />;
     case "trash":
       return <Trash {...iconProps} />;
     case "pencil":

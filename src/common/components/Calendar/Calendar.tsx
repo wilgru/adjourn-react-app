@@ -91,7 +91,7 @@ const CalendarItem = ({
         <div
           className={cn(
             "h-1 w-1 rounded-full",
-            dateWithNotes.hasFlagged ? "bg-orange-400" : "bg-slate-400",
+            dateWithNotes.hasBookmarked ? "bg-orange-400" : "bg-slate-400",
           )}
         />
       )}
