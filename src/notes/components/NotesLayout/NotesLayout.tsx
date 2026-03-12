@@ -19,6 +19,7 @@ type NotesLayoutProps = {
   links?: TagBadge[];
   prefillNewNoteData?: Partial<Note>;
   groupNotesBy?: "created" | "tag";
+  groupSortDirection?: "asc" | "desc";
 };
 
 export const NotesLayout = ({
@@ -31,6 +32,7 @@ export const NotesLayout = ({
   links,
   prefillNewNoteData,
   groupNotesBy,
+  groupSortDirection = "desc",
 }: NotesLayoutProps) => {
   const noteGroups = useMemo<NotesGroup[]>(() => {
     if (!groupNotesBy) {
@@ -42,8 +44,14 @@ export const NotesLayout = ({
         },
       ];
     }
-    return groupNotes(notes, groupNotesBy, title, prefillNewNoteData ?? {});
-  }, [notes, groupNotesBy, title, prefillNewNoteData]);
+    return groupNotes(
+      notes,
+      groupNotesBy,
+      title,
+      prefillNewNoteData ?? {},
+      groupSortDirection,
+    );
+  }, [notes, groupNotesBy, title, prefillNewNoteData, groupSortDirection]);
 
   // FIXME: pb-16 is the height of the toolbar to fix issue with scrolling body getting cut off. Issue to do with not having a fixed height on consuming element and children elements before this one pushing this one down.
   return (

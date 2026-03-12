@@ -8,6 +8,7 @@ import isAuthenticated from "src/Users/utils/isAuthenticated";
 import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
+import { sortNotes } from "src/common/utils/sortNotes";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useCreateNote } from "src/notes/hooks/useCreateNote";
 import { useGetNote } from "src/notes/hooks/useGetNote";
@@ -49,33 +50,10 @@ export default function TagComponent() {
   const sortBy = tag?.sortBy ?? "created";
   const sortDirection = tag?.sortDirection ?? "asc";
 
-  const sortedNotes = useMemo(() => {
-    const noteCopy = [...notes];
-
-    noteCopy.sort((a, b) => {
-      let compareVal = 0;
-
-      if (sortBy === "alphabetical") {
-        const titleA = a.title ?? "";
-        const titleB = b.title ?? "";
-
-        compareVal = titleA.localeCompare(titleB, undefined, {
-          sensitivity: "base",
-          numeric: true,
-        });
-      } else {
-        compareVal = a.created.valueOf() - b.created.valueOf();
-      }
-
-      if (sortDirection === "desc") {
-        compareVal = -compareVal;
-      }
-
-      return compareVal;
-    });
-
-    return noteCopy;
-  }, [notes, sortBy, sortDirection]);
+  const sortedNotes = useMemo(
+    () => sortNotes(notes, sortBy, sortDirection),
+    [notes, sortBy, sortDirection],
+  );
 
   if (!tag) {
     return null;
@@ -321,6 +299,7 @@ export default function TagComponent() {
         selectedNote={note || null}
         prefillNewNoteData={{ tags: [tag] }}
         groupNotesBy={tag.groupBy ?? undefined}
+        groupSortDirection={sortDirection}
       />
     </div>
   );

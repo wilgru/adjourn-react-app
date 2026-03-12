@@ -126,6 +126,7 @@ export function groupNotes(
   groupBy: "created" | "tag",
   defaultGroupTitle: string | undefined = undefined,
   relevantNoteData: Partial<Note>, // TODO: might not need this anymore?
+  sortDirection: "asc" | "desc" = "desc",
 ): NotesGroup[] {
   const groupedNotes = notes.reduce((acc: NotesGroup[], note: Note) => {
     const groups = getGroup(note, groupBy, defaultGroupTitle);
@@ -162,11 +163,15 @@ export function groupNotes(
     const bOrder = b.sortOrder ?? 0;
 
     if (aOrder !== bOrder) {
-      return bOrder - aOrder;
+      return sortDirection === "desc" ? bOrder - aOrder : aOrder - bOrder;
     }
 
     const aTitle = a.title ?? "";
     const bTitle = b.title ?? "";
+
+    if (sortDirection === "desc") {
+      return bTitle.localeCompare(aTitle);
+    }
 
     return aTitle.localeCompare(bTitle);
   });
