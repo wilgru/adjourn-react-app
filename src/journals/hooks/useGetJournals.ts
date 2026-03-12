@@ -14,9 +14,20 @@ export const useGetJournals = (): UseGetJournalsResponse => {
   }> => {
     const rawJournals = await pb
       .collection("journals")
-      .getList(undefined, undefined);
+      .getList(undefined, undefined, {
+        expand: "notes_via_journal, tasks_via_journal",
+      });
 
-    const journals = rawJournals.items.map(mapJournal);
+    const journals = rawJournals.items.map((journal) => {
+      const noteCount = journal.expand?.notes_via_journal?.length ?? 0;
+      const taskCount = journal.expand?.tasks_via_journal?.length ?? 0;
+
+      return {
+        ...mapJournal(journal),
+        noteCount,
+        taskCount,
+      };
+    });
 
     return { journals };
   };

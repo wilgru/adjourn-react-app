@@ -8,4 +8,6 @@ export type Journal = {
   colour: Colour;
   created: Dayjs;
   updated: Dayjs;
+  noteCount?: number;
+  taskCount?: number;
 };

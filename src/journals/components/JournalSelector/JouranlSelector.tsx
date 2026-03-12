@@ -13,6 +13,25 @@ type JournalSelectorProps = {
   journals: Journal[];
 };
 
+const getJournalSummary = (journal: Journal): string => {
+  const taskCount = journal.taskCount ?? 0;
+  const noteCount = journal.noteCount ?? 0;
+
+  if (taskCount === 0 && noteCount === 0) {
+    return "No content";
+  }
+
+  const parts: string[] = [];
+  if (taskCount > 0) {
+    parts.push(`${taskCount} task${taskCount === 1 ? "" : "s"}`);
+  }
+  if (noteCount > 0) {
+    parts.push(`${noteCount} note${noteCount === 1 ? "" : "s"}`);
+  }
+
+  return parts.join(", ");
+};
+
 export const JournalSelector = ({
   currentJournal,
   journals,
@@ -43,7 +62,9 @@ export const JournalSelector = ({
 
             <div className="flex flex-col items-start">
               <h2 className="text-sm">{currentJournal.title}</h2>
-              <p className="text-xs text-slate-400">3 tasks, 24 notes</p>
+              <p className="text-xs text-slate-400">
+                {getJournalSummary(currentJournal)}
+              </p>
             </div>
           </button>
         </DropdownMenu.Trigger>
@@ -92,7 +113,9 @@ export const JournalSelector = ({
 
                   <div className="flex flex-col items-start">
                     <h2 className="text-sm">{journal.title}</h2>
-                    <p className="text-xs text-slate-400">3 tasks, 24 notes</p>
+                    <p className="text-xs text-slate-400">
+                      {getJournalSummary(journal)}
+                    </p>
                   </div>
                 </Link>
               </DropdownMenu.Item>
