@@ -34,6 +34,7 @@ export const Sidebar = () => {
 
             <Button
               variant="ghost"
+              size="sm"
               onClick={() => setIsSidebarVisible(false)}
               iconName="arrowLineLeft"
             />

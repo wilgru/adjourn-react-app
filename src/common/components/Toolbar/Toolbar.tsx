@@ -34,6 +34,7 @@ export const Toolbar = ({
         {!isSideBarVisible && (
           <Button
             variant="ghost"
+            size="sm"
             colour={colour}
             iconName="arrowLineRight"
             onClick={() => setValue(true)}
@@ -60,7 +61,12 @@ export const Toolbar = ({
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
-              <Button variant="block" colour={colours.blue} iconName="user" />
+              <Button
+                variant="block"
+                size="sm"
+                colour={colours.blue}
+                iconName="user"
+              />
             </div>
           </DropdownMenu.Trigger>
 
