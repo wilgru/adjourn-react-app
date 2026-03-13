@@ -16,10 +16,42 @@ export const TasksSection = ({ taskGroup, colour }: TasksSectionProps) => {
   const { journalId } = useCurrentJournalId();
 
   const note = taskGroup.relevantTaskData.note;
-  const isNoNote = note === null;
+  const isNoNote = !note;
+
+  if (isNoNote) {
+    return (
+      <section id="no-note">
+        <div className="flex flex-col gap-2 p-4 rounded-2xl bg-gray-50">
+          <p className="text-sm text-slate-400 font-medium">{taskGroup.title}</p>
+
+          {taskGroup.tasks.length === 0 && (
+            <div className="w-full p-3 flex flex-col gap-3 items-center">
+              <p className="text-slate-500">No task yet</p>
+
+              <div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full"
+                  iconName="plusSquare"
+                  onClick={() => {}}
+                >
+                  Create your first task
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {taskGroup.tasks.map((task) => (
+            <TaskEditor key={task.id} task={task} onSave={() => {}} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section id={note?.id ?? "no-note"}>
+    <section id={note.id}>
       <div
         className="flex p-2 gap-2 items-center"
         onMouseOver={() => setIsTitleHovered(true)}
@@ -27,7 +59,7 @@ export const TasksSection = ({ taskGroup, colour }: TasksSectionProps) => {
       >
         <h2 className="font-title text-4xl">{taskGroup.title}</h2>
 
-        {isTitleHovered && !isNoNote && note && journalId && (
+        {isTitleHovered && journalId && (
           <div className="mb-2">
             <Link
               to="/$journalId/notes"
@@ -37,7 +69,7 @@ export const TasksSection = ({ taskGroup, colour }: TasksSectionProps) => {
               <Button
                 variant="ghost-strong"
                 size="sm"
-                iconName="arrowSquareOut"
+                iconName="arrowCircleRight"
                 colour={colour}
               />
             </Link>
@@ -45,13 +77,7 @@ export const TasksSection = ({ taskGroup, colour }: TasksSectionProps) => {
         )}
       </div>
 
-      <div
-        className={
-          isNoNote
-            ? "flex flex-col gap-1.5 p-3 rounded-lg bg-gray-50"
-            : "flex flex-col gap-1.5 p-1"
-        }
-      >
+      <div className="flex flex-col gap-1.5 p-1">
         {taskGroup.tasks.length === 0 && (
           <div className="w-full p-3 flex flex-col gap-3 items-center rounded-lg bg-gray-50">
             <p className="text-slate-500">No task yet</p>

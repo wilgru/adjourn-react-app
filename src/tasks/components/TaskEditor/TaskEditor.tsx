@@ -146,7 +146,7 @@ export const TaskEditor = ({ task, onSave }: TaskEditorProps) => {
                 description: e.target.value,
               })
             }
-            className="h-6 w-full text-sm font-normal bg-white placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
+            className="h-6 w-full text-sm font-normal bg-transparent placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
           />
         </div>
 

@@ -54,7 +54,7 @@ export const TasksLayout = ({
 
         {groupedTasks.map((group, index) => (
           <Fragment key={group.relevantTaskData.note?.id ?? "no-note"}>
-            {index > 0 && <hr className="border-slate-200" />}
+            {index > 0 && <div className="h-px rounded-full bg-slate-200" />}
             <TasksSection taskGroup={group} colour={colour} />
           </Fragment>
         ))}
