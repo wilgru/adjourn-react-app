@@ -58,7 +58,7 @@ export const NotesLayout = ({
   return (
     <div className="h-full w-full min-w-0 pb-16 flex">
       <div className="h-full w-80 px-6 flex flex-col gap-6 overflow-y-scroll border-r-2 border-slate-100">
-        {(description ?? links) && (
+        {(description || (links && links.length > 0)) && (
           <div className="bg-slate-50 p-4 rounded-xl flex flex-col gap-2">
             {description && (
               <p className="text-sm text-slate-500">{description}</p>
