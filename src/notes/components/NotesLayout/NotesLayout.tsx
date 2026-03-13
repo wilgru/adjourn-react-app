@@ -71,12 +71,14 @@ export const NotesLayout = ({
                   href={link.link}
                   target="_blank"
                   className={cn(
-                    "flex flex-row items-center gap-2 text-sm rounded-full hover:underline",
+                    "flex flex-row items-center gap-2 text-sm rounded-full hover:underline min-w-0",
                     colour.text,
                   )}
                 >
                   <Icon iconName="link" size="sm" />
-                  {link.title || getDisplayUrl(link.link)}
+                  <span className="truncate">
+                    {link.title || getDisplayUrl(link.link)}
+                  </span>
                 </a>
               ))}
           </div>
