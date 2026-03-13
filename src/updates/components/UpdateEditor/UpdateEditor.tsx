@@ -22,7 +22,9 @@ import type { Update, UpdateTint } from "src/updates/Update.type";
 type UpdateEditorProps = {
   update: Partial<Update>;
   colour?: Colour;
+  showNotes?: boolean;
   onCancel?: () => void;
+  onCreated?: () => void;
 };
 
 const TINT_OPTIONS: Array<{ value: UpdateTint; bg: string }> = [
@@ -31,6 +33,14 @@ const TINT_OPTIONS: Array<{ value: UpdateTint; bg: string }> = [
   { value: "green", bg: "bg-green-400" },
   { value: "blue", bg: "bg-blue-400" },
 ];
+
+/** Maps a tint to the matching entry in the colours constant, for components that take a Colour. */
+const TINT_TO_COLOUR: Partial<Record<UpdateTint, Colour>> = {
+  red: colours.red,
+  yellow: colours.yellow,
+  green: colours.green,
+  blue: colours.blue,
+};
 
 const getInitialUpdate = (update: Partial<Update>): Partial<Update> => ({
   id: update.id ?? "",
@@ -44,7 +54,9 @@ const getInitialUpdate = (update: Partial<Update>): Partial<Update> => ({
 export const UpdateEditor = ({
   update,
   colour,
+  showNotes = true,
   onCancel,
+  onCreated,
 }: UpdateEditorProps) => {
   const { currentJournal, journalId } = useCurrentJournal();
   const resolvedColour = colour ?? currentJournal?.colour ?? colours.orange;
@@ -62,6 +74,16 @@ export const UpdateEditor = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const toolbarId = `update-toolbar-${editedUpdate.id || "new"}`;
+
+  const tintClasses = getTintClasses(editedUpdate.tint);
+  /** Colour used for toolbar buttons and NoteMultiSelect when a tint is active. */
+  const tintColour = editedUpdate.tint
+    ? (TINT_TO_COLOUR[editedUpdate.tint] ?? resolvedColour)
+    : resolvedColour;
+  /** Colour used for NoteMultiSelect pills — grey when no tint. */
+  const noteColour = editedUpdate.tint
+    ? (TINT_TO_COLOUR[editedUpdate.tint] ?? colours.grey)
+    : colours.grey;
 
   const saveRef = useRef<() => Promise<void>>();
   saveRef.current = async () => {
@@ -83,7 +105,9 @@ export const UpdateEditor = ({
         },
       });
       if (created) {
-        setEditedUpdate((prev) => ({ ...prev, id: created.id }));
+        // Dismiss the "new update" editor slot so the saved update only
+        // appears once — via the refetched updates list.
+        onCreated?.();
       }
     }
   };
@@ -127,8 +151,6 @@ export const UpdateEditor = ({
     }
   };
 
-  const tintClasses = getTintClasses(editedUpdate.tint);
-
   if (isEditing) {
     return (
       <div
@@ -137,11 +159,12 @@ export const UpdateEditor = ({
           tintClasses.card,
         )}
       >
-        <div className="flex items-center justify-between flex-wrap">
-          <QuillFormattingToolbar
-            toolbarId={toolbarId}
-            toolbarFormatting={toolbarFormatting}
-            colour={resolvedColour}
+        {/* Top row: note selector (left) + tint picker (right) */}
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <NoteMultiSelect
+            selectedNotes={(editedUpdate.notes ?? []) as Note[]}
+            colour={noteColour}
+            onChange={(notes) => onUpdateField({ notes })}
           />
 
           <div className="flex gap-1.5 items-center">
@@ -172,22 +195,35 @@ export const UpdateEditor = ({
           </div>
         </div>
 
+        {/* Formatting toolbar */}
+        <QuillFormattingToolbar
+          toolbarId={toolbarId}
+          toolbarFormatting={toolbarFormatting}
+          colour={tintColour}
+          dividerClass={tintClasses.toolbarDivider}
+        />
+
+        {/* Editor */}
         <QuillEditor
           toolbarId={toolbarId}
           value={editedUpdate.content}
-          colour={resolvedColour}
+          colour={tintColour}
           onChange={(delta) => onUpdateField({ content: delta })}
           onSelectedFormattingChange={(formatting) =>
             setToolbarFormatting(formatting)
           }
         />
 
-        <div className="flex items-center justify-between flex-wrap">
-          <NoteMultiSelect
-            selectedNotes={(editedUpdate.notes ?? []) as Note[]}
-            colour={resolvedColour}
-            onChange={(notes) => onUpdateField({ notes })}
-          />
+        {/* Bottom row: delete text button (left) + discard/save (right) */}
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            colour={colours.red}
+            onClick={onDelete}
+          >
+            Delete
+          </Button>
 
           <div className="flex items-center gap-2">
             <Button
@@ -196,25 +232,16 @@ export const UpdateEditor = ({
               colour={colours.red}
               onClick={onCancelEdit}
             >
-              Cancel
+              Discard
             </Button>
             <Button
               size="sm"
               variant="block"
-              colour={resolvedColour}
+              colour={tintColour}
               onClick={onDone}
             >
-              Done
+              Save
             </Button>
-            {editedUpdate.id && (
-              <Button
-                size="sm"
-                variant="ghost"
-                colour={colours.red}
-                iconName="trash"
-                onClick={onDelete}
-              />
-            )}
           </div>
         </div>
       </div>
@@ -230,40 +257,46 @@ export const UpdateEditor = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <QuillViewer content={editedUpdate.content ?? new Delta()} />
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex flex-wrap gap-2 items-center">
-            {(editedUpdate.notes ?? []).length === 0 ? (
-              <span className="text-xs text-slate-400 italic">
-                No notes attached
-              </span>
-            ) : (
-              (editedUpdate.notes as Note[]).map((note) => (
-                <button
-                  key={note.id}
-                  onClick={() =>
-                    navigate({
-                      to: `/${journalId ?? ""}/notes`,
-                      search: { noteId: note.id },
-                    })
-                  }
-                  className={cn(
-                    "flex items-center gap-1 px-2 py-0.5 text-xs rounded-full transition-colors",
-                    tintClasses.notePill,
-                  )}
-                >
-                  {note.title ?? "Untitled Note"}
-                </button>
-              ))
-            )}
-          </div>
-
-          <p className={cn("text-xs", tintClasses.meta)}>
-            {editedUpdate.created?.format("h:mm a")}
-          </p>
+      {/* Top row: note pills (optional, left only) */}
+      {showNotes && (
+        <div className="flex flex-wrap gap-2 items-center">
+          {(editedUpdate.notes ?? []).length === 0 ? (
+            <span className="text-xs text-slate-400 italic">
+              No notes attached
+            </span>
+          ) : (
+            (editedUpdate.notes as Note[]).map((note) => (
+              <button
+                key={note.id}
+                onClick={() =>
+                  navigate({
+                    to: `/${journalId ?? ""}/notes`,
+                    search: { noteId: note.id },
+                  })
+                }
+                className={cn(
+                  "flex items-center gap-1 px-2 py-0.5 text-xs rounded-full transition-colors",
+                  tintClasses.notePill,
+                )}
+              >
+                {note.title ?? "Untitled Note"}
+              </button>
+            ))
+          )}
         </div>
+      )}
+
+      {/* Content */}
+      <QuillViewer
+        content={editedUpdate.content ?? new Delta()}
+        className={tintClasses.text}
+      />
+
+      {/* Bottom row: date (left) + edit/delete icons (right, hover-only) */}
+      <div className="flex items-center justify-between">
+        <p className={cn("text-xs", tintClasses.meta)}>
+          {editedUpdate.created?.format("h:mm a")}
+        </p>
 
         <div
           className={cn(
@@ -274,7 +307,7 @@ export const UpdateEditor = ({
           <Button
             size="sm"
             variant="ghost"
-            colour={resolvedColour}
+            colour={tintColour}
             iconName="pencil"
             onClick={() => setIsEditing(true)}
           />

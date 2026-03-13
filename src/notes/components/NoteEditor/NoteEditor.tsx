@@ -229,12 +229,14 @@ const NoteEditor = ({
             <UpdateEditor
               update={{ notes: [editedNote], tint: null }}
               colour={colour}
+              showNotes={false}
               onCancel={() => setShowNewUpdate(false)}
+              onCreated={() => setShowNewUpdate(false)}
             />
           )}
 
           {updates.map((upd) => (
-            <UpdateEditor key={upd.id} update={upd} colour={colour} />
+            <UpdateEditor key={upd.id} update={upd} colour={colour} showNotes={false} />
           ))}
         </div>
       )}

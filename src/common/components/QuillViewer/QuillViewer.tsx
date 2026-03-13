@@ -1,13 +1,15 @@
 import "./style.css";
 import Quill from "quill";
 import { useEffect, useRef } from "react";
+import { cn } from "src/common/utils/cn";
 import type Delta from "quill-delta";
 
 type QuillViewerProps = {
   content: Delta;
+  className?: string;
 };
 
-export default function QuillViewer({ content }: QuillViewerProps) {
+export default function QuillViewer({ content, className }: QuillViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function QuillViewer({ content }: QuillViewerProps) {
     <div
       id="quill-editor"
       ref={containerRef}
-      className="h-fit placeholder-slate-500"
+      className={cn("h-fit placeholder-slate-500", className)}
     />
   );
 }
