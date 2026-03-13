@@ -33,12 +33,14 @@ export const PageHeader = ({
             href={primaryBadge.link}
             target="_blank"
             className={cn(
-              "flex flex-row items-center gap-2 px-2 py-0.5 text-sm rounded-full hover:underline",
+              "flex flex-row items-center gap-2 px-2 py-0.5 text-sm rounded-full hover:underline max-w-xs",
               colour.backgroundPill,
               colour.textPill,
             )}
           >
-            {primaryBadge.title || getDisplayUrl(primaryBadge.link)}
+            <span className="truncate">
+              {primaryBadge.title || getDisplayUrl(primaryBadge.link)}
+            </span>
 
             <Icon iconName="link" size="sm" />
           </a>
