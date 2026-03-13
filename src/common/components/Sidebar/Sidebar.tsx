@@ -51,7 +51,7 @@ export const Sidebar = () => {
               iconName="pencil"
               title="Notes"
               to={`/${journalId}/notes/`}
-              colour={colours.grey}
+              colour={currentJournal.colour}
             />
 
             <NavItem
@@ -59,7 +59,7 @@ export const Sidebar = () => {
               iconName="checkCircle"
               title="Tasks"
               to={`/${journalId}/tasks/`}
-              colour={colours.grey}
+              colour={currentJournal.colour}
             />
 
             <NavItem
@@ -67,7 +67,7 @@ export const Sidebar = () => {
               iconName="chatCenteredText"
               title="Updates"
               to={`/${journalId}/logbook/${getNavigationDay()}`}
-              colour={colours.grey}
+              colour={currentJournal.colour}
             />
 
             <NavItem
