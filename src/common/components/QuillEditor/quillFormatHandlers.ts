@@ -47,7 +47,10 @@ export const createLinkHandler = (getQuill: () => Quill) => () => {
     return;
   }
 
-  const selectionFormatting = quill.getFormat(selection.index, selection.length);
+  const selectionFormatting = quill.getFormat(
+    selection.index,
+    selection.length,
+  );
 
   if (selectionFormatting.link) {
     quill.format("link", false);

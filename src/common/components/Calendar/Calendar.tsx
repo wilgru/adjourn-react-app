@@ -8,8 +8,8 @@ import { cn } from "src/common/utils/cn";
 import { getNavigationDay } from "src/common/utils/getNavigationDay";
 import { useGetDatesWithNotes } from "src/notes/hooks/useGetDatesWithNotes";
 import { jumpToDateAtom } from "src/tableOfContents/atoms/jumpToDateAtom";
-import type { Colour } from "src/colours/Colour.type";
 import type { Dayjs } from "dayjs";
+import type { Colour } from "src/colours/Colour.type";
 import type { DateWithNotes } from "src/notes/Note.type";
 
 type CalendarProps = {
@@ -107,7 +107,10 @@ const CalendarItem = ({
   );
 };
 
-export const Calendar = ({ journalId, colour = colours.orange }: CalendarProps): JSX.Element => {
+export const Calendar = ({
+  journalId,
+  colour = colours.orange,
+}: CalendarProps): JSX.Element => {
   const { datesWithNotes } = useGetDatesWithNotes();
   const [jumpToDate, setJumpToDate] = useAtom(jumpToDateAtom);
 

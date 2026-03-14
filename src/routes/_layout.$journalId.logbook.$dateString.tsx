@@ -28,8 +28,8 @@ export const Route = createFileRoute("/_layout/$journalId/logbook/$dateString")(
 );
 
 function LogbookComponent() {
-  const { dateString } = Route.useParams();
-  const { journalId, currentJournal } = useCurrentJournal();
+  const { journalId, dateString } = Route.useParams();
+  const { currentJournal } = useCurrentJournal();
   const colour = currentJournal?.colour ?? colours.orange;
 
   const navigate = useNavigate();

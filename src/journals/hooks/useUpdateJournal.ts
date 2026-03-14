@@ -26,10 +26,12 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
     journalId,
     updateJournalData,
   }: UpdateJournalProps): Promise<Journal | undefined> => {
-    const rawUpdatedJournal = await pb.collection("journals").update(journalId, {
-      ...updateJournalData,
-      colour: updateJournalData.colour.name,
-    });
+    const rawUpdatedJournal = await pb
+      .collection("journals")
+      .update(journalId, {
+        ...updateJournalData,
+        colour: updateJournalData.colour.name,
+      });
 
     return mapJournal(rawUpdatedJournal);
   };

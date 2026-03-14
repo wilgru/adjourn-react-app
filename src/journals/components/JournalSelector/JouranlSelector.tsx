@@ -136,7 +136,12 @@ export const JournalSelector = ({
 
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <Button variant="ghost" size="sm" iconName="gear" colour={currentJournal.colour} />
+          <Button
+            variant="ghost"
+            size="sm"
+            iconName="gear"
+            colour={currentJournal.colour}
+          />
         </Dialog.Trigger>
 
         <JournalSettingsModal journal={currentJournal} />
