@@ -21,7 +21,7 @@ export const useGetNote = ({
 }): UseGetNoteResponse => {
   const queryFn = async (): Promise<Note> => {
     const rawNote = await pb.collection("notes").getOne(noteId ?? "", {
-      expand: "tags, tasks_via_note",
+      expand: "tags, tasks_via_note, updates_via_notes",
     });
     const note: Note = mapNote(rawNote);
     return note;

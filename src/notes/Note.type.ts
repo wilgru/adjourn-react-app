@@ -11,6 +11,7 @@ export type Note = {
   content: Delta;
   isBookmarked: boolean;
   tags: Tag[];
+  updateCount: number;
   deleted: Dayjs | null;
   created: Dayjs;
   updated: Dayjs;

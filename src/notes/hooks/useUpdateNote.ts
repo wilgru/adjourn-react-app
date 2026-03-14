@@ -29,7 +29,11 @@ export const useUpdateNote = (): UseUpdateNoteResponse => {
 
     const updatedNote = await pb
       .collection("notes")
-      .update(noteId, { ...updateNoteData, tags: tagIds }, { expand: "tags" });
+      .update(
+        noteId,
+        { ...updateNoteData, tags: tagIds },
+        { expand: "tags, updates_via_notes" },
+      );
 
     return mapNote(updatedNote);
   };

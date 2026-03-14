@@ -58,7 +58,7 @@ export const useGetNotes = ({
       .collection("notes")
       .getList(undefined, undefined, {
         filter: filters.join(" && "),
-        expand: "tags",
+        expand: "tags, updates_via_notes",
       });
 
     const notes = rawNotes.items.map(mapNote);

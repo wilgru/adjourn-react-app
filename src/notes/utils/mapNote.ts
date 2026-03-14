@@ -19,6 +19,7 @@ export const mapNote = (note: RecordModel): Note => {
     content: note.content ? new Delta(note.content) : new Delta(), // TODO: make not nullable in pocketbase
     isBookmarked: note.isBookmarked,
     tags: note?.expand?.tags ? note.expand.tags.map(mapTag) : [],
+    updateCount: note?.expand?.updates_via_notes?.length ?? 0,
     deleted: null,
     created: dayjs.utc(note.created).local(),
     updated: dayjs.utc(note.updated).local(),
