@@ -3,7 +3,7 @@ import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
 import { CreateTagModal } from "src/tags/components/CreateTagModal/CreateTagModal";
-import { DeleteTagGroupModal } from "src/tags/components/DeleteTagGroupModal/DeleteTagGroupModal";
+import { EditTagGroupModal } from "src/tags/components/EditTagGroupModal/EditTagGroupModal";
 import type { Colour } from "src/colours/Colour.type";
 import type { TagGroup } from "src/tags/Tag.type";
 
@@ -54,13 +54,13 @@ export const SidebarTagSection = ({
                     className="mb-1"
                     variant="ghost-strong"
                     size="xs"
-                    iconName="trash"
+                    iconName="gear"
                     colour={colour}
                   />
                 </Dialog.Trigger>
               )}
 
-              <DeleteTagGroupModal tagGroup={tagGroup} />
+              <EditTagGroupModal tagGroup={tagGroup} />
             </Dialog.Root>
           )}
         </div>
