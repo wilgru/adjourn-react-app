@@ -23,6 +23,7 @@ type UpdateEditorProps = {
   update: Partial<Update>;
   colour?: Colour;
   showNotes?: boolean;
+  dateDisplay?: "date" | "time";
   onCancel?: () => void;
   onCreated?: () => void;
 };
@@ -55,6 +56,7 @@ export const UpdateEditor = ({
   update,
   colour,
   showNotes = true,
+  dateDisplay = "time",
   onCancel,
   onCreated,
 }: UpdateEditorProps) => {
@@ -156,6 +158,12 @@ export const UpdateEditor = ({
     }
   };
 
+  const dateStr = editedUpdate.created
+    ? dateDisplay === "date"
+      ? editedUpdate.created.format("MMM D, YYYY")
+      : editedUpdate.created.format("h:mm a")
+    : null;
+
   if (isEditing) {
     return (
       <div
@@ -255,75 +263,79 @@ export const UpdateEditor = ({
   }
 
   return (
-    <div
-      className={cn(
-        "rounded-2xl border p-4 flex flex-col gap-3 transition-colors",
-        tintClasses.card,
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Top row: note pills (optional, left only) */}
-      {showNotes && (
-        <div className="flex flex-wrap gap-2 items-center">
-          {(editedUpdate.notes ?? []).length === 0 ? (
-            <span className="text-xs text-slate-400 italic">
-              No notes attached
-            </span>
-          ) : (
-            (editedUpdate.notes as Note[]).map((note) => (
-              <button
-                key={note.id}
-                onClick={() =>
-                  navigate({
-                    to: `/${journalId ?? ""}/notes`,
-                    search: { noteId: note.id },
-                  })
-                }
-                className={cn(
-                  "flex items-center gap-1 px-2 py-1 text-xs rounded-full transition-colors",
-                  tintClasses.notePill,
-                )}
-              >
-                {note.title ?? "Untitled Note"}
-              </button>
-            ))
-          )}
-        </div>
-      )}
+    <div className="flex items-start gap-3">
+      {/* Date on the left, outside the card */}
+      <p className="text-xs text-slate-400 shrink-0 pt-3 w-16 text-right">
+        {dateStr}
+      </p>
 
-      {/* Content */}
-      <QuillViewer
-        content={editedUpdate.content ?? new Delta()}
-        textColor={tintClasses.textColor}
-      />
+      {/* Card */}
+      <div
+        className={cn(
+          "flex-1 rounded-2xl border p-4 flex flex-col gap-3 transition-colors",
+          tintClasses.card,
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Top row: note pills (optional, left only) */}
+        {showNotes && (
+          <div className="flex flex-wrap gap-2 items-center">
+            {(editedUpdate.notes ?? []).length === 0 ? (
+              <span className="text-xs text-slate-400 italic">
+                No notes attached
+              </span>
+            ) : (
+              (editedUpdate.notes as Note[]).map((note) => (
+                <button
+                  key={note.id}
+                  onClick={() =>
+                    navigate({
+                      to: `/${journalId ?? ""}/notes`,
+                      search: { noteId: note.id },
+                    })
+                  }
+                  className={cn(
+                    "flex items-center gap-1 px-2 py-1 text-xs rounded-full transition-colors",
+                    tintClasses.notePill,
+                  )}
+                >
+                  {note.title ?? "Untitled Note"}
+                </button>
+              ))
+            )}
+          </div>
+        )}
 
-      {/* Bottom row: date (left) + edit/delete icons (right, hover-only) */}
-      <div className="flex items-center justify-between">
-        <p className={cn("text-xs", tintClasses.meta)}>
-          {editedUpdate.created?.format("h:mm a")}
-        </p>
+        {/* Content */}
+        <QuillViewer
+          content={editedUpdate.content ?? new Delta()}
+          textColor={tintClasses.textColor}
+        />
 
-        <div
-          className={cn(
-            "flex items-center gap-1 transition-opacity",
-            isHovered ? "opacity-100" : "opacity-0",
-          )}
-        >
-          <Button
-            size="sm"
-            variant="ghost"
-            colour={tintColour}
-            iconName="pencil"
-            onClick={() => setIsEditing(true)}
-          />
-          <Button
-            size="sm"
-            variant="ghost"
-            colour={colours.red}
-            iconName="trash"
-            onClick={onDelete}
-          />
+        {/* Bottom row: edit/delete icons (right, hover-only) */}
+        <div className="flex justify-end">
+          <div
+            className={cn(
+              "flex items-center gap-1 transition-opacity",
+              isHovered ? "opacity-100" : "opacity-0",
+            )}
+          >
+            <Button
+              size="sm"
+              variant="ghost"
+              colour={tintColour}
+              iconName="pencil"
+              onClick={() => setIsEditing(true)}
+            />
+            <Button
+              size="sm"
+              variant="ghost"
+              colour={colours.red}
+              iconName="trash"
+              onClick={onDelete}
+            />
+          </div>
         </div>
       </div>
     </div>
