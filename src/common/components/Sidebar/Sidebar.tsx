@@ -31,6 +31,7 @@ export const Sidebar = () => {
             <Button
               variant="ghost"
               size="sm"
+              colour={currentJournal.colour}
               onClick={() => setIsSidebarVisible(false)}
               iconName="arrowLineLeft"
             />
