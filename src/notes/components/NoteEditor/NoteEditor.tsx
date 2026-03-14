@@ -116,8 +116,8 @@ const NoteEditor = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-[1000px]">
-      <div className="flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
+    <div className="flex flex-col items-center gap-4 w-[1000px]">
+      <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
         <textarea
           name="title"
           value={editedNote.title ?? ""}
@@ -195,7 +195,7 @@ const NoteEditor = ({
       </div>
 
       {note.tasks && note.tasks.length > 0 && (
-        <div className="flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
+        <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
           {note.tasks.map((task) => (
             <TaskEditor key={task.id} task={task} />
           ))}
@@ -220,11 +220,7 @@ const NoteEditor = ({
       />
 
       {(updates.length > 0 || showNewUpdate) && (
-        <div className="flex flex-col gap-3 border-t-2 border-slate-100 pt-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-title text-lg text-slate-500">Updates</h3>
-          </div>
-
+        <div className="w-full flex flex-col pt-4 pr-12">
           {showNewUpdate && (
             <UpdateEditor
               update={{ notes: [editedNote], tint: null }}
@@ -237,10 +233,15 @@ const NoteEditor = ({
           )}
 
           {updates.length > 0 && (
-            <div className="flex flex-col gap-3 relative">
-              <div className="absolute left-[6.375rem] top-0 bottom-0 w-px bg-slate-100" />
+            <div className="flex flex-col relative">
               {updates.map((upd) => (
-                <UpdateEditor key={upd.id} update={upd} colour={colour} showNotes={false} dateDisplay="date" />
+                <UpdateEditor
+                  key={upd.id}
+                  update={upd}
+                  colour={colour}
+                  showNotes={false}
+                  dateDisplay="date"
+                />
               ))}
             </div>
           )}

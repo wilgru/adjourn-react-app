@@ -28,7 +28,7 @@ export const QuillFormattingToolbar = ({
   dividerClass = "border-slate-200",
 }: QuillFormattingToolbarProps) => {
   return (
-    <div className="h-fit" id={toolbarId}>
+    <div className="w-full h-fit" id={toolbarId}>
       <ToggleGroup.Root
         className="font-medium text-sm flex"
         type="multiple"
@@ -46,7 +46,9 @@ export const QuillFormattingToolbar = ({
         ]}
         aria-label="Text formatting"
       >
-        <div className={`ql-formats flex flex-row gap-1 pr-1 border-r-2 ${dividerClass}`}>
+        <div
+          className={`ql-formats flex flex-row gap-1 pr-1 border-r-2 ${dividerClass}`}
+        >
           <QuillFormattingToolbarButton value="bold" colour={colour}>
             <TextB size={16} weight="bold" />
           </QuillFormattingToolbarButton>
@@ -61,7 +63,9 @@ export const QuillFormattingToolbar = ({
           </QuillFormattingToolbarButton>
         </div>
 
-        <div className={`flex flex-row gap-1 px-1 pr-1 border-r-2 ${dividerClass}`}>
+        <div
+          className={`flex flex-row gap-1 px-1 pr-1 border-r-2 ${dividerClass}`}
+        >
           <QuillFormattingToolbarButton value="ordered" colour={colour}>
             <ListNumbers size={16} weight="bold" />
           </QuillFormattingToolbarButton>

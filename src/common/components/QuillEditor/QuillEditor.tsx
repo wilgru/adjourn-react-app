@@ -164,7 +164,7 @@ const QuillEditor = ({
     <div
       id="quill-editor"
       ref={containerRef}
-      className="h-fit placeholder-slate-500"
+      className="w-full h-fit placeholder-slate-500"
       style={
         colour
           ? ({ "--ql-link-color": getColourHex(colour) } as React.CSSProperties)

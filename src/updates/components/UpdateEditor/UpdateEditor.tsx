@@ -73,7 +73,6 @@ export const UpdateEditor = ({
   );
   const [isEditing, setIsEditing] = useState(!update.id);
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
-  const [isHovered, setIsHovered] = useState(false);
 
   const toolbarId = `update-toolbar-${editedUpdate.id || "new"}`;
 
@@ -136,102 +135,110 @@ export const UpdateEditor = ({
 
   const dateStr = editedUpdate.created
     ? dateDisplay === "date"
-      ? editedUpdate.created.format("MMM D, YYYY")
+      ? editedUpdate.created.format("MMM D, YYYY h:mm a")
       : editedUpdate.created.format("h:mm a")
     : null;
 
   if (isEditing) {
     return (
-      <div
-        className={cn(
-          "rounded-2xl border p-4 flex flex-col gap-3",
-          tintClasses.card,
-        )}
-      >
-        {/* Top row: note selector (left) + tint picker (right) */}
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <NoteMultiSelect
-            selectedNotes={(editedUpdate.notes ?? []) as Note[]}
-            colour={noteColour}
-            onChange={(notes) => onUpdateField({ notes })}
-          />
+      <div className="relative flex items-start gap-8 p-1">
+        <p className="text-xs text-slate-400 shrink-0 pt-2 w-24 text-right leading-tight">
+          {dateStr ?? ""}
+        </p>
 
-          <div className="flex gap-1.5 items-center">
-            <button
-              onClick={() => onUpdateField({ tint: null })}
-              className={cn(
-                "h-5 w-5 rounded-full border-2 bg-slate-200",
-                editedUpdate.tint === null
-                  ? "border-slate-500"
-                  : "border-transparent",
-              )}
-              title="No colour"
-            />
-            {TINT_OPTIONS.map(({ value, bg }) => (
-              <button
-                key={value}
-                onClick={() => onUpdateField({ tint: value })}
-                className={cn(
-                  "h-5 w-5 rounded-full border-2",
-                  bg,
-                  editedUpdate.tint === value
-                    ? "border-slate-600"
-                    : "border-transparent",
-                )}
-                title={value}
-              />
-            ))}
-          </div>
+        <div className="absolute left-[7rem] top-0 bottom-0 -translate-x-1/2 pointer-events-none w-0.5 bg-slate-100" />
+
+        <div className="absolute left-[7rem] top-3 -translate-x-1/2 pointer-events-none text-slate-100">
+          <Icon iconName="circle" size="xs" />
         </div>
 
-        {/* Formatting toolbar */}
-        <QuillFormattingToolbar
-          toolbarId={toolbarId}
-          toolbarFormatting={toolbarFormatting}
-          colour={tintColour}
-          dividerClass={tintClasses.toolbarDivider}
-        />
+        <div
+          className={cn(
+            "flex-1 rounded-2xl border p-4 flex flex-col gap-3",
+            tintClasses.card,
+          )}
+        >
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <NoteMultiSelect
+              selectedNotes={(editedUpdate.notes ?? []) as Note[]}
+              colour={noteColour}
+              onChange={(notes) => onUpdateField({ notes })}
+            />
 
-        {/* Editor */}
-        <QuillEditor
-          toolbarId={toolbarId}
-          value={editedUpdate.content}
-          colour={tintColour}
-          onChange={(delta) => onUpdateField({ content: delta })}
-          onSelectedFormattingChange={(formatting) =>
-            setToolbarFormatting(formatting)
-          }
-        />
+            <div className="flex gap-1.5 items-center">
+              <button
+                onClick={() => onUpdateField({ tint: null })}
+                className={cn(
+                  "h-5 w-5 rounded-full border-2 bg-slate-200",
+                  editedUpdate.tint === null
+                    ? "border-slate-500"
+                    : "border-transparent",
+                )}
+                title="No colour"
+              />
+              {TINT_OPTIONS.map(({ value, bg }) => (
+                <button
+                  key={value}
+                  onClick={() => onUpdateField({ tint: value })}
+                  className={cn(
+                    "h-5 w-5 rounded-full border-2",
+                    bg,
+                    editedUpdate.tint === value
+                      ? "border-slate-600"
+                      : "border-transparent",
+                  )}
+                  title={value}
+                />
+              ))}
+            </div>
+          </div>
 
-        {/* Bottom row: delete text button (left) + discard/save (right) */}
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <Button
-            size="sm"
-            variant="ghost"
-            colour={colours.red}
-            className="text-red-500"
-            onClick={onDelete}
-          >
-            Delete
-          </Button>
+          <QuillFormattingToolbar
+            toolbarId={toolbarId}
+            toolbarFormatting={toolbarFormatting}
+            colour={tintColour}
+            dividerClass={tintClasses.toolbarDivider}
+          />
 
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={tintColour}
-              onClick={onCancelEdit}
-            >
-              Discard
-            </Button>
+          <QuillEditor
+            toolbarId={toolbarId}
+            value={editedUpdate.content}
+            colour={tintColour}
+            onChange={(delta) => onUpdateField({ content: delta })}
+            onSelectedFormattingChange={(formatting) =>
+              setToolbarFormatting(formatting)
+            }
+          />
+
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <Button
               size="sm"
               variant="block"
-              colour={tintColour}
-              onClick={onDone}
+              colour={colours.red}
+              className="text-red-500"
+              onClick={onDelete}
             >
-              Save
+              Delete
             </Button>
+
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                colour={tintColour}
+                onClick={onCancelEdit}
+              >
+                Discard
+              </Button>
+              <Button
+                size="sm"
+                variant="block"
+                colour={tintColour}
+                onClick={onDone}
+              >
+                Save
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -239,28 +246,31 @@ export const UpdateEditor = ({
   }
 
   return (
-    <div className="flex items-start gap-3">
-      {/* Date on the left, outside the card */}
-      <p className="text-xs text-slate-400 shrink-0 pt-3 w-24 text-right whitespace-nowrap">
+    <div className="relative flex items-start gap-8 p-1">
+      <p className="text-xs text-slate-400 shrink-0 pt-2 w-24 text-right leading-tight">
         {dateStr}
       </p>
 
-      {/* Card */}
+      <div className="absolute left-[7rem] top-0 bottom-0 -translate-x-1/2 pointer-events-none w-0.5 bg-slate-100" />
+
+      <div className="absolute left-[7rem] top-3 -translate-x-1/2 pointer-events-none text-slate-100">
+        <Icon iconName="circle" size="xs" />
+      </div>
+
       <div
         className={cn(
           "flex-1 rounded-2xl border p-4 flex flex-col gap-3 transition-colors",
           tintClasses.card,
         )}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         <QuillViewer
           content={editedUpdate.content ?? new Delta()}
           textColor={tintClasses.textColor}
+          onClick={() => setIsEditing(true)}
         />
 
-        <div className="flex justify-between">
-          {showNotes && (
+        {showNotes && (
+          <div className="flex justify-between">
             <div className="flex flex-wrap gap-2 items-center">
               {(editedUpdate.notes ?? []).length === 0 ? (
                 <span className="text-xs text-slate-400 italic">
@@ -270,48 +280,27 @@ export const UpdateEditor = ({
                 (editedUpdate.notes as Note[]).map((note) => (
                   <button
                     key={note.id}
-                    onClick={() =>
+                    onClick={(event) => {
+                      event.stopPropagation();
                       navigate({
                         to: `/${journalId ?? ""}/notes`,
                         search: { noteId: note.id },
-                      })
-                    }
+                      });
+                    }}
                     className={cn(
-                      "flex items-center gap-1 px-2 py-1 text-xs rounded-full transition-colors",
+                      "flex items-center gap-1 pl-2 pr-1 py-1 text-xs rounded-full transition-colors",
                       tintClasses.notePill,
                     )}
                   >
                     {note.title ?? "Untitled Note"}
 
-                    <Icon iconName="arrowCircleRight" />
+                    <Icon iconName="arrowCircleRight" size="sm" />
                   </button>
                 ))
               )}
             </div>
-          )}
-
-          <div
-            className={cn(
-              "flex items-center gap-1 transition-opacity",
-              isHovered ? "opacity-100" : "opacity-0",
-            )}
-          >
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={tintColour}
-              iconName="pencil"
-              onClick={() => setIsEditing(true)}
-            />
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={colours.red}
-              iconName="trash"
-              onClick={onDelete}
-            />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

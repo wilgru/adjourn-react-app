@@ -8,12 +8,14 @@ type QuillViewerProps = {
   content: Delta;
   className?: string;
   textColor?: string;
+  onClick?: () => void;
 };
 
 export default function QuillViewer({
   content,
   className,
   textColor,
+  onClick,
 }: QuillViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +56,7 @@ export default function QuillViewer({
     <div
       id="quill-editor"
       ref={containerRef}
+      onClick={onClick}
       className={cn("h-fit placeholder-slate-500", className)}
     />
   );

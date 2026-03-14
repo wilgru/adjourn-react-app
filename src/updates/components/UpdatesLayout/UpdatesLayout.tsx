@@ -56,7 +56,7 @@ export const UpdatesLayout = ({
         </PageHeader>
 
         {pendingNew && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             <UpdateEditor
               update={{ notes: [], tint: null }}
               colour={colour}
