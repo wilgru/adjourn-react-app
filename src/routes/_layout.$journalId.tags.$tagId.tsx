@@ -9,6 +9,7 @@ import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { sortNotes } from "src/common/utils/sortNotes";
+import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useCreateNote } from "src/notes/hooks/useCreateNote";
 import { useGetNote } from "src/notes/hooks/useGetNote";
@@ -46,6 +47,7 @@ export default function TagComponent() {
   const { note } = useGetNote({ noteId });
   const { createNote } = useCreateNote();
   const { updateTag } = useUpdateTag();
+  const { currentJournal } = useCurrentJournal();
 
   const sortBy = tag?.sortBy ?? "created";
   const sortDirection = tag?.sortDirection ?? "asc";
@@ -88,7 +90,12 @@ export default function TagComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName={tag.icon} title={tag.name} colour={tag.colour}>
+      <Toolbar
+        iconName={tag.icon}
+        title={tag.name}
+        colour={tag.colour}
+        journalColour={currentJournal?.colour}
+      >
         <>
           <div>
             <Dialog.Root>

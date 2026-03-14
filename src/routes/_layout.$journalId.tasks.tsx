@@ -1,6 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import isAuthenticated from "src/Users/utils/isAuthenticated";
-import { colours } from "src/colours/colours.constant";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
@@ -24,19 +23,23 @@ export const Route = createFileRoute("/_layout/$journalId/tasks")({
 
 function RouteComponent() {
   const { currentJournal } = useCurrentJournal();
-  const colour = currentJournal?.colour ?? colours.orange;
 
   const { tasks } = useGetTasks({});
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="checkCircle" title="Tasks" colour={colour} />
+      <Toolbar
+        iconName="checkCircle"
+        title="Tasks"
+        colour={currentJournal?.colour}
+        journalColour={currentJournal?.colour}
+      />
 
       <TasksLayout
         header={
           <div className="flex gap-3">
             <Icon
-              className={cn("pb-1", colour.text)}
+              className={cn("pb-1", currentJournal?.colour?.text)}
               iconName="checkCircle"
               size="xl"
             />
@@ -46,7 +49,7 @@ function RouteComponent() {
         }
         title="Tasks"
         tasks={tasks}
-        colour={colour}
+        colour={currentJournal?.colour}
       />
     </div>
   );

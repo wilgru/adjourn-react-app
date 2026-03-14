@@ -1,6 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import isAuthenticated from "src/Users/utils/isAuthenticated";
-import { colours } from "src/colours/colours.constant";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
@@ -31,7 +30,6 @@ export const Route = createFileRoute("/_layout/$journalId/notes")({
 
 function NotesComponent() {
   const { currentJournal } = useCurrentJournal();
-  const colour = currentJournal?.colour ?? colours.orange;
 
   const { notes } = useGetNotes({
     createdDateString: undefined,
@@ -42,12 +40,16 @@ function NotesComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="pencil" title={"Notes"} colour={colour} />
+      <Toolbar
+        iconName="pencil"
+        title={"Notes"}
+        colour={currentJournal?.colour}
+      />
 
       <NotesLayout
         title={"Notes"}
         notes={notes}
-        colour={colour}
+        colour={currentJournal?.colour}
         selectedNote={note || null}
         description={null}
       />

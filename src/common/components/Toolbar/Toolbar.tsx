@@ -13,6 +13,7 @@ type ToolbarProps = {
   iconName?: string;
   title: string;
   colour?: Colour;
+  journalColour?: Colour;
   children?: JSX.Element;
 };
 
@@ -20,6 +21,7 @@ export const Toolbar = ({
   iconName,
   title,
   colour = colours.orange,
+  journalColour,
   children,
 }: ToolbarProps) => {
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ export const Toolbar = ({
           <Button
             variant="ghost"
             size="sm"
-            colour={colour}
+            colour={journalColour ?? colour}
             iconName="arrowLineRight"
             onClick={() => setValue(true)}
           />
@@ -64,7 +66,7 @@ export const Toolbar = ({
               <Button
                 variant="block"
                 size="sm"
-                colour={colour}
+                colour={journalColour ?? colour}
                 iconName="user"
               />
             </div>

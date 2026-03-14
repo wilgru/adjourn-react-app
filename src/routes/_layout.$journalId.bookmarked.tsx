@@ -30,7 +30,6 @@ export const Route = createFileRoute("/_layout/$journalId/bookmarked")({
 
 function RouteComponent() {
   const { currentJournal } = useCurrentJournal();
-  const colour = currentJournal?.colour ?? colours.orange;
 
   const { notes } = useGetNotes({
     isBookmarked: true,
@@ -40,11 +39,16 @@ function RouteComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="bookmark" colour={colour} title={"Bookmarked"} />
+      <Toolbar
+        iconName="bookmark"
+        colour={colours.red}
+        journalColour={currentJournal?.colour}
+        title={"Bookmarked"}
+      />
 
       <NotesLayout
         title="Bookmarked"
-        colour={colour}
+        colour={colours.red}
         notes={notes}
         prefillNewNoteData={{ isBookmarked: true }}
         selectedNote={note || null}
