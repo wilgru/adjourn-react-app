@@ -30,14 +30,14 @@ function RouteComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="listChecks" title="Tasks" colour={colour} />
+      <Toolbar iconName="checkCircle" title="Tasks" colour={colour} />
 
       <TasksLayout
         header={
           <div className="flex gap-3">
             <Icon
               className={cn("pb-1", colour.text)}
-              iconName="listChecks"
+              iconName="checkCircle"
               size="xl"
             />
 

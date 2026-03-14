@@ -129,7 +129,7 @@ export const TaskEditor = ({ task, onSave }: TaskEditorProps) => {
               })
             }
             className={cn(
-              "h-6 w-full tracking-tight text-md placeholder-slate-400 select-none resize-none outline-none",
+              "h-6 w-full tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
               (editedTask.completedDate ?? editedTask.cancelledDate)
                 ? "text-slate-500"
                 : "text-slate-700",
@@ -146,7 +146,7 @@ export const TaskEditor = ({ task, onSave }: TaskEditorProps) => {
                 description: e.target.value,
               })
             }
-            className="h-6 w-full text-sm font-normal bg-white placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
+            className="h-6 w-full text-sm font-normal bg-transparent placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
           />
         </div>
 
