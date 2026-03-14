@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import isAuthenticated from "src/Users/utils/isAuthenticated";
 import { colours } from "src/colours/colours.constant";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
+import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useGetNote } from "src/notes/hooks/useGetNote";
 import { useGetNotes } from "src/notes/hooks/useGetNotes";
@@ -28,6 +29,9 @@ export const Route = createFileRoute("/_layout/$journalId/bookmarked")({
 });
 
 function RouteComponent() {
+  const { currentJournal } = useCurrentJournal();
+  const colour = currentJournal?.colour ?? colours.orange;
+
   const { notes } = useGetNotes({
     isBookmarked: true,
   });
@@ -36,11 +40,11 @@ function RouteComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="bookmark" colour={colours.red} title={"Bookmarked"} />
+      <Toolbar iconName="bookmark" colour={colour} title={"Bookmarked"} />
 
       <NotesLayout
         title="Bookmarked"
-        colour={colours.red}
+        colour={colour}
         notes={notes}
         prefillNewNoteData={{ isBookmarked: true }}
         selectedNote={note || null}
