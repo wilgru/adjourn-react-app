@@ -8,7 +8,7 @@ import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { sortNotes } from "src/common/utils/sortNotes";
-import { useGetJournals } from "src/journals/hooks/useGetJournals";
+import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { useUpdateJournal } from "src/journals/hooks/useUpdateJournal";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useGetNote } from "src/notes/hooks/useGetNote";
@@ -37,41 +37,40 @@ export const Route = createFileRoute("/_layout/$journalId/notes")({
 });
 
 function NotesComponent() {
-  const { journalId } = Route.useParams();
+  const { currentJournal } = useCurrentJournal();
+  const colour = currentJournal?.colour ?? colours.orange;
+
   const { notes } = useGetNotes({
     createdDateString: undefined,
     isBookmarked: undefined,
   });
   const { noteId } = Route.useSearch(); // TODO: use in loaders?
   const { note } = useGetNote({ noteId });
-  const { journals } = useGetJournals();
   const { updateJournal } = useUpdateJournal();
 
-  const journal = journals.find((j) => j.id === journalId);
-
-  const sortBy = journal?.notesSortBy ?? "created";
-  const sortDirection = journal?.notesSortDirection ?? "asc";
-  const groupBy = journal?.notesGroupBy ?? null;
+  const sortBy = currentJournal?.notesSortBy ?? "created";
+  const sortDirection = currentJournal?.notesSortDirection ?? "asc";
+  const groupBy = currentJournal?.notesGroupBy ?? null;
 
   const sortedNotes = useMemo(
     () => sortNotes(notes, sortBy, sortDirection),
     [notes, sortBy, sortDirection],
   );
 
-  if (!journal) {
+  if (!currentJournal) {
     return null;
   }
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="pencil" title={"Notes"} colour={colours.grey}>
+      <Toolbar iconName="pencil" title={"Notes"} colour={colour}>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
               <Button
                 variant="ghost"
                 size="sm"
-                colour={colours.grey}
+                colour={colour}
                 iconName="arrowsDownUp"
               />
             </div>
@@ -92,9 +91,9 @@ function NotesComponent() {
                     value === "tag"
                   ) {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
-                        ...journal,
+                        ...currentJournal,
                         notesGroupBy: value === "null" ? null : value,
                       },
                     });
@@ -108,8 +107,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="null"
                 >
@@ -122,8 +121,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -135,8 +134,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="tag"
                 >
@@ -152,9 +151,9 @@ function NotesComponent() {
                 onValueChange={(value) => {
                   if (value === "created" || value === "alphabetical") {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
-                        ...journal,
+                        ...currentJournal,
                         notesSortBy: value,
                       },
                     });
@@ -168,8 +167,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -181,8 +180,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="alphabetical"
                 >
@@ -198,9 +197,9 @@ function NotesComponent() {
                 onValueChange={(value) => {
                   if (value === "asc" || value === "desc") {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
-                        ...journal,
+                        ...currentJournal,
                         notesSortDirection: value,
                       },
                     });
@@ -214,8 +213,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="asc"
                 >
@@ -227,8 +226,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.grey.backgroundPill}`,
-                    `data-[highlighted]:${colours.grey.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="desc"
                 >
@@ -246,7 +245,7 @@ function NotesComponent() {
       <NotesLayout
         title={"Notes"}
         notes={sortedNotes}
-        colour={colours.grey}
+        colour={colour}
         selectedNote={note || null}
         description={null}
         groupNotesBy={groupBy ?? undefined}

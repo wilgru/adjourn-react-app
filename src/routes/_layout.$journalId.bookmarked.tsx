@@ -8,7 +8,7 @@ import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { sortNotes } from "src/common/utils/sortNotes";
-import { useGetJournals } from "src/journals/hooks/useGetJournals";
+import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { useUpdateJournal } from "src/journals/hooks/useUpdateJournal";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useGetNote } from "src/notes/hooks/useGetNote";
@@ -36,40 +36,39 @@ export const Route = createFileRoute("/_layout/$journalId/bookmarked")({
 });
 
 function RouteComponent() {
-  const { journalId } = Route.useParams();
+  const { currentJournal } = useCurrentJournal();
+  const colour = currentJournal?.colour ?? colours.orange;
+
   const { notes } = useGetNotes({
     isBookmarked: true,
   });
   const { noteId } = Route.useSearch(); // TODO: use in loaders?
   const { note } = useGetNote({ noteId });
-  const { journals } = useGetJournals();
   const { updateJournal } = useUpdateJournal();
 
-  const journal = journals.find((j) => j.id === journalId);
-
-  const sortBy = journal?.bookmarkedSortBy ?? "created";
-  const sortDirection = journal?.bookmarkedSortDirection ?? "asc";
-  const groupBy = journal?.bookmarkedGroupBy ?? null;
+  const sortBy = currentJournal?.bookmarkedSortBy ?? "created";
+  const sortDirection = currentJournal?.bookmarkedSortDirection ?? "asc";
+  const groupBy = currentJournal?.bookmarkedGroupBy ?? null;
 
   const sortedNotes = useMemo(
     () => sortNotes(notes, sortBy, sortDirection),
     [notes, sortBy, sortDirection],
   );
 
-  if (!journal) {
+  if (!currentJournal) {
     return null;
   }
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar iconName="bookmark" colour={colours.red} title={"Bookmarked"}>
+      <Toolbar iconName="bookmark" colour={colour} title={"Bookmarked"}>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
               <Button
                 variant="ghost"
                 size="sm"
-                colour={colours.red}
+                colour={colour}
                 iconName="arrowsDownUp"
               />
             </div>
@@ -90,7 +89,7 @@ function RouteComponent() {
                     value === "tag"
                   ) {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
                         ...journal,
                         bookmarkedGroupBy: value === "null" ? null : value,
@@ -106,8 +105,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="null"
                 >
@@ -120,8 +119,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -133,8 +132,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="tag"
                 >
@@ -150,7 +149,7 @@ function RouteComponent() {
                 onValueChange={(value) => {
                   if (value === "created" || value === "alphabetical") {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
                         ...journal,
                         bookmarkedSortBy: value,
@@ -166,8 +165,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -179,8 +178,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="alphabetical"
                 >
@@ -196,7 +195,7 @@ function RouteComponent() {
                 onValueChange={(value) => {
                   if (value === "asc" || value === "desc") {
                     updateJournal({
-                      journalId: journal.id,
+                      journalId: currentJournal.id,
                       updateJournalData: {
                         ...journal,
                         bookmarkedSortDirection: value,
@@ -212,8 +211,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="asc"
                 >
@@ -225,8 +224,8 @@ function RouteComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${colours.red.backgroundPill}`,
-                    `data-[highlighted]:${colours.red.textPill}`,
+                    `data-[highlighted]:${colour.backgroundPill}`,
+                    `data-[highlighted]:${colour.textPill}`,
                   )}
                   value="desc"
                 >
@@ -243,7 +242,7 @@ function RouteComponent() {
 
       <NotesLayout
         title="Bookmarked"
-        colour={colours.red}
+        colour={colour}
         notes={sortedNotes}
         prefillNewNoteData={{ isBookmarked: true }}
         selectedNote={note || null}
