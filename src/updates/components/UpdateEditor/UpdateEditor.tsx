@@ -8,6 +8,7 @@ import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
 import { cn } from "src/common/utils/cn";
+import { Icon } from "src/icons/components/Icon/Icon";
 import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { NoteMultiSelect } from "src/notes/components/NoteMultiSelect/NoteMultiSelect";
 import { useCreateUpdate } from "src/updates/hooks/useCreateUpdate";
@@ -278,43 +279,42 @@ export const UpdateEditor = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Top row: note pills (optional, left only) */}
-        {showNotes && (
-          <div className="flex flex-wrap gap-2 items-center">
-            {(editedUpdate.notes ?? []).length === 0 ? (
-              <span className="text-xs text-slate-400 italic">
-                No notes attached
-              </span>
-            ) : (
-              (editedUpdate.notes as Note[]).map((note) => (
-                <button
-                  key={note.id}
-                  onClick={() =>
-                    navigate({
-                      to: `/${journalId ?? ""}/notes`,
-                      search: { noteId: note.id },
-                    })
-                  }
-                  className={cn(
-                    "flex items-center gap-1 px-2 py-1 text-xs rounded-full transition-colors",
-                    tintClasses.notePill,
-                  )}
-                >
-                  {note.title ?? "Untitled Note"}
-                </button>
-              ))
-            )}
-          </div>
-        )}
-
-        {/* Content */}
         <QuillViewer
           content={editedUpdate.content ?? new Delta()}
           textColor={tintClasses.textColor}
         />
 
-        {/* Bottom row: edit/delete icons (right, hover-only) */}
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          {showNotes && (
+            <div className="flex flex-wrap gap-2 items-center">
+              {(editedUpdate.notes ?? []).length === 0 ? (
+                <span className="text-xs text-slate-400 italic">
+                  No notes attached
+                </span>
+              ) : (
+                (editedUpdate.notes as Note[]).map((note) => (
+                  <button
+                    key={note.id}
+                    onClick={() =>
+                      navigate({
+                        to: `/${journalId ?? ""}/notes`,
+                        search: { noteId: note.id },
+                      })
+                    }
+                    className={cn(
+                      "flex items-center gap-1 px-2 py-1 text-xs rounded-full transition-colors",
+                      tintClasses.notePill,
+                    )}
+                  >
+                    {note.title ?? "Untitled Note"}
+
+                    <Icon iconName="arrowCircleRight" />
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+
           <div
             className={cn(
               "flex items-center gap-1 transition-opacity",
