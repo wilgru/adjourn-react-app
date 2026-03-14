@@ -20,7 +20,6 @@ import { Route as LayoutJournalIdTasksImport } from './routes/_layout.$journalId
 import { Route as LayoutJournalIdNotesImport } from './routes/_layout.$journalId.notes'
 import { Route as LayoutJournalIdBookmarkedImport } from './routes/_layout.$journalId.bookmarked'
 import { Route as LayoutJournalIdTagsTagIdImport } from './routes/_layout.$journalId.tags.$tagId'
-import { Route as LayoutJournalIdLogbookDateStringImport } from './routes/_layout.$journalId.logbook.$dateString'
 
 // Create/Update Routes
 
@@ -76,13 +75,6 @@ const LayoutJournalIdTagsTagIdRoute = LayoutJournalIdTagsTagIdImport.update({
   path: '/$journalId/tags/$tagId',
   getParentRoute: () => LayoutRoute,
 } as any)
-
-const LayoutJournalIdLogbookDateStringRoute =
-  LayoutJournalIdLogbookDateStringImport.update({
-    id: '/$journalId/logbook/$dateString',
-    path: '/$journalId/logbook/$dateString',
-    getParentRoute: () => LayoutRoute,
-  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -144,13 +136,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutJournalIdUpdatesImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/$journalId/logbook/$dateString': {
-      id: '/_layout/$journalId/logbook/$dateString'
-      path: '/$journalId/logbook/$dateString'
-      fullPath: '/$journalId/logbook/$dateString'
-      preLoaderRoute: typeof LayoutJournalIdLogbookDateStringImport
-      parentRoute: typeof LayoutImport
-    }
     '/_layout/$journalId/tags/$tagId': {
       id: '/_layout/$journalId/tags/$tagId'
       path: '/$journalId/tags/$tagId'
@@ -168,7 +153,6 @@ interface LayoutRouteChildren {
   LayoutJournalIdNotesRoute: typeof LayoutJournalIdNotesRoute
   LayoutJournalIdTasksRoute: typeof LayoutJournalIdTasksRoute
   LayoutJournalIdUpdatesRoute: typeof LayoutJournalIdUpdatesRoute
-  LayoutJournalIdLogbookDateStringRoute: typeof LayoutJournalIdLogbookDateStringRoute
   LayoutJournalIdTagsTagIdRoute: typeof LayoutJournalIdTagsTagIdRoute
 }
 
@@ -177,7 +161,6 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutJournalIdNotesRoute: LayoutJournalIdNotesRoute,
   LayoutJournalIdTasksRoute: LayoutJournalIdTasksRoute,
   LayoutJournalIdUpdatesRoute: LayoutJournalIdUpdatesRoute,
-  LayoutJournalIdLogbookDateStringRoute: LayoutJournalIdLogbookDateStringRoute,
   LayoutJournalIdTagsTagIdRoute: LayoutJournalIdTagsTagIdRoute,
 }
 
@@ -193,7 +176,6 @@ export interface FileRoutesByFullPath {
   '/$journalId/notes': typeof LayoutJournalIdNotesRoute
   '/$journalId/tasks': typeof LayoutJournalIdTasksRoute
   '/$journalId/updates': typeof LayoutJournalIdUpdatesRoute
-  '/$journalId/logbook/$dateString': typeof LayoutJournalIdLogbookDateStringRoute
   '/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
@@ -206,7 +188,6 @@ export interface FileRoutesByTo {
   '/$journalId/notes': typeof LayoutJournalIdNotesRoute
   '/$journalId/tasks': typeof LayoutJournalIdTasksRoute
   '/$journalId/updates': typeof LayoutJournalIdUpdatesRoute
-  '/$journalId/logbook/$dateString': typeof LayoutJournalIdLogbookDateStringRoute
   '/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
@@ -220,7 +201,6 @@ export interface FileRoutesById {
   '/_layout/$journalId/notes': typeof LayoutJournalIdNotesRoute
   '/_layout/$journalId/tasks': typeof LayoutJournalIdTasksRoute
   '/_layout/$journalId/updates': typeof LayoutJournalIdUpdatesRoute
-  '/_layout/$journalId/logbook/$dateString': typeof LayoutJournalIdLogbookDateStringRoute
   '/_layout/$journalId/tags/$tagId': typeof LayoutJournalIdTagsTagIdRoute
 }
 
@@ -235,7 +215,6 @@ export interface FileRouteTypes {
     | '/$journalId/notes'
     | '/$journalId/tasks'
     | '/$journalId/updates'
-    | '/$journalId/logbook/$dateString'
     | '/$journalId/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -247,7 +226,6 @@ export interface FileRouteTypes {
     | '/$journalId/notes'
     | '/$journalId/tasks'
     | '/$journalId/updates'
-    | '/$journalId/logbook/$dateString'
     | '/$journalId/tags/$tagId'
   id:
     | '__root__'
@@ -259,7 +237,6 @@ export interface FileRouteTypes {
     | '/_layout/$journalId/notes'
     | '/_layout/$journalId/tasks'
     | '/_layout/$journalId/updates'
-    | '/_layout/$journalId/logbook/$dateString'
     | '/_layout/$journalId/tags/$tagId'
   fileRoutesById: FileRoutesById
 }
@@ -301,7 +278,6 @@ export const routeTree = rootRoute
         "/_layout/$journalId/notes",
         "/_layout/$journalId/tasks",
         "/_layout/$journalId/updates",
-        "/_layout/$journalId/logbook/$dateString",
         "/_layout/$journalId/tags/$tagId"
       ]
     },
@@ -328,10 +304,6 @@ export const routeTree = rootRoute
     },
     "/_layout/$journalId/updates": {
       "filePath": "_layout.$journalId.updates.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/$journalId/logbook/$dateString": {
-      "filePath": "_layout.$journalId.logbook.$dateString.tsx",
       "parent": "/_layout"
     },
     "/_layout/$journalId/tags/$tagId": {
