@@ -54,14 +54,12 @@ const getInitialUpdate = (update: Partial<Update>): Partial<Update> => ({
 
 export const UpdateEditor = ({
   update,
-  colour,
   showNotes = true,
   dateDisplay = "time",
   onCancel,
   onCreated,
 }: UpdateEditorProps) => {
-  const { currentJournal, journalId } = useCurrentJournal();
-  const resolvedColour = colour ?? currentJournal?.colour ?? colours.orange;
+  const { journalId } = useCurrentJournal();
   const navigate = useNavigate();
 
   const { createUpdate } = useCreateUpdate();
@@ -77,14 +75,12 @@ export const UpdateEditor = ({
   const toolbarId = `update-toolbar-${editedUpdate.id || "new"}`;
 
   const tintClasses = getTintClasses(editedUpdate.tint);
-  /** Colour used for toolbar buttons and NoteMultiSelect when a tint is active. */
-  const tintColour = editedUpdate.tint
-    ? (TINT_TO_COLOUR[editedUpdate.tint] ?? resolvedColour)
-    : resolvedColour;
-  /** Colour used for NoteMultiSelect pills — grey when no tint. */
-  const noteColour = editedUpdate.tint
-    ? (TINT_TO_COLOUR[editedUpdate.tint] ?? colours.grey)
-    : colours.grey;
+  const resolvedColour =
+    (editedUpdate.tint ? TINT_TO_COLOUR[editedUpdate.tint] : undefined) ??
+    colours.grey;
+
+  const tintColour = resolvedColour;
+  const noteColour = resolvedColour;
 
   const onUpdateField = (fields: Partial<Update>) => {
     setEditedUpdate((current) => ({ ...current, ...fields }));
@@ -158,7 +154,7 @@ export const UpdateEditor = ({
             tintClasses.card,
           )}
         >
-          <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center justify-between flex-wrap gap-2 border-b-2 pb-3 border-slate-100">
             <NoteMultiSelect
               selectedNotes={(editedUpdate.notes ?? []) as Note[]}
               colour={noteColour}

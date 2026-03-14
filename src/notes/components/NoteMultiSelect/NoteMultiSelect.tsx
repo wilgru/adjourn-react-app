@@ -42,6 +42,10 @@ export const NoteMultiSelect = ({
 
   return (
     <div className="flex flex-row flex-wrap gap-2 items-center">
+      {selectedNotes.length === 0 && (
+        <p className="text-xs text-slate-400 pt-0.5">No note selected</p>
+      )}
+
       {selectedNotes.map((note) => (
         <button
           key={note.id}
