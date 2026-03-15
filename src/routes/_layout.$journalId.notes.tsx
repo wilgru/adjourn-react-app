@@ -9,6 +9,7 @@ import { cn } from "src/common/utils/cn";
 import { sortNotes } from "src/common/utils/sortNotes";
 import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { useUpdateJournal } from "src/journals/hooks/useUpdateJournal";
+import { NoteSearchBar } from "src/notes/components/NoteSearchBar/NoteSearchBar";
 import { NotesLayout } from "src/notes/components/NotesLayout/NotesLayout";
 import { useGetNote } from "src/notes/hooks/useGetNote";
 import { useGetNotes } from "src/notes/hooks/useGetNotes";
@@ -65,6 +66,7 @@ function NotesComponent() {
         iconName="pencil"
         title={"Notes"}
         colour={currentJournal?.colour}
+        rightChildren={<NoteSearchBar colour={currentJournal?.colour} />}
       >
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>

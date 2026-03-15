@@ -15,6 +15,7 @@ type ToolbarProps = {
   colour?: Colour;
   journalColour?: Colour;
   children?: JSX.Element;
+  rightChildren?: JSX.Element;
 };
 
 export const Toolbar = ({
@@ -23,6 +24,7 @@ export const Toolbar = ({
   colour = colours.orange,
   journalColour,
   children,
+  rightChildren,
 }: ToolbarProps) => {
   const navigate = useNavigate();
   const { logout } = useLogin();
@@ -60,6 +62,7 @@ export const Toolbar = ({
       </div>
 
       <div className="flex items-center gap-2">
+        {rightChildren}
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
