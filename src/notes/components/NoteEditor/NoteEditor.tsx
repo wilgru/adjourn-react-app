@@ -222,6 +222,10 @@ const NoteEditor = ({
 
       {(updates.length > 0 || showNewUpdate) && (
         <div className="w-full flex flex-col pt-4 pr-12">
+          <div className="flex items-center justify-between">
+            <h3 className="font-title text-xl text-slate-500">Updates</h3>
+          </div>
+
           {showNewUpdate && (
             <UpdateEditor
               update={{ notes: [editedNote], tint: null }}
