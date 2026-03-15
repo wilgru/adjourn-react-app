@@ -1,8 +1,9 @@
-import { Bookmark, ChatCenteredText, Tag } from "@phosphor-icons/react";
+import { Bookmark, ChatCenteredText } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { cn } from "src/common/utils/cn";
+import { TagPill } from "../../../tags/components/TagPill/TagPill";
 import type { Colour } from "src/colours/Colour.type";
 import type { Note } from "src/notes/Note.type";
 
@@ -47,9 +48,17 @@ export const NoteListItem = ({
           </p>
 
           {note.tags.length > 0 && (
-            <div className="flex items-center gap-0.5 text-xs text-slate-400 m-1">
-              <Tag size={12} />
-              <span>{note.tags.length}</span>
+            <div className="flex items-center gap-0">
+              {note.tags.map((tag) => (
+                <TagPill
+                  key={tag.id}
+                  tag={tag}
+                  size="xs"
+                  variant="ghost"
+                  closable={false}
+                  collapsed={true}
+                />
+              ))}
             </div>
           )}
 
