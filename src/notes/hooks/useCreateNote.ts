@@ -9,7 +9,7 @@ import type { Note } from "src/notes/Note.type";
 type CreateNoteProps = {
   createNoteData: Omit<
     Note,
-    "id" | "created" | "updated" | "deleted" | "tasks"
+    "id" | "created" | "updated" | "deleted" | "tasks" | "updateCount"
   >;
 };
 
@@ -37,7 +37,7 @@ export const useCreateNote = (): UseCreateNoteResponse => {
         journal: journalId,
         user: user?.id,
       },
-      { expand: "tags" },
+      { expand: "tags, updates_via_notes" },
     );
 
     return mapNote(createdNote);

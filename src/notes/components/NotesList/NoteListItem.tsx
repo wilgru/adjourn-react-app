@@ -1,4 +1,4 @@
-import { Bookmark } from "@phosphor-icons/react";
+import { Bookmark, ChatCenteredText } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
@@ -47,16 +47,24 @@ export const NoteListItem = ({
             {note.created.format(createdDateFormat)}
           </p>
 
-          {note.tags.map((tag) => (
-            <TagPill
-              key={tag.id}
-              tag={tag}
-              size="xs"
-              variant="ghost"
-              closable={false}
-              collapsed={true}
-            />
-          ))}
+          {note.tags.length > 0 &&
+            note.tags.map((tag) => (
+              <TagPill
+                key={tag.id}
+                tag={tag}
+                size="xs"
+                variant="ghost"
+                closable={false}
+                collapsed={true}
+              />
+            ))}
+
+          {note.updateCount > 0 && (
+            <div className="flex items-center gap-1 text-xs text-slate-400 m-1">
+              <ChatCenteredText size={14} />
+              <span>{note.updateCount}</span>
+            </div>
+          )}
 
           {note.isBookmarked && (
             <Bookmark className="fill-red-400 m-1" weight="fill" size={14} />
