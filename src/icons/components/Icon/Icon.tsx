@@ -2,6 +2,7 @@ import {
   Gear,
   Pencil,
   Plus,
+  PlusCircle,
   PlusSquare,
   X,
   Bookmark,
@@ -84,6 +85,8 @@ const Icon = ({
       return <Plus {...iconProps} weight="bold" />;
     case "plusSquare":
       return <PlusSquare {...iconProps} />;
+    case "plusCircle":
+      return <PlusCircle {...iconProps} />;
     case "dotsThree":
       return <DotsThree {...iconProps} weight="bold" />;
     case "chatCircle":
