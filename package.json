@@ -54,6 +54,7 @@
     "@chromatic-com/storybook": "^3.2.6",
     "@flydotio/dockerfile": "^0.5.7",
     "@storybook/react": "^8.6.12",
+    "storybook": "^8.6.12",
     "@tanstack/router-devtools": "^1.166.9",
     "@types/debounce": "^1.2.4",
     "@types/node": "^20.19.0",
