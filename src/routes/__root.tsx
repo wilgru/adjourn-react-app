@@ -1,5 +1,6 @@
+import { TanStackDevtools } from "@tanstack/react-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
   createRootRoute,
   HeadContent,
@@ -7,7 +8,7 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/router-devtools";
 import { useState } from "react";
 import requireClientAuth from "src/Users/utils/requireClientAuth";
 import appCss from "src/index.css?url";
@@ -47,8 +48,18 @@ function RootComponent() {
       <body>
         <QueryClientProvider client={queryClient}>
           <Outlet />
-          <TanStackRouterDevtools position="bottom-right" />
-          <ReactQueryDevtools initialIsOpen={false} />
+          <TanStackDevtools
+            plugins={[
+              {
+                name: "TanStack Query",
+                render: <ReactQueryDevtoolsPanel />,
+              },
+              {
+                name: "TanStack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
         </QueryClientProvider>
         <Scripts />
       </body>
