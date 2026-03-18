@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { useCurrentJournalId } from "src/journals/hooks/useCurrentJournalId";
 import { TaskEditor } from "src/tasks/components/TaskEditor/TaskEditor";
@@ -9,12 +9,25 @@ import type { TasksGroup } from "src/tasks/Task.type";
 type TasksSectionProps = {
   taskGroup: TasksGroup;
   colour: Colour;
+  /** Incrementing this counter causes the section to open a new task editor. Used by the toolbar plus button. */
+  noNoteEditorTrigger?: number;
 };
 
-export const TasksSection = ({ taskGroup, colour }: TasksSectionProps) => {
+export const TasksSection = ({
+  taskGroup,
+  colour,
+  noNoteEditorTrigger,
+}: TasksSectionProps) => {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
   const { journalId } = useCurrentJournalId();
+
+  // Open the new-task editor whenever the toolbar plus button fires.
+  useEffect(() => {
+    if (noNoteEditorTrigger && noNoteEditorTrigger > 0) {
+      setIsAddingTask(true);
+    }
+  }, [noNoteEditorTrigger]);
 
   const note = taskGroup.relevantTaskData.note;
   const isNoNote = !note;

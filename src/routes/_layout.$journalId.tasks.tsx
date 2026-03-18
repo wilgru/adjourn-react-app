@@ -1,5 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useState } from "react";
 import isAuthenticated from "src/Users/utils/isAuthenticated";
+import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
@@ -25,6 +27,7 @@ function RouteComponent() {
   const { currentJournal } = useCurrentJournal();
 
   const { tasks } = useGetTasks({});
+  const [noNoteEditorTrigger, setNoNoteEditorTrigger] = useState(0);
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -33,7 +36,15 @@ function RouteComponent() {
         title="Tasks"
         colour={currentJournal?.colour}
         journalColour={currentJournal?.colour}
-      />
+      >
+        <Button
+          variant="ghost"
+          size="sm"
+          colour={currentJournal?.colour}
+          iconName="plusCircle"
+          onClick={() => setNoNoteEditorTrigger((c) => c + 1)}
+        />
+      </Toolbar>
 
       <TasksLayout
         header={
@@ -50,6 +61,7 @@ function RouteComponent() {
         title="Tasks"
         tasks={tasks}
         colour={currentJournal?.colour}
+        noNoteEditorTrigger={noNoteEditorTrigger}
       />
     </div>
   );
