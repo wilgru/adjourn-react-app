@@ -3,16 +3,17 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import electron from "vite-plugin-electron/simple";
-import svgr from "vite-plugin-svgr"; // TODO: no longer needed?
 
 const isElectron = process.env.ELECTRON === "true";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: isElectron ? "./" : "/",
+export default defineConfig(({ command }) => ({
+  // "./" base is only needed for production Electron builds (file:// paths).
+  // In dev, the BrowserWindow loads from http://localhost, so "/" is correct
+  // and avoids breaking TanStack Start's server function routing.
+  base: isElectron && command === "build" ? "./" : "/",
   plugins: [
     tanstackStart(),
-    svgr(),
     react(),
     ...(isElectron
       ? [
@@ -32,4 +33,4 @@ export default defineConfig({
       src: resolve(__dirname, "src"),
     },
   },
-});
+}));

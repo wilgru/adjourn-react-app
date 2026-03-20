@@ -16,7 +16,7 @@ ENV NODE_ENV="production"
 FROM base AS build
 
 # Build arguments/env variables
-ARG VITE_POCKETBASE_URL="https://adjourn-pocketbase.fly.dev"
+# ARG
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \

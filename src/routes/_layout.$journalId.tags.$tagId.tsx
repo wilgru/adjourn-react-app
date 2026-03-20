@@ -60,7 +60,6 @@ export default function TagComponent() {
         title: "",
         content: new Delta(),
         tags: [tag],
-        isDraft: false,
         isBookmarked: false,
       },
     });

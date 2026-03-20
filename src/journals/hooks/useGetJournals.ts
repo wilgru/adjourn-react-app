@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { mapJournal } from "src/journals/utils/mapJournal";
-import { pb } from "src/pocketbase/utils/connection";
+import { getJournals } from "../serverFunctions/getJournals";
 import type { Journal } from "src/journals/Journal.type";
 
 type UseGetJournalsResponse = {
@@ -9,28 +10,18 @@ type UseGetJournalsResponse = {
 };
 
 export const useGetJournals = (): UseGetJournalsResponse => {
-  const shouldFetchJournals =
-    typeof window !== "undefined" && !!pb.authStore?.isValid;
+  const getJournalsFn = useServerFn(getJournals);
 
   const queryFn = async (): Promise<{
     journals: Journal[];
   }> => {
-    const rawJournals = await pb
-      .collection("journals")
-      .getList(undefined, undefined, {
-        expand: "notes_via_journal, tasks_via_journal",
-      });
+    const result = await getJournalsFn();
 
-    const journals = rawJournals.items.map((journal) => {
-      const noteCount = journal.expand?.notes_via_journal?.length ?? 0;
-      const taskCount = journal.expand?.tasks_via_journal?.length ?? 0;
-
-      return {
-        ...mapJournal(journal),
-        noteCount,
-        taskCount,
-      };
-    });
+    const journals = result.journals.map((journal) => ({
+      ...mapJournal(journal),
+      noteCount: journal.noteCount,
+      taskCount: journal.taskCount,
+    }));
 
     return { journals };
   };
@@ -39,7 +30,6 @@ export const useGetJournals = (): UseGetJournalsResponse => {
   const { data, isPending } = useQuery({
     queryKey: ["journals.list"],
     queryFn,
-    enabled: shouldFetchJournals,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
