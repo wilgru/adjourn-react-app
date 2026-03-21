@@ -2,12 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import { db } from "src/db/connection";
 import { tags } from "src/tags/tags.schema";
+import type { ColourName } from "src/colours/Colour.type";
 import type { TagSchema } from "src/tags/tags.schema";
 
 type UpdateTagInput = {
   tagId: string;
   name: string;
-  colour: string;
+  colour: ColourName;
   icon: string;
   description: string | null;
   groupBy: string | null;

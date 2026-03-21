@@ -2,13 +2,14 @@ import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import { db } from "src/db/connection";
 import { journals } from "src/journals/journals.schema";
+import type { ColourName } from "src/colours/Colour.type";
 import type { JournalSchema } from "src/journals/journals.schema";
 
 type UpdateJournalInput = {
   journalId: string;
   title: string;
   icon: string;
-  colour: string;
+  colour: ColourName;
   notesSortBy: string;
   notesSortDirection: string;
   notesGroupBy: string | null;

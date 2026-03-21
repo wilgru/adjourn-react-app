@@ -1,11 +1,5 @@
-import { log } from "node:console";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { app, BrowserWindow } from "electron";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 
 app.setName("Adjourn");
 
@@ -31,14 +25,8 @@ function createWindow() {
     },
   });
 
-  log("VITE_DEV_SERVER_URL:", VITE_DEV_SERVER_URL);
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL);
-    win.webContents.openDevTools();
-  } else {
-    // Always load from 'dist' for Electron production build
-    win.loadFile(path.join(__dirname, "../dist/index.html"));
-  }
+  // Always load the server URL (dev or prod)
+  win.loadURL("http://localhost:3000");
 }
 
 app.on("window-all-closed", () => {
@@ -46,10 +34,6 @@ app.on("window-all-closed", () => {
     app.quit();
     win = null;
   }
-});
-
-app.on("before-quit", () => {
-  // DB is managed by TanStack Start server functions via Drizzle
 });
 
 app.on("activate", () => {
@@ -60,5 +44,4 @@ app.on("activate", () => {
 
 app.whenReady().then(() => {
   createWindow();
-  console.log("YOOO __dirname:", __dirname);
 });
