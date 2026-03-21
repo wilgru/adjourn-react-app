@@ -1,7 +1,4 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useNavigate } from "@tanstack/react-router";
 import { useAtom } from "jotai";
-import { useLogin } from "src/Users/hooks/useLogin";
 import { colours } from "src/colours/colours.constant";
 import { isSideBarVisibleAtom } from "src/common/atoms/isSidebarVisibleAtom";
 import { Button } from "src/common/components/Button/Button";
@@ -27,9 +24,6 @@ export const Toolbar = ({
   children,
 }: ToolbarProps) => {
   const { isMacElectron } = useElectronEnvironment();
-
-  const navigate = useNavigate();
-  const { logout } = useLogin();
 
   const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
   const shouldReserveWindowButtonSpace = isMacElectron && !isSideBarVisible;
@@ -80,48 +74,6 @@ export const Toolbar = ({
         )}
       >
         <NoteSearchBar />
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <div>
-              <Button
-                variant="block"
-                size="sm"
-                colour={journalColour ?? colour}
-                iconName="user"
-              />
-            </div>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              className="flex flex-col gap-2 bg-white border border-slate-200 text-sm rounded-2xl p-2 w-40 drop-shadow"
-              sideOffset={2}
-              align="start"
-            >
-              <DropdownMenu.Item
-                className="leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 transition-colors"
-                onClick={() => {
-                  logout();
-                  navigate({ to: "/login", search: { redirect: undefined } });
-                }}
-              >
-                Account Settings
-              </DropdownMenu.Item>
-
-              <DropdownMenu.Separator className="h-[1px] rounded-full bg-slate-200" />
-
-              <DropdownMenu.Item
-                className="leading-none text-red-400 text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500 transition-colors"
-                onClick={() => {
-                  logout();
-                  navigate({ to: "/login", search: { redirect: undefined } });
-                }}
-              >
-                Log out
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
       </div>
     </div>
   );
