@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_ELECTROBUN?: string;
+  readonly VITE_ELECTRON?: string;
 }
 
 interface ImportMeta {
