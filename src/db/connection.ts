@@ -1,8 +1,9 @@
 import { mkdirSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
-import { Database } from "bun:sqlite";
-import { drizzle } from "drizzle-orm/bun-sqlite";
+import Database from "better-sqlite3";
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 
 function getDbPath(): string {
   if (process.env.NODE_ENV === "production") {
@@ -38,7 +39,15 @@ function getDbPath(): string {
   return path.join(devDbDir, "adjourn.db");
 }
 
-const sqlite = new Database(getDbPath(), { create: true });
-sqlite.run("PRAGMA journal_mode = WAL;");
+const sqlite = new Database(getDbPath());
+sqlite.pragma("journal_mode = WAL");
 
-export const db = drizzle(sqlite);
+const db = drizzle(sqlite);
+await migrate(db, {
+  migrationsFolder:
+    process.env.NODE_ENV === "production"
+      ? path.join(process.resourcesPath, "drizzle")
+      : path.join(process.cwd(), "migrations"),
+});
+
+export { db };

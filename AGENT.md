@@ -16,6 +16,7 @@ This file defines custom agent instructions for GitHub Copilot Chat in this repo
 - full stack project is built on Tanstack Start with React and Typescript
 - Tailwind CSS is used for styling, falling back to CSS modules where Tailwind cant be used
 - Custom Tanstack Query hooks are used with server functions internally by the frontend to communicate with the backend
+- Electron build output goes to `.vite/build/`, cloud build to `dist-cloud/`
 
 ## Coding Preferences
 
@@ -30,9 +31,10 @@ This file defines custom agent instructions for GitHub Copilot Chat in this repo
 
 ## Electron Guidance
 
-- Electron build output goes to `dist/`, cloud build to `dist-cloud/`
-- Electron-builder release output goes to `dist/release/`
+- Electron-forge release output goes to `dist/`
 - Electron build resources (icons, etc.) are in `resources/`
+- Drizzle migration files are included in Electron's `extraResource` (see `forge.config.ts`).
+- On app startup, migrations are run programmatically using Drizzle ORM, referencing the bundled migration folder in production (see `src/db/connection.ts`).
 
 ## Communication
 

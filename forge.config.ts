@@ -5,8 +5,9 @@ const config: ForgeConfig = {
   packagerConfig: {
     name: "Adjourn",
     icon: "resources/icon.icon",
+    extraResource: ["dist-cloud", "drizzle"],
   },
-  outDir: ".vite/dist/release",
+  outDir: "dist",
   rebuildConfig: {},
   makers: [
     {
@@ -26,13 +27,13 @@ const config: ForgeConfig = {
           entry: "electron/preload.ts",
           config: "vite.preload.config.ts",
         },
-      ],
-      renderer: [
         {
-          name: "main_window",
-          config: "vite.renderer.config.ts",
+          entry: "electron/nitro-worker.ts",
+          config: "vite.main.config.ts",
+          target: "main",
         },
       ],
+      renderer: [],
     }),
   ],
 };
