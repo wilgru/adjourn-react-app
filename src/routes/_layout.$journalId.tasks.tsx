@@ -34,7 +34,7 @@ function RouteComponent() {
           variant="ghost"
           size="sm"
           colour={currentJournal?.colour}
-          iconName="plusCircle"
+          iconName="plus"
           onClick={() => setNoNoteEditorTrigger((c) => c + 1)}
         />
       </Toolbar>

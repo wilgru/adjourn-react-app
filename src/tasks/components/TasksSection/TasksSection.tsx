@@ -49,7 +49,7 @@ export const TasksSection = ({
               <Button
                 variant="ghost-strong"
                 size="sm"
-                iconName="plusCircle"
+                iconName="plus"
                 colour={colour}
                 onClick={() => setIsAddingTask(true)}
               />
@@ -103,7 +103,7 @@ export const TasksSection = ({
             <Button
               variant="ghost-strong"
               size="sm"
-              iconName="plusCircle"
+              iconName="plus"
               colour={colour}
               onClick={() => setIsAddingTask(true)}
             />
@@ -132,10 +132,7 @@ export const TasksSection = ({
         ))}
 
         {isAddingTask && (
-          <TaskEditor
-            task={{ note }}
-            onSave={() => setIsAddingTask(false)}
-          />
+          <TaskEditor task={{ note }} onSave={() => setIsAddingTask(false)} />
         )}
       </div>
     </section>
