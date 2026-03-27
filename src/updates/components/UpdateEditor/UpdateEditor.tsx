@@ -137,20 +137,22 @@ export const UpdateEditor = ({
 
   if (isEditing) {
     return (
-      <div className="relative flex items-start gap-8 p-1">
-        <p className="text-xs text-slate-400 shrink-0 pt-2 w-24 text-right leading-tight">
+      <div className="relative flex items-center gap-4">
+        <p className="text-xs text-slate-400 shrink-0 w-32 text-right leading-tight">
           {dateStr ?? ""}
         </p>
 
-        <div className="absolute left-[7rem] top-0 bottom-0 -translate-x-1/2 pointer-events-none w-0.5 bg-slate-100" />
+        <div className="relative h-full w-4 flex items-center justify-center">
+          <div className="absolute h-full pointer-events-none w-0.5 bg-slate-100" />
 
-        <div className="absolute left-[7rem] top-3 -translate-x-1/2 pointer-events-none text-slate-100">
-          <Icon iconName="circle" size="xs" />
+          <div className="absolute pointer-events-none text-slate-100">
+            <Icon iconName="circle" size="xs" />
+          </div>
         </div>
 
         <div
           className={cn(
-            "flex-1 rounded-2xl border p-4 flex flex-col gap-3",
+            "flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors",
             tintClasses.card,
           )}
         >
@@ -242,20 +244,22 @@ export const UpdateEditor = ({
   }
 
   return (
-    <div className="relative flex items-start gap-8 p-1">
-      <p className="text-xs text-slate-400 shrink-0 pt-2 w-24 text-right leading-tight">
+    <div className="relative flex items-center gap-4">
+      <p className="text-xs text-slate-400 shrink-0 w-32 text-right leading-tight">
         {dateStr}
       </p>
 
-      <div className="absolute left-[7rem] top-0 bottom-0 -translate-x-1/2 pointer-events-none w-0.5 bg-slate-100" />
+      <div className="relative h-full w-4 flex items-center justify-center">
+        <div className="absolute h-full pointer-events-none w-0.5 bg-slate-100" />
 
-      <div className="absolute left-[7rem] top-3 -translate-x-1/2 pointer-events-none text-slate-100">
-        <Icon iconName="circle" size="xs" />
+        <div className="absolute pointer-events-none text-slate-100">
+          <Icon iconName="circle" size="xs" />
+        </div>
       </div>
 
       <div
         className={cn(
-          "flex-1 rounded-2xl border p-4 flex flex-col gap-3 transition-colors",
+          "flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors",
           tintClasses.card,
         )}
       >

@@ -4,7 +4,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
   switch (tint) {
     case "red":
       return {
-        card: "bg-red-50 border-red-100",
+        card: "bg-red-50",
         text: "text-red-700",
         textColor: "#b91c1c", // red-700
         meta: "text-red-400",
@@ -13,7 +13,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       };
     case "yellow":
       return {
-        card: "bg-yellow-50 border-yellow-100",
+        card: "bg-yellow-50",
         text: "text-yellow-700",
         textColor: "#a16207", // yellow-700
         meta: "text-yellow-500",
@@ -22,7 +22,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       };
     case "green":
       return {
-        card: "bg-green-50 border-green-100",
+        card: "bg-green-50",
         text: "text-green-700",
         textColor: "#15803d", // green-700
         meta: "text-green-500",
@@ -31,7 +31,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       };
     case "blue":
       return {
-        card: "bg-blue-50 border-blue-100",
+        card: "bg-blue-50",
         text: "text-blue-700",
         textColor: "#1d4ed8", // blue-700
         meta: "text-blue-400",
@@ -40,7 +40,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       };
     default:
       return {
-        card: "bg-white border-slate-100",
+        card: "bg-slate-50",
         text: "text-slate-700",
         textColor: "#334155", // slate-700
         meta: "text-slate-400",
