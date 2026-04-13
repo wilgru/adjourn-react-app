@@ -1,6 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useSetAtom } from "jotai";
-import { colours } from "src/colours/colours.constant";
 import { isSideBarVisibleAtom } from "src/common/atoms/isSidebarVisibleAtom";
 import { Button } from "src/common/components/Button/Button";
 import { NavItem } from "src/common/components/NavItem/NavItem";
@@ -12,6 +11,7 @@ import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { useGetJournalContentCounts } from "src/journals/hooks/useGetJournalContentCounts";
 import { CreateTagGroupModal } from "src/tags/components/CreateTagGroupModal/CreateTagGroupModal";
 import { useGetTagGroups } from "src/tags/hooks/useGetTagGroups";
+import { SidebarBookmarkSection } from "./SidebarBookmarkSection";
 import { SidebarTagSection } from "./SidebarTagSection";
 
 export const Sidebar = () => {
@@ -90,15 +90,9 @@ export const Sidebar = () => {
               preview={counts?.updateCount}
             />
 
-            <NavItem
-              ghost
-              iconName="bookmark"
-              title={"Bookmarked"}
-              to={`/${journalId}/bookmarked/`}
-              colour={colours.red}
-              preview={counts?.bookmarkedCount}
-            />
           </section>
+
+          <SidebarBookmarkSection />
 
           <SidebarTagSection
             title={"Tags"}
