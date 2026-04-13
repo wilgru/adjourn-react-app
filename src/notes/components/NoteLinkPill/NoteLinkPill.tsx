@@ -31,7 +31,7 @@ export const NoteLinkPill = ({
       )}
     >
       <Icon iconName="link" size="sm" weight="regular" />
-      <span className="inline-block overflow-hidden max-w-[10rem]">
+      <span className="inline-block overflow-hidden max-w-[10rem] truncate">
         {link.title || link.link}
       </span>
     </button>

@@ -49,6 +49,7 @@ const NoteEditor = ({
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>(false);
   const [showNewUpdate, setShowNewUpdate] = useState(false);
+  const [linksModalKey, setLinksModalKey] = useState(0);
 
   // Ref that always points to the latest save implementation so the debounced
   // function never closes over stale state.
@@ -175,8 +176,7 @@ const NoteEditor = ({
 
             <Dialog.Root
               onOpenChange={(open) => {
-                if (!open) return;
-                // Reset modal state to current links each time it opens
+                if (open) setLinksModalKey((k) => k + 1);
               }}
             >
               <Dialog.Trigger asChild>
@@ -189,7 +189,7 @@ const NoteEditor = ({
               </Dialog.Trigger>
 
               <NoteLinksModal
-                key={JSON.stringify(editedNote.links)}
+                key={linksModalKey}
                 links={editedNote.links}
                 colour={colour}
                 onSave={onSaveLinks}
