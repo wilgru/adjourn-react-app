@@ -90,6 +90,7 @@ const NoteEditor = ({
         title: "New task",
         isFlagged: false,
         link: null,
+        links: [],
         description: "",
         dueDate: null,
         completedDate: null,

@@ -10,6 +10,7 @@ type CreateTaskInput = {
   title: string;
   description: string;
   link: string | null;
+  links: string;
   isFlagged: boolean;
   noteId: string | null;
   dueDate: string | null;
@@ -37,6 +38,7 @@ export const createTask = createServerFn({ method: "POST" })
         title: data.title,
         description: data.description,
         link: data.link,
+        links: data.links,
         isFlagged: data.isFlagged,
         note: data.noteId,
         dueDate: data.dueDate,

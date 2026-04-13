@@ -29,6 +29,7 @@ export const useUpdateTask = (): UseUpdateTaskResponse => {
       title: updateTaskData.title,
       description: updateTaskData.description,
       link: updateTaskData.link,
+      links: JSON.stringify(updateTaskData.links),
       isFlagged: updateTaskData.isFlagged,
       noteId: updateTaskData.note?.id ?? null,
       dueDate: updateTaskData.dueDate?.toISOString() ?? null,
