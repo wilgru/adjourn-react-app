@@ -47,7 +47,6 @@ const NoteEditor = ({
 
   const [editedNote, setEditedNote] = useState<Note>(note); // TODO: maybe use key prop when using NoteEditor to force reset instead of having to manage this state and useEffects to reset when the note prop changes.
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
-  const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>(false);
   const [showNewUpdate, setShowNewUpdate] = useState(false);
   const [linksModalKey, setLinksModalKey] = useState(0);
 
@@ -135,43 +134,17 @@ const NoteEditor = ({
           className="h-12 text-5xl font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
         />
 
+        {editedNote.links.map((link) => (
+          <NoteLinkPill key={link.id} link={link} colour={colour} />
+        ))}
+
         <div className="flex flex-row flex-wrap items-center justify-between">
           <div className="flex flex-row flex-wrap gap-2 items-center">
-            <p
-              className={`${
-                updatedDateVisible ? "visible" : "hidden"
-              } text-slate-500 text-xs italic`}
-            >
-              {"(Last edited " +
-                editedNote.updated.format("ddd D MMMM YYYY, hh:mm a") +
-                ")"}
-            </p>
-
             <TagMultiSelect
               key={editedNote.id}
               initialTags={editedNote.tags}
               colour={colour}
               onChange={(tags) => onUpdateNote({ tags })}
-            />
-
-            {editedNote.links.map((link) => (
-              <NoteLinkPill key={link.id} link={link} colour={colour} />
-            ))}
-
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={colour}
-              onClick={onCreateTask}
-              iconName="checkCircle"
-            />
-
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={colour}
-              onClick={() => setShowNewUpdate(true)}
-              iconName="chatCenteredText"
             />
 
             <Dialog.Root
@@ -196,6 +169,22 @@ const NoteEditor = ({
               />
             </Dialog.Root>
 
+            <Button
+              size="sm"
+              variant="ghost"
+              colour={colour}
+              onClick={onCreateTask}
+              iconName="checkCircle"
+            />
+
+            <Button
+              size="sm"
+              variant="ghost"
+              colour={colour}
+              onClick={() => setShowNewUpdate(true)}
+              iconName="chatCenteredText"
+            />
+
             <Toggle
               isToggled={editedNote.isBookmarked}
               size="sm"
@@ -206,15 +195,8 @@ const NoteEditor = ({
               iconName="bookmark"
             />
 
-            <p
-              className="text-slate-500 text-xs"
-              onClick={() =>
-                setUpdatedDateVisible(
-                  (currentUpdatedDateVisible) => !currentUpdatedDateVisible,
-                )
-              }
-            >
-              {editedNote.created.format("ddd D MMMM YYYY, hh:mm a")}
+            <p className="text-slate-500 text-xs">
+              {editedNote.created.format("D MMMM YYYY, hh:mm a")}
             </p>
           </div>
 
