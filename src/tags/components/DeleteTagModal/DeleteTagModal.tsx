@@ -6,14 +6,16 @@ import type { Tag } from "src/tags/Tag.type";
 
 type DeleteTagModalProps = {
   tag: Tag;
+  onDeleted?: () => void | Promise<void>;
 };
 
-export const DeleteTagModal = ({ tag }: DeleteTagModalProps) => {
+export const DeleteTagModal = ({ tag, onDeleted }: DeleteTagModalProps) => {
   const { deleteTag } = useDeleteTag();
 
   const onConfirmDelete = async () => {
     if (tag) {
       await deleteTag(tag.id);
+      await onDeleted?.();
     }
   };
 

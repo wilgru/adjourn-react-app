@@ -13,9 +13,10 @@ import type { Tag, TagLink } from "src/tags/Tag.type";
 
 type EditTagModalProps = {
   tag: Tag;
+  onDeleted?: () => void | Promise<void>;
 };
 
-export const EditTagModal = ({ tag }: EditTagModalProps) => {
+export const EditTagModal = ({ tag, onDeleted }: EditTagModalProps) => {
   const [editedTag, setEditedTag] = useState<Tag>(tag);
   const { updateTag } = useUpdateTag();
 
@@ -140,7 +141,7 @@ export const EditTagModal = ({ tag }: EditTagModalProps) => {
                 </Button>
               </Dialog.Trigger>
 
-              <DeleteTagModal tag={tag} />
+              <DeleteTagModal tag={tag} onDeleted={onDeleted} />
             </Dialog.Root>
 
             <div className="flex gap-2 justify-end">

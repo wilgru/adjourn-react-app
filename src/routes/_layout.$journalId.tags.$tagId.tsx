@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Delta from "quill-delta";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import requireClientAuth from "src/Users/utils/requireClientAuth";
 import { Button } from "src/common/components/Button/Button";
 import { Toolbar } from "src/common/components/Toolbar/Toolbar";
@@ -41,6 +41,7 @@ export default function TagComponent() {
   const { createNote } = useCreateNote();
   const { updateTag } = useUpdateTag();
   const { currentJournal } = useCurrentJournal();
+  const [isEditTagModalOpen, setIsEditTagModalOpen] = useState(false);
 
   const sortBy = tag?.sortBy ?? "created";
   const sortDirection = tag?.sortDirection ?? "asc";
@@ -80,6 +81,20 @@ export default function TagComponent() {
     });
   };
 
+  const onDeleteTag = async () => {
+    setIsEditTagModalOpen(false);
+
+    navigate({
+      to: "/$journalId/notes",
+      params: {
+        journalId,
+      },
+      search: {
+        noteId: null,
+      },
+    });
+  };
+
   return (
     <div className="h-full w-full flex flex-col items-center">
       <Toolbar
@@ -90,7 +105,10 @@ export default function TagComponent() {
       >
         <>
           <div>
-            <Dialog.Root>
+            <Dialog.Root
+              open={isEditTagModalOpen}
+              onOpenChange={setIsEditTagModalOpen}
+            >
               <Dialog.Trigger asChild>
                 <Button
                   variant="ghost"
@@ -100,7 +118,7 @@ export default function TagComponent() {
                 />
               </Dialog.Trigger>
 
-              <EditTagModal tag={tag} />
+              <EditTagModal tag={tag} onDeleted={onDeleteTag} />
             </Dialog.Root>
           </div>
           <DropdownMenu.Root>

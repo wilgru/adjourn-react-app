@@ -14,19 +14,29 @@ export const useDeleteTag = (): UseDeleteTagResponse => {
     return tagId;
   };
 
-  const onSuccess = (data: string | undefined) => {
+  const onSuccess = async (data: string | undefined) => {
     if (!data) {
       return;
     }
 
-    queryClient.refetchQueries({
-      queryKey: ["tags.list"],
+    queryClient.removeQueries({
+      queryKey: ["tags.get", data],
     });
 
-    // remove tag from any notes
-    queryClient.refetchQueries({
-      queryKey: ["notes.list"],
-    });
+    await Promise.all([
+      queryClient.refetchQueries({
+        queryKey: ["tags.list"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["tagGroups.list"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["notes.list"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["notes.get"],
+      }),
+    ]);
   };
 
   // TODO: consider time caching for better performance
