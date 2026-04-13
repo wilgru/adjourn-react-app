@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import { useMemo } from "react";
 import { mapNote } from "src/notes/utils/mapNote";
 import { useGetTags } from "src/tags/hooks/useGetTags";
 import { useCurrentJournalId } from "../../journals/hooks/useCurrentJournalId";
 import type { Note } from "src/notes/Note.type";
+import type { GetNotesResult } from "src/notes/ipc/getNotes";
 
 type UseGetNotesResponse = {
   notes: Note[];
@@ -22,9 +24,7 @@ export const useGetNotes = ({
   const { journalId } = useCurrentJournalId();
   const { tags: allTags } = useGetTags();
 
-  const queryFn = async (): Promise<{
-    notes: Note[];
-  }> => {
+  const queryFn = async (): Promise<GetNotesResult> => {
     let createdAfter: string | undefined;
     let createdBefore: string | undefined;
 
@@ -54,14 +54,7 @@ export const useGetNotes = ({
     });
 
     if (!response.success) throw new Error(response.error);
-    const result = response.data;
-
-    const notes = result.notes.map((row) => {
-      const tags = allTags.filter((t) => row.tagIds.includes(t.id));
-      return mapNote(row, { tags });
-    });
-
-    return { notes };
+    return response.data;
   };
 
   // TODO: consider time caching for better performance
@@ -72,7 +65,16 @@ export const useGetNotes = ({
     // gcTime: 2 * 60 * 1000,
   });
 
+  const notes = useMemo(
+    () =>
+      (data?.notes ?? []).map((row) => {
+        const tags = allTags.filter((tag) => row.tagIds.includes(tag.id));
+        return mapNote(row, { tags });
+      }),
+    [allTags, data],
+  );
+
   return {
-    notes: data?.notes ?? [],
+    notes,
   };
 };
