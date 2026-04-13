@@ -27,11 +27,22 @@ function RouteComponent() {
   const [completedModalOpen, setCompletedModalOpen] = useState(false);
 
   const today = dayjs();
-  const incompleteTasks = tasks.filter((t) => !t.completedDate && !t.cancelledDate);
-  const completedTodayTasks = tasks.filter(
-    (t) =>
-      (t.completedDate && t.completedDate.isSame(today, "day")) ||
-      (t.cancelledDate && t.cancelledDate.isSame(today, "day")),
+  const { incompleteTasks, completedTodayTasks } = tasks.reduce<{
+    incompleteTasks: typeof tasks;
+    completedTodayTasks: typeof tasks;
+  }>(
+    (acc, task) => {
+      if (!task.completedDate && !task.cancelledDate) {
+        acc.incompleteTasks.push(task);
+      } else if (
+        (task.completedDate && task.completedDate.isSame(today, "day")) ||
+        (task.cancelledDate && task.cancelledDate.isSame(today, "day"))
+      ) {
+        acc.completedTodayTasks.push(task);
+      }
+      return acc;
+    },
+    { incompleteTasks: [], completedTodayTasks: [] },
   );
   const visibleTasks = [...incompleteTasks, ...completedTodayTasks];
 

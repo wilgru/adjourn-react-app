@@ -36,9 +36,8 @@ export const CompletedTasksModal = ({
           {tasks.map((task) => {
             const isCompleted = !!task.completedDate;
             const isCancelled = !!task.cancelledDate;
-            const timestamp = isCompleted
-              ? task.completedDate!.format("h:mm A")
-              : task.cancelledDate!.format("h:mm A");
+            const timestamp =
+              (task.completedDate ?? task.cancelledDate)?.format("h:mm A") ?? "";
 
             return (
               <div key={task.id} className="flex items-start gap-2 py-1">
