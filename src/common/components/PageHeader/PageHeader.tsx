@@ -64,9 +64,10 @@ export const PageHeader = ({
           </h3>
         ))}
 
-        {actionBadges?.map((actionBadge, index) => (
+        {actionBadges?.map((actionBadge) => (
           <button
-            key={index}
+            key={actionBadge.label}
+            type="button"
             onClick={actionBadge.onClick}
             className={cn(
               "px-2 py-0.5 text-sm rounded-full transition-colors hover:opacity-80",
