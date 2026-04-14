@@ -51,7 +51,7 @@ function getDbPath(): string {
 }
 
 const sqlite = new Database(getDbPath());
-sqlite.pragma("pocketbook_mode = WAL");
+sqlite.pragma("journal_mode = WAL");
 
 const db = drizzle(sqlite);
 migrate(db, {

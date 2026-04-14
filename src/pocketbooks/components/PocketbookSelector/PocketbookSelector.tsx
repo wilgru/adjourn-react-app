@@ -80,7 +80,7 @@ export const PocketbookSelector = ({
             className="w-56 flex flex-col flex-grow gap-2 bg-white border border-slate-200 rounded-2xl p-2 drop-shadow"
           >
             <DropdownMenu.Label className="pl-2 text-xs text-slate-400">
-              Notebooks
+              Pocketbooks
             </DropdownMenu.Label>
 
             {pocketbooks.map((pocketbook) => (
@@ -126,7 +126,7 @@ export const PocketbookSelector = ({
             <DropdownMenu.Item className="flex items-center gap-2 leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 transition-colors">
               <Link to={"/create-pocketbook"} className="flex items-center gap-2">
                 <Icon iconName="plus" size="sm" />
-                Create new notebook
+                Create new pocketbook
               </Link>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
