@@ -4,7 +4,7 @@ This file defines custom agent instructions for GitHub Copilot Chat in this repo
 
 ## Project Context
 
-Adjourn is a desktop app built with Electron. There is only one build target — the Electron app with a local SQLite database.
+Pocketbook is a desktop app built with Electron. There is only one build target — the Electron app with a local SQLite database.
 
 ## Tech Stack
 
