@@ -35,14 +35,6 @@ const TINT_OPTIONS: Array<{ value: UpdateTint; bg: string }> = [
   { value: "blue", bg: "bg-blue-400" },
 ];
 
-/** Maps a tint to the matching entry in the colours constant, for components that take a Colour. */
-const TINT_TO_COLOUR: Partial<Record<UpdateTint, Colour>> = {
-  red: colours.red,
-  yellow: colours.yellow,
-  green: colours.green,
-  blue: colours.blue,
-};
-
 const getInitialUpdate = (update: Partial<Update>): Partial<Update> => ({
   id: update.id ?? "",
   content: update.content ?? new Delta(),
@@ -59,7 +51,7 @@ export const UpdateEditor = ({
   onCancel,
   onCreated,
 }: UpdateEditorProps) => {
-  const { journalId } = useCurrentJournal();
+  const { currentJournal } = useCurrentJournal();
   const navigate = useNavigate();
 
   const { createUpdate } = useCreateUpdate();
@@ -73,18 +65,15 @@ export const UpdateEditor = ({
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
 
   const toolbarId = `update-toolbar-${editedUpdate.id || "new"}`;
-
   const tintClasses = getTintClasses(editedUpdate.tint);
-  const resolvedColour =
-    (editedUpdate.tint ? TINT_TO_COLOUR[editedUpdate.tint] : undefined) ??
-    colours.grey;
-
-  const tintColour = resolvedColour;
-  const noteColour = resolvedColour;
 
   const onUpdateField = (fields: Partial<Update>) => {
     setEditedUpdate((current) => ({ ...current, ...fields }));
   };
+
+  if (!currentJournal) {
+    return null;
+  }
 
   const onDone = async () => {
     if (editedUpdate.id) {
@@ -150,13 +139,11 @@ export const UpdateEditor = ({
           </div>
         </div>
 
-        <div
-          className="flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3"
-        >
+        <div className="flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 bg-slate-50">
           <div className="flex items-center justify-between flex-wrap gap-2 border-b-2 pb-3 border-slate-100">
             <NoteMultiSelect
               selectedNotes={(editedUpdate.notes ?? []) as Note[]}
-              colour={noteColour}
+              colour={currentJournal.colour}
               onChange={(notes) => onUpdateField({ notes })}
             />
 
@@ -191,14 +178,13 @@ export const UpdateEditor = ({
           <QuillFormattingToolbar
             toolbarId={toolbarId}
             toolbarFormatting={toolbarFormatting}
-            colour={tintColour}
-            dividerClass={tintClasses.toolbarDivider}
+            colour={currentJournal.colour}
           />
 
           <QuillEditor
             toolbarId={toolbarId}
             value={editedUpdate.content}
-            colour={tintColour}
+            colour={currentJournal.colour}
             onChange={(delta) => onUpdateField({ content: delta })}
             onSelectedFormattingChange={(formatting) =>
               setToolbarFormatting(formatting)
@@ -220,7 +206,7 @@ export const UpdateEditor = ({
               <Button
                 size="sm"
                 variant="ghost"
-                colour={tintColour}
+                colour={currentJournal.colour}
                 onClick={onCancelEdit}
               >
                 Discard
@@ -228,7 +214,7 @@ export const UpdateEditor = ({
               <Button
                 size="sm"
                 variant="block"
-                colour={tintColour}
+                colour={currentJournal.colour}
                 onClick={onDone}
               >
                 Save
@@ -274,7 +260,7 @@ export const UpdateEditor = ({
                     onClick={(event) => {
                       event.stopPropagation();
                       navigate({
-                        to: `/${journalId ?? ""}/notes`,
+                        to: `/${currentJournal.id ?? ""}/notes`,
                         search: { noteId: note.id },
                       });
                     }}

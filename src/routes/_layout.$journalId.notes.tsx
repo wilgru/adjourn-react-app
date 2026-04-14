@@ -53,18 +53,14 @@ function NotesComponent() {
 
   return (
     <div className="h-full w-full flex flex-col items-center">
-      <Toolbar
-        iconName="pencil"
-        title={"Notes"}
-        colour={currentJournal?.colour}
-      >
+      <Toolbar iconName="pencil" title={"Notes"} colour={currentJournal.colour}>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
               <Button
                 variant="ghost"
                 size="sm"
-                colour={currentJournal?.colour}
+                colour={currentJournal.colour}
                 iconName="arrowsDownUp"
               />
             </div>
@@ -101,8 +97,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="null"
                 >
@@ -115,8 +111,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -128,8 +124,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="tag"
                 >
@@ -161,8 +157,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="created"
                 >
@@ -174,8 +170,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="alphabetical"
                 >
@@ -207,8 +203,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="asc"
                 >
@@ -220,8 +216,8 @@ function NotesComponent() {
                 <DropdownMenu.RadioItem
                   className={cn(
                     "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
-                    `data-[highlighted]:${currentJournal?.colour.backgroundPill}`,
-                    `data-[highlighted]:${currentJournal?.colour.textPill}`,
+                    `data-[highlighted]:${currentJournal.colour.backgroundPill}`,
+                    `data-[highlighted]:${currentJournal.colour.textPill}`,
                   )}
                   value="desc"
                 >
@@ -239,7 +235,7 @@ function NotesComponent() {
       <NotesLayout
         title={"Notes"}
         notes={sortedNotes}
-        colour={currentJournal?.colour}
+        colour={currentJournal.colour}
         selectedNote={note || null}
         description={null}
         groupNotesBy={groupBy ?? undefined}
