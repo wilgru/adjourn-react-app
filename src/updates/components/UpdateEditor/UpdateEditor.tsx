@@ -151,10 +151,7 @@ export const UpdateEditor = ({
         </div>
 
         <div
-          className={cn(
-            "flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors",
-            tintClasses.card,
-          )}
+          className="flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3"
         >
           <div className="flex items-center justify-between flex-wrap gap-2 border-b-2 pb-3 border-slate-100">
             <NoteMultiSelect
