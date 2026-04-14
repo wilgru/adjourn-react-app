@@ -22,14 +22,12 @@ export const CompletedTasksModal = ({
         className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] overflow-y-scroll p-4 focus:outline-none bg-white border border-slate-300 rounded-2xl shadow-2xl data-[state=open]:animate-contentShow"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <Dialog.Title className="mb-5 font-title text-xl">
-          Completed &amp; cancelled today
-        </Dialog.Title>
+        <Dialog.Title className="mb-5 font-title text-xl">Done</Dialog.Title>
 
         <div className="flex flex-col gap-2">
           {tasks.length === 0 && (
             <p className="text-slate-400 text-sm py-2">
-              No tasks completed or cancelled today.
+              No tasks completed or cancelled.
             </p>
           )}
 
@@ -37,7 +35,9 @@ export const CompletedTasksModal = ({
             const isCompleted = !!task.completedDate;
             const isCancelled = !!task.cancelledDate;
             const timestamp =
-              (task.completedDate ?? task.cancelledDate)?.format("h:mm A") ?? "";
+              (task.completedDate ?? task.cancelledDate)?.format(
+                "DD MMM, h:mm A",
+              ) ?? "";
 
             return (
               <div key={task.id} className="flex items-start gap-2 py-1">

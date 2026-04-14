@@ -11,6 +11,7 @@ import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
 import { CompletedTasksModal } from "src/tasks/components/CompletedTasksModal/CompletedTasksModal";
 import { TasksLayout } from "src/tasks/components/TasksLayout/TasksLayout";
 import { useGetTasks } from "src/tasks/hooks/useGetTasks";
+import type { Task } from "src/tasks/Task.type";
 
 export const Route = createFileRoute("/_layout/$journalId/tasks")({
   component: RouteComponent,
@@ -27,24 +28,28 @@ function RouteComponent() {
   const [completedModalOpen, setCompletedModalOpen] = useState(false);
 
   const today = dayjs();
-  const { incompleteTasks, completedTodayTasks } = tasks.reduce<{
-    incompleteTasks: typeof tasks;
-    completedTodayTasks: typeof tasks;
-  }>(
-    (acc, task) => {
-      if (!task.completedDate && !task.cancelledDate) {
-        acc.incompleteTasks.push(task);
-      } else if (
-        (task.completedDate && task.completedDate.isSame(today, "day")) ||
-        (task.cancelledDate && task.cancelledDate.isSame(today, "day"))
-      ) {
-        acc.completedTodayTasks.push(task);
-      }
-      return acc;
-    },
-    { incompleteTasks: [], completedTodayTasks: [] },
-  );
-  const visibleTasks = [...incompleteTasks, ...completedTodayTasks];
+  const { incompleteTasks, completedTodayTasks, pastCompletedTasks } =
+    tasks.reduce<{
+      incompleteTasks: Task[];
+      completedTodayTasks: Task[];
+      pastCompletedTasks: Task[];
+    }>(
+      (acc, task) => {
+        if (!task.completedDate && !task.cancelledDate) {
+          acc.incompleteTasks.push(task);
+        } else if (
+          (task.completedDate && task.completedDate.isSame(today, "day")) ||
+          (task.cancelledDate && task.cancelledDate.isSame(today, "day"))
+        ) {
+          acc.completedTodayTasks.push(task);
+        } else {
+          acc.pastCompletedTasks.push(task);
+        }
+        return acc;
+      },
+      { incompleteTasks: [], completedTodayTasks: [], pastCompletedTasks: [] },
+    );
+  const todayTasks = [...incompleteTasks, ...completedTodayTasks];
 
   return (
     <div className="h-full w-full flex flex-col items-center">
@@ -63,7 +68,10 @@ function RouteComponent() {
         />
       </Toolbar>
 
-      <Dialog.Root open={completedModalOpen} onOpenChange={setCompletedModalOpen}>
+      <Dialog.Root
+        open={completedModalOpen}
+        onOpenChange={setCompletedModalOpen}
+      >
         <TasksLayout
           header={
             <div className="flex gap-3">
@@ -77,14 +85,14 @@ function RouteComponent() {
             </div>
           }
           title="Tasks"
-          tasks={visibleTasks}
+          tasks={todayTasks}
           colour={currentJournal?.colour}
-          secondaryBadges={[`${incompleteTasks.length}`]}
+          badges={[`${incompleteTasks.length} tasks`]}
           actionBadges={
-            completedTodayTasks.length > 0
+            pastCompletedTasks.length > 0
               ? [
                   {
-                    label: `${completedTodayTasks.length} done`,
+                    label: `${pastCompletedTasks.length} done`,
                     onClick: () => setCompletedModalOpen(true),
                   },
                 ]
@@ -94,7 +102,7 @@ function RouteComponent() {
         />
 
         <CompletedTasksModal
-          tasks={completedTodayTasks}
+          tasks={pastCompletedTasks}
           colour={currentJournal?.colour}
         />
       </Dialog.Root>
