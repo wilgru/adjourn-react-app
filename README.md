@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/0544258a-d3e7-4f49-a7e6-2ccf3b430ba1">
     <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/5ecd5541-2402-4d5c-b58f-a96fd7e436ef">
-    <img alt="Adjourn logo" src="https://github.com/user-attachments/assets/5ecd5541-2402-4d5c-b58f-a96fd7e436ef" width="300">
+    <img alt="Pocketbook logo" src="https://github.com/user-attachments/assets/5ecd5541-2402-4d5c-b58f-a96fd7e436ef" width="300">
   </picture>
 </p>
 
