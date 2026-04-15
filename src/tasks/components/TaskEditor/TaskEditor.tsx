@@ -4,10 +4,10 @@ import debounce from "debounce";
 import { useEffect, useRef, useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
+import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
-import { NoteLinkPill } from "src/notes/components/NoteLinkPill/NoteLinkPill";
 import { TaskDatePicker } from "src/tasks/components/TaskDatePicker/TaskDatePicker";
 import { TaskLinksModal } from "src/tasks/components/TaskLinksModal/TaskLinksModal";
 import { useCreateTask } from "src/tasks/hooks/useCreateTask";
@@ -164,7 +164,7 @@ export const TaskEditor = ({
 
       <div className="w-full flex items-start justify-between">
         <div className="flex flex-col grow">
-          <div className="flex flex-row flex-wrap items-center gap-1">
+          <div className="flex gap-2">
             <textarea
               name="title"
               value={editedTask.title ?? ""}
@@ -176,7 +176,9 @@ export const TaskEditor = ({
               }
               className={cn(
                 "h-6 flex-1 tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
-                isCompleted || isCancelled ? "text-slate-500" : "text-slate-700",
+                isCompleted || isCancelled
+                  ? "text-slate-500"
+                  : "text-slate-700",
                 isCancelled && "line-through",
               )}
             />
@@ -201,7 +203,7 @@ export const TaskEditor = ({
           )}
         </div>
 
-        <div className="flex flex-row flex-wrap items-center gap-1">
+        <div className="flex flex-row flex-wrap items-center gap-1 pl-2">
           {(isFocused || editedTask.isFlagged) && (
             <Toggle
               isToggled={editedTask.isFlagged}

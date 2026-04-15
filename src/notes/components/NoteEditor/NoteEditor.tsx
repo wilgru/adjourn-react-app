@@ -5,10 +5,10 @@ import debounce from "debounce";
 import { useEffect, useRef, useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
+import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import { Toggle } from "src/common/components/Toggle/Toggle";
-import { NoteLinkPill } from "src/notes/components/NoteLinkPill/NoteLinkPill";
 import { NoteLinksModal } from "src/notes/components/NoteLinksModal/NoteLinksModal";
 import { useCreateNote } from "src/notes/hooks/useCreateNote";
 import { useDeleteNote } from "src/notes/hooks/useDeleteNote";
@@ -135,9 +135,11 @@ const NoteEditor = ({
           className="h-12 text-5xl font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
         />
 
-        {editedNote.links.map((link) => (
-          <NoteLinkPill key={link.id} link={link} colour={colour} />
-        ))}
+        <div className="flex flex-row flex-wrap gap-2 items-center">
+          {editedNote.links.map((link) => (
+            <NoteLinkPill key={link.id} link={link} colour={colour} />
+          ))}
+        </div>
 
         <div className="flex flex-row flex-wrap items-center justify-between">
           <div className="flex flex-row flex-wrap gap-2 items-center">
