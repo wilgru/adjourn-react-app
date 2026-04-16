@@ -13,7 +13,12 @@ export type CreatePocketbookInput = {
 
 createIpcHandler(
   "pocketbooks:create",
-  ({ title, icon, colour, userId }: CreatePocketbookInput): PocketbookSchema => {
+  ({
+    title,
+    icon,
+    colour,
+    userId,
+  }: CreatePocketbookInput): PocketbookSchema => {
     const now = new Date().toISOString();
     const id = crypto.randomUUID();
 

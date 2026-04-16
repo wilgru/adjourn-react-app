@@ -12,3 +12,4 @@ drizzle/
 
 # generated files
 src/routeTree.gen.ts
+resources/

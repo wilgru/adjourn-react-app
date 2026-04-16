@@ -23,7 +23,9 @@ export const getPocketbookContentCounts = createServerFn({ method: "GET" })
       db
         .select({ count: sql<number>`count(*)` })
         .from(notes)
-        .where(and(eq(notes.pocketbook, data.pocketbookId), isNull(notes.deleted)))
+        .where(
+          and(eq(notes.pocketbook, data.pocketbookId), isNull(notes.deleted)),
+        )
         .get()?.count ?? 0;
 
     const bookmarkedCount =

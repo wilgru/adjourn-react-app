@@ -23,7 +23,10 @@ createIpcHandler(
     createdAfter,
     createdBefore,
   }: GetNotesInput): GetNotesResult => {
-    const conditions = [eq(notes.pocketbook, pocketbookId), isNull(notes.deleted)];
+    const conditions = [
+      eq(notes.pocketbook, pocketbookId),
+      isNull(notes.deleted),
+    ];
 
     if (isBookmarked !== undefined) {
       conditions.push(eq(notes.isBookmarked, isBookmarked));

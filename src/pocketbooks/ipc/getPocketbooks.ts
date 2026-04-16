@@ -11,7 +11,9 @@ export type GetPocketbooksInput = {
 };
 
 export type GetPocketbooksResult = {
-  pocketbooks: Array<PocketbookSchema & { noteCount: number; taskCount: number }>;
+  pocketbooks: Array<
+    PocketbookSchema & { noteCount: number; taskCount: number }
+  >;
 };
 
 createIpcHandler(

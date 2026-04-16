@@ -18,7 +18,9 @@ export const useNavigateToLastUsedPocketbook = (): {
 
   const lastUsedPocketbook = !lastUsedPocketbookId
     ? null
-    : (pocketbooks.find((pocketbook) => pocketbook.id === lastUsedPocketbookId) ?? null);
+    : (pocketbooks.find(
+        (pocketbook) => pocketbook.id === lastUsedPocketbookId,
+      ) ?? null);
 
   if (!lastUsedPocketbook) {
     const firstPocketbook = pocketbooks[0];

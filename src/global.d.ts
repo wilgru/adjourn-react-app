@@ -1,8 +1,8 @@
 import type { IpcApiMethod } from "src/common/types/IpcApiMethod.type";
 import type { CreateNoteInput } from "src/notes/ipc/createNote";
 import type { DeleteNoteInput } from "src/notes/ipc/deleteNote";
-import type { GetNoteInput , GetNoteResult } from "src/notes/ipc/getNote";
-import type { GetNotesInput , GetNotesResult } from "src/notes/ipc/getNotes";
+import type { GetNoteInput, GetNoteResult } from "src/notes/ipc/getNote";
+import type { GetNotesInput, GetNotesResult } from "src/notes/ipc/getNotes";
 import type { UpdateNoteInput } from "src/notes/ipc/updateNote";
 import type { NoteSchema } from "src/notes/notes.schema";
 import type { CreatePocketbookInput } from "src/pocketbooks/ipc/createPocketbook";

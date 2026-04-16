@@ -13,7 +13,9 @@ export const useCurrentPocketbook = (): UseCurrentPocketbookResponse => {
   const { pocketbookId } = useCurrentPocketbookId();
   const { pocketbooks, isFetching } = useGetPocketbooks();
 
-  const currentPocketbook = pocketbooks.find((pocketbook) => pocketbook.id === pocketbookId);
+  const currentPocketbook = pocketbooks.find(
+    (pocketbook) => pocketbook.id === pocketbookId,
+  );
 
   return {
     pocketbookId,

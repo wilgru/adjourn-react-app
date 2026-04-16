@@ -32,7 +32,9 @@ type GetTasksResult = {
 export const getTasks = createServerFn({ method: "GET" })
   .inputValidator((input: GetTasksInput) => input)
   .handler(async ({ data }): Promise<GetTasksResult> => {
-    const conditions: (SQL | undefined)[] = [eq(tasks.pocketbook, data.pocketbookId)];
+    const conditions: (SQL | undefined)[] = [
+      eq(tasks.pocketbook, data.pocketbookId),
+    ];
 
     if (data.isFlagged !== undefined) {
       conditions.push(eq(tasks.isFlagged, data.isFlagged));

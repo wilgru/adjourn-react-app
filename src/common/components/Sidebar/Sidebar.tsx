@@ -17,8 +17,12 @@ import { SidebarTagSection } from "./SidebarTagSection";
 export const Sidebar = () => {
   const { isElectron, isMacElectron } = useElectronEnvironment();
 
-  const { pocketbookId, currentPocketbook, pocketbooks, isFetchingPocketbooks } =
-    useCurrentPocketbook();
+  const {
+    pocketbookId,
+    currentPocketbook,
+    pocketbooks,
+    isFetchingPocketbooks,
+  } = useCurrentPocketbook();
   const { ungroupedTags, tagGroups } = useGetTagGroups();
   const { counts } = useGetPocketbookContentCounts();
 

@@ -7,7 +7,9 @@ import { tasks } from "src/tasks/tasks.schema";
 import type { PocketbookSchema } from "src/pocketbooks/pocketbooks.schema";
 
 type GetPocketbooksResult = {
-  pocketbooks: Array<PocketbookSchema & { noteCount: number; taskCount: number }>;
+  pocketbooks: Array<
+    PocketbookSchema & { noteCount: number; taskCount: number }
+  >;
 };
 
 export const getPocketbooks = createServerFn({ method: "GET" }).handler(

@@ -14,7 +14,9 @@ export const useGetPocketbooks = (): UseGetPocketbooksResponse => {
   const queryFn = async (): Promise<{
     pocketbooks: Pocketbook[];
   }> => {
-    const response = await window.api.getPocketbooks({ userId: user?.id ?? null });
+    const response = await window.api.getPocketbooks({
+      userId: user?.id ?? null,
+    });
     if (!response.success) throw new Error(response.error);
 
     const pocketbooks = response.data.pocketbooks.map((pocketbook) =>

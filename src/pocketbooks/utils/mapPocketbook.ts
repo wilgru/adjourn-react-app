@@ -18,7 +18,8 @@ export const mapPocketbook = (
     updated: dayjs.utc(pocketbook.updated).local(),
     notesSortBy:
       (pocketbook.notesSortBy as "alphabetical" | "created") ?? "created",
-    notesSortDirection: (pocketbook.notesSortDirection as "asc" | "desc") ?? "asc",
+    notesSortDirection:
+      (pocketbook.notesSortDirection as "asc" | "desc") ?? "asc",
     notesGroupBy: (pocketbook.notesGroupBy as "created" | "tag" | null) ?? null,
     bookmarkedSortBy:
       (pocketbook.bookmarkedSortBy as "alphabetical" | "created") ?? "created",

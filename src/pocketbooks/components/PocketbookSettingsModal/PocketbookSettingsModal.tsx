@@ -75,7 +75,10 @@ export const PocketbookSettingsModal = ({
               selectedIconName={editedPocketbook.icon}
               colour={editedPocketbook.colour}
               onSelectIcon={(iconName) =>
-                setEditedPocketbook((current) => ({ ...current, icon: iconName }))
+                setEditedPocketbook((current) => ({
+                  ...current,
+                  icon: iconName,
+                }))
               }
             />
           </div>

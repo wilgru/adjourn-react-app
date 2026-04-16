@@ -4,26 +4,28 @@ import type { Link } from "src/common/types/Link.type";
 import type { Prettify } from "src/common/types/Prettify.type";
 import type { Note } from "src/notes/Note.type";
 
-export type Task = Prettify<Omit<
-  TaskSchema,
-  | "note"
-  | "dueDate"
-  | "completedDate"
-  | "cancelledDate"
-  | "pocketbook"
-  | "user"
-  | "created"
-  | "updated"
-  | "links"
-> & {
-  note: Note | null;
-  dueDate: Dayjs | null;
-  completedDate: Dayjs | null;
-  cancelledDate: Dayjs | null;
-  created: Dayjs;
-  updated: Dayjs;
-  links: Link[];
-}>;
+export type Task = Prettify<
+  Omit<
+    TaskSchema,
+    | "note"
+    | "dueDate"
+    | "completedDate"
+    | "cancelledDate"
+    | "pocketbook"
+    | "user"
+    | "created"
+    | "updated"
+    | "links"
+  > & {
+    note: Note | null;
+    dueDate: Dayjs | null;
+    completedDate: Dayjs | null;
+    cancelledDate: Dayjs | null;
+    created: Dayjs;
+    updated: Dayjs;
+    links: Link[];
+  }
+>;
 
 export type TasksGroup = {
   title: string;

@@ -21,11 +21,12 @@ type PocketbookToCreate = {
 function RouteComponent() {
   const { createPocketbook, isCreatingPocketbook } = useCreatePocketbook();
   const navigate = useNavigate();
-  const [pocketbookToCreate, setPocketbookToCreate] = useState<PocketbookToCreate>({
-    title: "",
-    icon: "notebook",
-    colour: colours.blue,
-  });
+  const [pocketbookToCreate, setPocketbookToCreate] =
+    useState<PocketbookToCreate>({
+      title: "",
+      icon: "notebook",
+      colour: colours.blue,
+    });
 
   const onClickCreate = async () => {
     const createdPocketbook = await createPocketbook({
@@ -56,7 +57,10 @@ function RouteComponent() {
               <Input
                 onChange={(e) =>
                   setPocketbookToCreate((currentPocketbookToCreate) => {
-                    return { ...currentPocketbookToCreate, title: e.target.value };
+                    return {
+                      ...currentPocketbookToCreate,
+                      title: e.target.value,
+                    };
                   })
                 }
                 id="title"

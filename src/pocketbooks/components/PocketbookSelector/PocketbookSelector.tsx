@@ -124,7 +124,10 @@ export const PocketbookSelector = ({
             <DropdownMenu.Separator className="my-1 border-t border-slate-200" />
 
             <DropdownMenu.Item className="flex items-center gap-2 leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 transition-colors">
-              <Link to={"/create-pocketbook"} className="flex items-center gap-2">
+              <Link
+                to={"/create-pocketbook"}
+                className="flex items-center gap-2"
+              >
                 <Icon iconName="plus" size="sm" />
                 Create new pocketbook
               </Link>
