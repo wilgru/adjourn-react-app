@@ -38,11 +38,12 @@ const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutPocketbookIdUpdatesRoute = LayoutPocketbookIdUpdatesRouteImport.update({
-  id: '/$pocketbookId/updates',
-  path: '/$pocketbookId/updates',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutPocketbookIdUpdatesRoute =
+  LayoutPocketbookIdUpdatesRouteImport.update({
+    id: '/$pocketbookId/updates',
+    path: '/$pocketbookId/updates',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 const LayoutPocketbookIdTasksRoute = LayoutPocketbookIdTasksRouteImport.update({
   id: '/$pocketbookId/tasks',
   path: '/$pocketbookId/tasks',

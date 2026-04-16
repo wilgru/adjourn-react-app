@@ -1,9 +1,115 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "pocketbooks_migration_snapshot",
-  "prevId": "pocketbooks_migration_snapshot",
+  "id": "b3f7e2a1-9c4d-4e8b-a5f6-1d2e3c4b5a6f",
+  "prevId": "04701461-29e1-4809-8dae-c713f6c16cf5",
   "tables": {
+    "pocketbooks": {
+      "name": "pocketbooks",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "colour": {
+          "name": "colour",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "notes_sort_by": {
+          "name": "notes_sort_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'created'"
+        },
+        "notes_sort_direction": {
+          "name": "notes_sort_direction",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'asc'"
+        },
+        "notes_group_by": {
+          "name": "notes_group_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "bookmarked_sort_by": {
+          "name": "bookmarked_sort_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'created'"
+        },
+        "bookmarked_sort_direction": {
+          "name": "bookmarked_sort_direction",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'asc'"
+        },
+        "bookmarked_group_by": {
+          "name": "bookmarked_group_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "user": {
+          "name": "user",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created": {
+          "name": "created",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated": {
+          "name": "updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "note_tags": {
       "name": "note_tags",
       "columns": {
@@ -74,6 +180,13 @@
           "autoincrement": false,
           "default": false
         },
+        "pocketbook": {
+          "name": "pocketbook",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user": {
           "name": "user",
           "type": "text",
@@ -109,19 +222,12 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "pocketbook": {
-          "name": "pocketbook",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "notes_journal_journals_id_fk": {
-          "name": "notes_journal_journals_id_fk",
+        "notes_pocketbook_pocketbooks_id_fk": {
+          "name": "notes_pocketbook_pocketbooks_id_fk",
           "tableFrom": "notes",
           "tableTo": "pocketbooks",
           "columnsFrom": [
@@ -155,6 +261,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "pocketbook": {
+          "name": "pocketbook",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user": {
           "name": "user",
           "type": "text",
@@ -175,19 +288,12 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "pocketbook": {
-          "name": "pocketbook",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "tag_groups_journal_journals_id_fk": {
-          "name": "tag_groups_journal_journals_id_fk",
+        "tag_groups_pocketbook_pocketbooks_id_fk": {
+          "name": "tag_groups_pocketbook_pocketbooks_id_fk",
           "tableFrom": "tag_groups",
           "tableTo": "pocketbooks",
           "columnsFrom": [
@@ -281,6 +387,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "pocketbook": {
+          "name": "pocketbook",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user": {
           "name": "user",
           "type": "text",
@@ -301,13 +414,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "pocketbook": {
-          "name": "pocketbook",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
@@ -325,8 +431,8 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "tags_journal_journals_id_fk": {
-          "name": "tags_journal_journals_id_fk",
+        "tags_pocketbook_pocketbooks_id_fk": {
+          "name": "tags_pocketbook_pocketbooks_id_fk",
           "tableFrom": "tags",
           "tableTo": "pocketbooks",
           "columnsFrom": [
@@ -376,6 +482,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "links": {
+          "name": "links",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
         "is_flagged": {
           "name": "is_flagged",
           "type": "integer",
@@ -412,6 +526,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "pocketbook": {
+          "name": "pocketbook",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user": {
           "name": "user",
           "type": "text",
@@ -432,13 +553,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "pocketbook": {
-          "name": "pocketbook",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
@@ -456,8 +570,8 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "tasks_journal_journals_id_fk": {
-          "name": "tasks_journal_journals_id_fk",
+        "tasks_pocketbook_pocketbooks_id_fk": {
+          "name": "tasks_pocketbook_pocketbooks_id_fk",
           "tableFrom": "tasks",
           "tableTo": "pocketbooks",
           "columnsFrom": [
@@ -549,6 +663,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "pocketbook": {
+          "name": "pocketbook",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user": {
           "name": "user",
           "type": "text",
@@ -569,19 +690,12 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "pocketbook": {
-          "name": "pocketbook",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "updates_journal_journals_id_fk": {
-          "name": "updates_journal_journals_id_fk",
+        "updates_pocketbook_pocketbooks_id_fk": {
+          "name": "updates_pocketbook_pocketbooks_id_fk",
           "tableFrom": "updates",
           "tableTo": "pocketbooks",
           "columnsFrom": [
@@ -597,133 +711,22 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
-    },
-    "pocketbooks": {
-      "name": "pocketbooks",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "icon": {
-          "name": "icon",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "''",
-          "table": "pocketbooks"
-        },
-        "colour": {
-          "name": "colour",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "notes_sort_by": {
-          "name": "notes_sort_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'created'",
-          "table": "pocketbooks"
-        },
-        "notes_sort_direction": {
-          "name": "notes_sort_direction",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'asc'",
-          "table": "pocketbooks"
-        },
-        "notes_group_by": {
-          "name": "notes_group_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "bookmarked_sort_by": {
-          "name": "bookmarked_sort_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'created'",
-          "table": "pocketbooks"
-        },
-        "bookmarked_sort_direction": {
-          "name": "bookmarked_sort_direction",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'asc'",
-          "table": "pocketbooks"
-        },
-        "bookmarked_group_by": {
-          "name": "bookmarked_group_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "user": {
-          "name": "user",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "created": {
-          "name": "created",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        },
-        "updated": {
-          "name": "updated",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "table": "pocketbooks"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
     }
   },
   "views": {},
   "enums": {},
   "_meta": {
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {
+      "\"journals\"": "\"pocketbooks\""
+    },
+    "columns": {
+      "\"notes\".\"journal\"": "\"notes\".\"pocketbook\"",
+      "\"tag_groups\".\"journal\"": "\"tag_groups\".\"pocketbook\"",
+      "\"tags\".\"journal\"": "\"tags\".\"pocketbook\"",
+      "\"tasks\".\"journal\"": "\"tasks\".\"pocketbook\"",
+      "\"updates\".\"journal\"": "\"updates\".\"pocketbook\""
+    }
   },
   "internal": {
     "indexes": {}
