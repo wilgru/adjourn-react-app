@@ -1,37 +1,36 @@
 import type { IpcApiMethod } from "src/common/types/IpcApiMethod.type";
 import type { CreateNoteInput } from "src/notes/ipc/createNote";
 import type { DeleteNoteInput } from "src/notes/ipc/deleteNote";
-import type { GetNoteInput } from "src/notes/ipc/getNote";
-import type { GetNoteResult } from "src/notes/ipc/getNote";
-import type { GetNotesInput } from "src/notes/ipc/getNotes";
-import type { GetNotesResult } from "src/notes/ipc/getNotes";
+import type { GetNoteInput , GetNoteResult } from "src/notes/ipc/getNote";
+import type { GetNotesInput , GetNotesResult } from "src/notes/ipc/getNotes";
 import type { UpdateNoteInput } from "src/notes/ipc/updateNote";
 import type { NoteSchema } from "src/notes/notes.schema";
 import type { CreatePocketbookInput } from "src/pocketbooks/ipc/createPocketbook";
+import type { DeletePocketbookInput } from "src/pocketbooks/ipc/deletePocketbook";
 import type { GetPocketbookInput } from "src/pocketbooks/ipc/getPocketbook";
 import type {
   GetPocketbooksInput,
   GetPocketbooksResult,
 } from "src/pocketbooks/ipc/getPocketbooks";
 import type { UpdatePocketbookInput } from "src/pocketbooks/ipc/updatePocketbook";
-import type { DeletePocketbookInput } from "src/pocketbooks/ipc/deletePocketbook";
 import type { PocketbookSchema } from "src/pocketbooks/pocketbooks.schema";
-import type { CreateTaskInput } from "src/tasks/ipc/createTask";
-import type { GetTaskInput } from "src/tasks/ipc/getTask";
-import type { GetTasksInput, GetTasksResult } from "src/tasks/ipc/getTasks";
-import type { UpdateTaskInput } from "src/tasks/ipc/updateTask";
-import type { DeleteTaskInput } from "src/tasks/ipc/deleteTask";
-import type { TaskSchema } from "src/tasks/tasks.schema";
 import type { CreateTagInput } from "src/tags/ipc/createTag";
+import type { CreateTagGroupInput } from "src/tags/ipc/createTagGroup";
+import type { DeleteTagInput } from "src/tags/ipc/deleteTag";
+import type { DeleteTagGroupInput } from "src/tags/ipc/deleteTagGroup";
 import type { GetTagInput } from "src/tags/ipc/getTag";
 import type { GetTagsInput, GetTagsResult } from "src/tags/ipc/getTags";
 import type { UpdateTagInput } from "src/tags/ipc/updateTag";
-import type { DeleteTagInput } from "src/tags/ipc/deleteTag";
-import type { CreateTagGroupInput } from "src/tags/ipc/createTagGroup";
 import type { UpdateTagGroupInput } from "src/tags/ipc/updateTagGroup";
-import type { DeleteTagGroupInput } from "src/tags/ipc/deleteTagGroup";
 import type { TagSchema, TagGroupSchema } from "src/tags/tags.schema";
+import type { CreateTaskInput } from "src/tasks/ipc/createTask";
+import type { DeleteTaskInput } from "src/tasks/ipc/deleteTask";
+import type { GetTaskInput } from "src/tasks/ipc/getTask";
+import type { GetTasksInput, GetTasksResult } from "src/tasks/ipc/getTasks";
+import type { UpdateTaskInput } from "src/tasks/ipc/updateTask";
+import type { TaskSchema } from "src/tasks/tasks.schema";
 import type { CreateUpdateInput } from "src/updates/ipc/createUpdate";
+import type { DeleteUpdateInput } from "src/updates/ipc/deleteUpdate";
 import type {
   GetUpdateInput,
   GetUpdateResult,
@@ -41,7 +40,6 @@ import type {
   GetUpdatesResult,
 } from "src/updates/ipc/getUpdates";
 import type { UpdateUpdateInput } from "src/updates/ipc/updateUpdate";
-import type { DeleteUpdateInput } from "src/updates/ipc/deleteUpdate";
 import type { UpdateSchema } from "src/updates/updates.schema";
 
 declare global {

@@ -1,9 +1,9 @@
 import { RouterProvider } from "@tanstack/react-router";
-import { getRouter } from "src/router";
 import "src/index.css";
 import "quill/dist/quill.core.css";
 import { StrictMode, startTransition } from "react";
 import { createRoot } from "react-dom/client";
+import { getRouter } from "src/router";
 
 const router = getRouter();
 const rootElement = document.getElementById("app");

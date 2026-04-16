@@ -8,8 +8,8 @@ import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToo
 import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
-import { useCurrentPocketbook } from "src/pocketbooks/hooks/useCurrentPocketbook";
 import { NoteMultiSelect } from "src/notes/components/NoteMultiSelect/NoteMultiSelect";
+import { useCurrentPocketbook } from "src/pocketbooks/hooks/useCurrentPocketbook";
 import { useCreateUpdate } from "src/updates/hooks/useCreateUpdate";
 import { useDeleteUpdate } from "src/updates/hooks/useDeleteUpdate";
 import { useUpdateUpdate } from "src/updates/hooks/useUpdateUpdate";

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCurrentPocketbookId } from "src/pocketbooks/hooks/useCurrentPocketbookId";
 import { mapNote } from "src/notes/utils/mapNote";
+import { useCurrentPocketbookId } from "src/pocketbooks/hooks/useCurrentPocketbookId";
 import { mapUpdate } from "src/updates/utils/mapUpdate";
 import type { Note } from "src/notes/Note.type";
 import type { Update } from "src/updates/Update.type";

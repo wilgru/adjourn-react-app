@@ -3,8 +3,8 @@ import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
-import { useCurrentPocketbookId } from "src/pocketbooks/hooks/useCurrentPocketbookId";
 import { useGetNotes } from "src/notes/hooks/useGetNotes";
+import { useCurrentPocketbookId } from "src/pocketbooks/hooks/useCurrentPocketbookId";
 
 export const SidebarBookmarkSection = () => {
   const { pocketbookId } = useCurrentPocketbookId();

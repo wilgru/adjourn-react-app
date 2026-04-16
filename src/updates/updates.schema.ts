@@ -1,6 +1,6 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { pocketbooks } from "src/pocketbooks/pocketbooks.schema";
 import { notes } from "src/notes/notes.schema";
+import { pocketbooks } from "src/pocketbooks/pocketbooks.schema";
 import type { InferSelectModel } from "drizzle-orm/table";
 
 export const updates = sqliteTable("updates", {

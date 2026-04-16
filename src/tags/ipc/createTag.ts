@@ -1,8 +1,8 @@
 import { createIpcHandler } from "src/common/utils/createIpcHandler";
 import { db } from "src/db/connection";
 import { tags } from "src/tags/tags.schema";
-import type { TagSchema } from "src/tags/tags.schema";
 import type { ColourName } from "src/colours/Colour.type";
+import type { TagSchema } from "src/tags/tags.schema";
 
 export type CreateTagInput = {
   name: string;

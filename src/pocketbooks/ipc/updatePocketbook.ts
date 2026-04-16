@@ -2,8 +2,8 @@ import { eq } from "drizzle-orm";
 import { createIpcHandler } from "src/common/utils/createIpcHandler";
 import { db } from "src/db/connection";
 import { pocketbooks } from "src/pocketbooks/pocketbooks.schema";
-import type { PocketbookSchema } from "src/pocketbooks/pocketbooks.schema";
 import type { ColourName } from "src/colours/Colour.type";
+import type { PocketbookSchema } from "src/pocketbooks/pocketbooks.schema";
 
 export type UpdatePocketbookInput = {
   pocketbookId: string;
