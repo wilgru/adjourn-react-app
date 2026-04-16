@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import type { Link } from "src/common/types/Link.type";
 import type { Note } from "src/notes/Note.type";
 import type { Task } from "src/tasks/Task.type";
 import type { TaskSchema } from "src/tasks/tasks.schema";
@@ -14,6 +15,13 @@ export const mapTask = (
   task: TaskSchema,
   options: MapTaskOptions = {},
 ): Task => {
+  let links: Link[] = [];
+  try {
+    links = JSON.parse(task.links || "[]");
+  } catch {
+    links = [];
+  }
+
   return {
     id: task.id,
     title: task.title,
@@ -21,6 +29,7 @@ export const mapTask = (
     link: task.link || null,
     isFlagged: task.isFlagged,
     note: options.note ?? null,
+    links,
     dueDate: task.dueDate ? dayjs.utc(task.dueDate).local() : null,
     completedDate: task.completedDate
       ? dayjs.utc(task.completedDate).local()

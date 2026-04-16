@@ -1,10 +1,8 @@
 import { useMemo } from "react";
 import { colours } from "src/colours/colours.constant";
-import { cn } from "src/common/utils/cn";
-import { Icon } from "src/icons/components/Icon/Icon";
+import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import NoteEditor from "src/notes/components/NoteEditor/NoteEditor";
 import { groupNotes } from "src/notes/utils/groupNotes";
-import { getDisplayUrl } from "src/tags/utils/getDisplayUrl";
 import { NotesList } from "../NotesList/NotesList";
 import type { Colour } from "src/colours/Colour.type";
 import type { Note, NotesGroup } from "src/notes/Note.type";
@@ -66,20 +64,7 @@ export const NotesLayout = ({
 
             {links &&
               links.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.link}
-                  target="_blank"
-                  className={cn(
-                    "flex flex-row items-center gap-2 text-sm rounded-full hover:underline min-w-0",
-                    colour.text,
-                  )}
-                >
-                  <Icon iconName="link" size="sm" />
-                  <span className="truncate">
-                    {link.title || getDisplayUrl(link.link)}
-                  </span>
-                </a>
+                <NoteLinkPill key={index} link={link} colour={colour} />
               ))}
           </div>
         )}

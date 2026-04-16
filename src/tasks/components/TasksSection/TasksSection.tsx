@@ -75,13 +75,19 @@ export const TasksSection = ({
           )}
 
           {taskGroup.tasks.map((task) => (
-            <TaskEditor key={task.id} task={task} onSave={() => {}} />
+            <TaskEditor
+              key={task.id}
+              task={task}
+              onSave={() => {}}
+              colour={colour}
+            />
           ))}
 
           {isAddingTask && (
             <TaskEditor
               task={{ note: null }}
               onSave={() => setIsAddingTask(false)}
+              colour={colour}
             />
           )}
         </div>
@@ -128,11 +134,20 @@ export const TasksSection = ({
 
       <div className="flex flex-col gap-1.5 p-1">
         {taskGroup.tasks.map((task) => (
-          <TaskEditor key={task.id} task={task} onSave={() => {}} />
+          <TaskEditor
+            key={task.id}
+            task={task}
+            onSave={() => {}}
+            colour={colour}
+          />
         ))}
 
         {isAddingTask && (
-          <TaskEditor task={{ note }} onSave={() => setIsAddingTask(false)} />
+          <TaskEditor
+            task={{ note }}
+            onSave={() => setIsAddingTask(false)}
+            colour={colour}
+          />
         )}
       </div>
     </section>

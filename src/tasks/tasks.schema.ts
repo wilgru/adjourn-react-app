@@ -8,6 +8,7 @@ export const tasks = sqliteTable("tasks", {
   title: text("title").notNull().default(""),
   description: text("description").notNull().default(""),
   link: text("link"),
+  links: text("links").notNull().default("[]"),
   isFlagged: integer("is_flagged", { mode: "boolean" })
     .notNull()
     .default(false),

@@ -7,6 +7,7 @@ export type CreateTaskInput = {
   title: string;
   description: string;
   link: string | null;
+  links: string;
   isFlagged: boolean;
   noteId: string | null;
   dueDate: string | null;
@@ -20,6 +21,7 @@ createIpcHandler(
     title,
     description,
     link,
+    links,
     isFlagged,
     noteId,
     dueDate,
@@ -36,6 +38,7 @@ createIpcHandler(
         title,
         description,
         link,
+        links,
         isFlagged,
         note: noteId,
         dueDate,

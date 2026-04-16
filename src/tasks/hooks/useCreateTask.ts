@@ -30,6 +30,7 @@ export const useCreateTask = (): UseCreateTaskResponse => {
       title: createTaskData.title,
       description: createTaskData.description,
       link: createTaskData.link,
+      links: JSON.stringify(createTaskData.links),
       isFlagged: createTaskData.isFlagged,
       noteId: createTaskData.note?.id ?? null,
       dueDate: createTaskData.dueDate?.toISOString() ?? null,
