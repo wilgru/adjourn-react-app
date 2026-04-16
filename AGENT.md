@@ -26,7 +26,7 @@ Pocketbook is a desktop app built with Electron. There is only one build target 
 
 - Use modern TypeScript and React best practices
 - Prefer TanStack Query and TanStack Router idioms
-- Use Drizzle ORM for all database access
+- Use Drizzle ORM with Electron IPC for all database access
 - Use Tailwind CSS for styling
 - Prefer functional components and hooks
 - Use absolute imports from `src/`
@@ -36,6 +36,7 @@ Pocketbook is a desktop app built with Electron. There is only one build target 
 - When typing a variable, look for an existing type in `.type.ts` files rather than deriving one with `typeof`
 - Use full, unabbreviated names for iteration callback parameters (e.g. `objects.map((object) => {})` not `objects.map((obj) => {})`)
 - Check for existing components that can be reused; if a suitable component exists in a feature-specific area, consider extracting it into a generic, shared component and modify it as needed
+- always adhere to linting and Prettier rules and always fix Typescript errors
 
 ## Electron Guidance
 
