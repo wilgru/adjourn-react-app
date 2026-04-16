@@ -1,0 +1,30 @@
+import { colours } from "src/colours/colours.constant";
+import { cn } from "src/common/utils/cn";
+import { getDisplayUrl } from "src/common/utils/getDisplayUrl";
+import { Icon } from "src/icons/components/Icon/Icon";
+import type { Colour } from "src/colours/Colour.type";
+import type { Link } from "src/common/types/Link.type";
+
+type NoteLinkPillProps = {
+  link: Link;
+  colour?: Colour;
+};
+
+export const NoteLinkPill = ({
+  link,
+  colour = colours.orange,
+}: NoteLinkPillProps) => {
+  return (
+    <a
+      href={link.link}
+      target="_blank"
+      className={cn(
+        "flex flex-row items-center gap-1 text-sm rounded-full hover:underline min-w-0",
+        colour.text,
+      )}
+    >
+      <Icon iconName="link" size="sm" />
+      <span className="truncate">{link.title || getDisplayUrl(link.link)}</span>
+    </a>
+  );
+};

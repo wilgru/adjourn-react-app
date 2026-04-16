@@ -1,0 +1,1 @@
+ALTER TABLE `tasks` ADD `links` text DEFAULT '[]' NOT NULL;

@@ -1,15 +1,20 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import dayjs from "dayjs";
 import debounce from "debounce";
 import { useEffect, useRef, useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
+import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
+import { TaskDatePicker } from "src/tasks/components/TaskDatePicker/TaskDatePicker";
+import { TaskLinksModal } from "src/tasks/components/TaskLinksModal/TaskLinksModal";
 import { useCreateTask } from "src/tasks/hooks/useCreateTask";
 import { useDeleteTask } from "src/tasks/hooks/useDeleteTask";
 import { useUpdateTask } from "src/tasks/hooks/useUpdateTask";
 import type { Colour } from "src/colours/Colour.type";
+import type { Link } from "src/common/types/Link.type";
 import type { Task } from "src/tasks/Task.type";
 
 type TaskEditorProps = {
@@ -25,6 +30,7 @@ const getInitialTask = (task: Partial<Task> | undefined): Task => {
     description: task?.description || "",
     note: task?.note || null,
     link: task?.link || null,
+    links: task?.links || [],
     dueDate: task?.dueDate || null,
     completedDate: task?.completedDate || null,
     cancelledDate: task?.cancelledDate || null,
@@ -45,6 +51,9 @@ export const TaskEditor = ({
 
   const [editedTask, setEditedTask] = useState<Task>(getInitialTask(task));
   const [isFocused, setIsFocused] = useState(false);
+  const [linksModalKey, setLinksModalKey] = useState(0);
+  const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   // Timer for distinguishing single vs double click on the status circle
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -123,6 +132,10 @@ export const TaskEditor = ({
     }
   };
 
+  const onSaveLinks = (links: Link[]) => {
+    onUpdateTask({ links });
+  };
+
   const isCompleted = !!editedTask.completedDate;
   const isCancelled = !!editedTask.cancelledDate;
 
@@ -134,7 +147,11 @@ export const TaskEditor = ({
       className="w-full flex gap-2 items-start"
       onFocus={() => setIsFocused(true)}
       onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
+        if (
+          !e.currentTarget.contains(e.relatedTarget) &&
+          !isLinksModalOpen &&
+          !isDatePickerOpen
+        ) {
           setIsFocused(false);
         }
       }}
@@ -152,21 +169,29 @@ export const TaskEditor = ({
 
       <div className="w-full flex items-start justify-between">
         <div className="flex flex-col grow">
-          <textarea
-            name="title"
-            value={editedTask.title ?? ""}
-            placeholder="No Title"
-            onChange={(e) =>
-              onUpdateTask({
-                title: e.target.value,
-              })
-            }
-            className={cn(
-              "h-6 w-full tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
-              isCompleted || isCancelled ? "text-slate-500" : "text-slate-700",
-              isCancelled && "line-through",
-            )}
-          />
+          <div className="flex justify-between gap-2">
+            <textarea
+              name="title"
+              value={editedTask.title ?? ""}
+              placeholder="No Title"
+              onChange={(e) =>
+                onUpdateTask({
+                  title: e.target.value,
+                })
+              }
+              className={cn(
+                "h-6 flex-1 tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
+                isCompleted || isCancelled
+                  ? "text-slate-500"
+                  : "text-slate-700",
+                isCancelled && "line-through",
+              )}
+            />
+
+            {editedTask.links.map((link) => (
+              <NoteLinkPill key={link.id} link={link} colour={colour} />
+            ))}
+          </div>
 
           {showDescription && (
             <textarea
@@ -183,8 +208,21 @@ export const TaskEditor = ({
           )}
         </div>
 
-        {isFocused && (
-          <div className="flex flex-row flex-wrap items-center gap-1">
+        <div className="flex flex-row flex-wrap items-center gap-1 pl-2">
+          {isFocused && (
+            <Button
+              colour={colour}
+              variant="ghost"
+              size="sm"
+              iconName="link"
+              onClick={() => {
+                setLinksModalKey((k) => k + 1);
+                setIsLinksModalOpen(true);
+              }}
+            />
+          )}
+
+          {(isFocused || editedTask.isFlagged) && (
             <Toggle
               isToggled={editedTask.isFlagged}
               size="sm"
@@ -192,33 +230,20 @@ export const TaskEditor = ({
               onClick={() => onUpdateTask({ isFlagged: !editedTask.isFlagged })}
               iconName="flag"
             />
+          )}
 
-            {editedTask.dueDate ? (
-              <Button
-                colour={colour}
-                size="sm"
-                className={cn(
-                  "text-xs px-2 py-1 rounded-full",
-                  editedTask.dueDate.isBefore(dayjs(), "day") &&
-                    !isCompleted &&
-                    !isCancelled
-                    ? "bg-red-100 text-red-500"
-                    : "bg-gray-100 text-gray-500",
-                )}
-              >
-                {editedTask.dueDate.format("MMM D, YYYY")}
-              </Button>
-            ) : (
-              <Button
-                colour={colour}
-                iconName="calendarDots"
-                variant="ghost"
-                size="sm"
-              />
-            )}
+          {(isFocused || !!editedTask.dueDate) && (
+            <TaskDatePicker
+              dueDate={editedTask.dueDate}
+              colour={colour}
+              isCompleted={isCompleted}
+              isCancelled={isCancelled}
+              onChange={(date) => onUpdateTask({ dueDate: date })}
+              onOpenChange={setIsDatePickerOpen}
+            />
+          )}
 
-            <Button colour={colour} variant="ghost" size="sm" iconName="link" />
-
+          {isFocused && (
             <Button
               variant="ghost"
               size="sm"
@@ -226,9 +251,23 @@ export const TaskEditor = ({
               colour={colours.red}
               onClick={() => deleteTask({ taskId: editedTask.id })}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
+
+      <Dialog.Root
+        open={isLinksModalOpen}
+        onOpenChange={(open) => {
+          setIsLinksModalOpen(open);
+        }}
+      >
+        <TaskLinksModal
+          key={linksModalKey}
+          links={editedTask.links}
+          colour={colour}
+          onSave={onSaveLinks}
+        />
+      </Dialog.Root>
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import type { TaskSchema } from "./tasks.schema";
 import type { Dayjs } from "dayjs";
-import type { Note } from "src/notes/Note.type";
+import type { Link } from "src/common/types/Link.type";
 import type { Prettify } from "src/common/types/Prettify.type";
+import type { Note } from "src/notes/Note.type";
 
 export type Task = Prettify<Omit<
   TaskSchema,
@@ -13,6 +14,7 @@ export type Task = Prettify<Omit<
   | "user"
   | "created"
   | "updated"
+  | "links"
 > & {
   note: Note | null;
   dueDate: Dayjs | null;
@@ -20,6 +22,7 @@ export type Task = Prettify<Omit<
   cancelledDate: Dayjs | null;
   created: Dayjs;
   updated: Dayjs;
+  links: Link[];
 }>;
 
 export type TasksGroup = {
