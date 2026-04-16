@@ -10,7 +10,7 @@ export type Task = Prettify<Omit<
   | "dueDate"
   | "completedDate"
   | "cancelledDate"
-  | "journal"
+  | "pocketbook"
   | "user"
   | "created"
   | "updated"

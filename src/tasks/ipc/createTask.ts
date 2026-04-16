@@ -11,7 +11,7 @@ export type CreateTaskInput = {
   isFlagged: boolean;
   noteId: string | null;
   dueDate: string | null;
-  journalId: string | null;
+  pocketbookId: string | null;
   userId: string | null;
 };
 
@@ -25,7 +25,7 @@ createIpcHandler(
     isFlagged,
     noteId,
     dueDate,
-    journalId,
+    pocketbookId,
     userId,
   }: CreateTaskInput): TaskSchema => {
     const now = new Date().toISOString();
@@ -42,7 +42,7 @@ createIpcHandler(
         isFlagged,
         note: noteId,
         dueDate,
-        journal: journalId,
+        pocketbook: pocketbookId,
         user: userId,
         created: now,
         updated: now,

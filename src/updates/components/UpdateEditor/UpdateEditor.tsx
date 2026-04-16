@@ -8,7 +8,7 @@ import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToo
 import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
-import { useCurrentJournal } from "src/journals/hooks/useCurrentJournal";
+import { useCurrentPocketbook } from "src/pocketbooks/hooks/useCurrentPocketbook";
 import { NoteMultiSelect } from "src/notes/components/NoteMultiSelect/NoteMultiSelect";
 import { useCreateUpdate } from "src/updates/hooks/useCreateUpdate";
 import { useDeleteUpdate } from "src/updates/hooks/useDeleteUpdate";
@@ -52,7 +52,7 @@ export const UpdateEditor = ({
   onCancel,
   onCreated,
 }: UpdateEditorProps) => {
-  const { currentJournal } = useCurrentJournal();
+  const { pocketbookId, currentPocketbook } = useCurrentPocketbook();
   const navigate = useNavigate();
 
   const { createUpdate } = useCreateUpdate();
@@ -72,11 +72,11 @@ export const UpdateEditor = ({
     setEditedUpdate((current) => ({ ...current, ...fields }));
   };
 
-  if (!currentJournal) {
+  if (!currentPocketbook) {
     return null;
   }
 
-  const resolvedColour = colour ?? currentJournal.colour ?? colours.blue;
+  const resolvedColour = colour ?? currentPocketbook.colour ?? colours.blue;
 
   const onDone = async () => {
     if (editedUpdate.id) {
@@ -263,7 +263,7 @@ export const UpdateEditor = ({
                     onClick={(event) => {
                       event.stopPropagation();
                       navigate({
-                        to: `/${currentJournal.id ?? ""}/notes`,
+                        to: `/${pocketbookId ?? ""}/notes`,
                         search: { noteId: note.id },
                       });
                     }}
