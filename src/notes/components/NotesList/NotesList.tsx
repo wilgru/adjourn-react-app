@@ -32,14 +32,7 @@ export const NotesList = ({
       </div>
 
       {noteGroup.notes.length === 0 && (
-        <EmptyState
-          title="No notes yet"
-          description="Capture your first thought here."
-          colour={colour}
-          size="sm"
-          iconName="pencil"
-          createFirstButtonText="Create your first note"
-        />
+        <EmptyState text="No notes yet" />
       )}
     </section>
   );
