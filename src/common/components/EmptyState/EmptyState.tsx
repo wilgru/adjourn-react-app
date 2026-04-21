@@ -17,6 +17,7 @@ export const EmptyState = ({ text, onAdd }: EmptyStateProps) => {
           size="lg"
           colour={colours.grey}
           iconName="plus"
+          ariaLabel="Add"
           onClick={onAdd}
         />
       )}
