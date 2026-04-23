@@ -6,7 +6,7 @@ import type { ForgeConfig } from "@electron-forge/shared-types";
 const config: ForgeConfig = {
   packagerConfig: {
     name: "Pocketbook",
-    icon: "resources/icon.icon",
+    icon: "resources/icon",
     extraResource: ["drizzle"],
     asar: {
       unpack: "**/node_modules/{better-sqlite3,bindings,file-uri-to-path}/**",
@@ -29,6 +29,11 @@ const config: ForgeConfig = {
     {
       name: "@electron-forge/maker-zip",
       platforms: ["darwin"],
+      config: {},
+    },
+    {
+      name: "@electron-forge/maker-zip",
+      platforms: ["win32"],
       config: {},
     },
   ],
