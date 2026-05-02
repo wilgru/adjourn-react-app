@@ -7,6 +7,7 @@ import type {
 } from "@tanstack/react-query";
 import type { Note } from "src/notes/Note.type";
 import type { Tag } from "src/tags/Tag.type";
+import type { TagSchema } from "src/tags/tags.schema";
 
 type UseTagResponse = {
   tag: Tag | undefined;
@@ -31,15 +32,30 @@ export const useGetTag = (tagId: string): UseTagResponse => {
     if (!tagResponse.success) throw new Error(tagResponse.error);
 
     const pocketbookId = tagResponse.data.pocketbook;
-    const notesResponse = pocketbookId
-      ? await window.api.getNotes({ pocketbookId })
-      : { success: true as const, data: { notes: [] } };
+    const [notesResponse, tagsResponse] = pocketbookId
+      ? await Promise.all([
+          window.api.getNotes({ pocketbookId }),
+          window.api.getTags({ pocketbookId }),
+        ])
+      : [
+          { success: true as const, data: { notes: [] } },
+          { success: true as const, data: { tags: [] as TagSchema[], tagGroups: [] } },
+        ];
 
     if (!notesResponse.success) throw new Error(notesResponse.error);
+    if (!tagsResponse.success) throw new Error(tagsResponse.error);
+
+    const allTags = tagsResponse.data.tags.map((t) => mapTag(t));
+    const tagById = new Map<string, Tag>(allTags.map((t) => [t.id, t]));
 
     const notes = notesResponse.data.notes
       .filter((note) => note.tagIds.includes(tagId))
-      .map((note) => mapNote(note));
+      .map((note) => {
+        const noteTags = note.tagIds
+          .map((id) => tagById.get(id))
+          .filter((t): t is Tag => t !== undefined);
+        return mapNote(note, { tags: noteTags });
+      });
 
     const tag = mapTag(tagResponse.data, { noteCount: notes.length });
 
