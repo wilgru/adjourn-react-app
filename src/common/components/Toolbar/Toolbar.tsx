@@ -1,7 +1,9 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { colours } from "src/colours/colours.constant";
 import { isSideBarVisibleAtom } from "src/common/atoms/isSidebarVisibleAtom";
+import { quillEditorStateAtom } from "src/common/atoms/quillEditorStateAtom";
 import { Button } from "src/common/components/Button/Button";
+import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import { useElectronEnvironment } from "src/common/hooks/useElectronEnvironment";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
@@ -26,6 +28,7 @@ export const Toolbar = ({
   const { isMacElectron } = useElectronEnvironment();
 
   const [isSideBarVisible, setValue] = useAtom(isSideBarVisibleAtom);
+  const { isQuillFocused, toolbarFormatting, colour: quillColour } = useAtomValue(quillEditorStateAtom);
   const shouldReserveWindowButtonSpace = isMacElectron && !isSideBarVisible;
 
   //TODO: remove h-16 when scrolling issue is fixed
@@ -73,6 +76,13 @@ export const Toolbar = ({
           isMacElectron ? "electron-no-drag" : "",
         )}
       >
+        <div className={cn(!isQuillFocused && "hidden")}>
+          <QuillFormattingToolbar
+            toolbarId="toolbar"
+            toolbarFormatting={toolbarFormatting}
+            colour={quillColour ?? colour}
+          />
+        </div>
         <NoteSearchBar />
       </div>
     </div>

@@ -17,6 +17,8 @@ type QuillEditorProps = {
   autoFocus?: boolean;
   onChange: (delta: Delta) => void;
   onSelectedFormattingChange: (selectionFormatting: StringMap) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 // https://quilljs.com/docs/modules/toolbar/
@@ -31,14 +33,20 @@ const QuillEditor = ({
   autoFocus = false,
   onChange,
   onSelectedFormattingChange,
+  onFocus,
+  onBlur,
 }: QuillEditorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const onChangeRef = useRef(onChange);
   const autoFocusRef = useRef(autoFocus);
+  const onFocusRef = useRef(onFocus);
+  const onBlurRef = useRef(onBlur);
   const [quillEditor, setQuillEditor] = useState<Quill | null>(null);
 
   useLayoutEffect(() => {
     onChangeRef.current = onChange;
+    onFocusRef.current = onFocus;
+    onBlurRef.current = onBlur;
   });
 
   useEffect(() => {
@@ -57,6 +65,8 @@ const QuillEditor = ({
 
   useEffect(() => {
     if (!quillEditor) return;
+
+    let isFocused = false;
 
     const handleTextChange = (
       _delta: Delta,
@@ -88,6 +98,16 @@ const QuillEditor = ({
         );
 
         onSelectedFormattingChange(selectionFormatting);
+
+        if (!isFocused) {
+          isFocused = true;
+          onFocusRef.current?.();
+        }
+      } else {
+        if (isFocused) {
+          isFocused = false;
+          onBlurRef.current?.();
+        }
       }
     };
 
