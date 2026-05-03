@@ -77,17 +77,21 @@ const NoteEditor = ({
     debouncedSave.flush();
     setEditedNote(note);
     setShowNewUpdate(false);
-    setQuillEditorState((s) => ({ ...s, colour, isQuillFocused: false }));
+    setQuillEditorState((s) => ({ ...s, isQuillFocused: false }));
   }, [note.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keep the colour in the toolbar atom in sync with the current note's colour.
+  useEffect(() => {
+    setQuillEditorState((s) => ({ ...s, colour }));
+  }, [colour, setQuillEditorState]);
 
   // Flush any pending debounced save when the component unmounts (navigation).
   useEffect(() => {
-    setQuillEditorState({ isQuillFocused: false, toolbarFormatting: undefined, colour });
     return () => {
       debouncedSave.flush();
       setQuillEditorState({ isQuillFocused: false, toolbarFormatting: undefined, colour: undefined });
     };
-  }, [debouncedSave]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [debouncedSave, setQuillEditorState]);
 
   // Scroll to the new update editor when it appears.
   useEffect(() => {
