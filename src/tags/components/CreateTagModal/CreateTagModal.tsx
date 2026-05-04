@@ -24,7 +24,7 @@ const getInitialTag = (tagGroupId?: string): NewTag => ({
   links: [],
   tagGroupId: tagGroupId ?? null,
   sortBy: "created",
-  sortDirection: "asc",
+  sortDirection: "desc",
 });
 
 export const CreateTagModal = ({ tagGroupId }: CreateTagModalProps) => {

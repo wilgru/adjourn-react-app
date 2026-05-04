@@ -21,7 +21,7 @@ export const mapTag = (tag: TagSchema, options: MapTagOptions = {}): Tag => {
     links: tag.links ? JSON.parse(tag.links) : [],
     groupBy: (tag.groupBy as "created" | "tag" | null) ?? null,
     sortBy: (tag.sortBy ?? "created") as "alphabetical" | "created",
-    sortDirection: (tag.sortDirection ?? "asc") as "asc" | "desc",
+    sortDirection: (tag.sortDirection ?? "desc") as "asc" | "desc",
     tagGroupId: tag.tagGroup || null,
     created: dayjs.utc(tag.created).local(),
     updated: dayjs.utc(tag.updated).local(),

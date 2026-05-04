@@ -44,7 +44,7 @@ export default function TagComponent() {
   const [isEditTagModalOpen, setIsEditTagModalOpen] = useState(false);
 
   const sortBy = tag?.sortBy ?? "created";
-  const sortDirection = tag?.sortDirection ?? "asc";
+  const sortDirection = tag?.sortDirection ?? "desc";
 
   const sortedNotes = useMemo(
     () => sortNotes(notes, sortBy, sortDirection),

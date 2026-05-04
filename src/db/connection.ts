@@ -55,11 +55,18 @@ function getDbPath(): string {
 const sqlite = new Database(getDbPath());
 sqlite.pragma("journal_mode = WAL");
 
+// PRAGMA foreign_keys is a no-op inside a transaction, so it must be set here
+// before migrate() opens its BEGIN transaction. Migrations that recreate tables
+// (drop + rename pattern) require FK enforcement to be off during the migration.
+sqlite.pragma("foreign_keys = OFF");
+
 const db = drizzle(sqlite);
 migrate(db, {
   migrationsFolder: isPackaged
     ? path.join(process.resourcesPath, "drizzle")
     : path.join(process.cwd(), "drizzle"),
 });
+
+sqlite.pragma("foreign_keys = ON");
 
 export { db };
