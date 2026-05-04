@@ -45,15 +45,26 @@ let mainWindow: BrowserWindow | null = null;
 
 const createWindow = () => {
   const isMac = process.platform === "darwin";
+  const isWindows = process.platform === "win32";
 
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     title: "Pocketbook",
+    titleBarStyle: "hidden",
     ...(isMac
       ? {
-          titleBarStyle: "hidden",
           trafficLightPosition: { x: 21, y: 21 },
+        }
+      : {}),
+    ...(isWindows
+      ? {
+          frame: false,
+          titleBarOverlay: {
+            color: "#ffffff00",
+            symbolColor: "#64748b",
+            height: 60,
+          },
         }
       : {}),
     webPreferences: {
