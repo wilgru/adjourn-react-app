@@ -1,7 +1,11 @@
+import { useAtomValue } from "jotai";
 import { useMemo } from "react";
 import { colours } from "src/colours/colours.constant";
+import { quillEditorStateAtom } from "src/common/atoms/quillEditorStateAtom";
 import { EmptyState } from "src/common/components/EmptyState/EmptyState";
+import { FloatingToolbar } from "src/common/components/FloatingToolbar/FloatingToolbar";
 import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
+import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import NoteEditor from "src/notes/components/NoteEditor/NoteEditor";
 import { groupNotes } from "src/notes/utils/groupNotes";
 import { NotesList } from "../NotesList/NotesList";
@@ -36,6 +40,8 @@ export const NotesLayout = ({
   groupSortDirection = "desc",
   onCreateNote,
 }: NotesLayoutProps) => {
+  const { isQuillFocused, toolbarFormatting, colour: quillColour } = useAtomValue(quillEditorStateAtom);
+
   const noteGroups = useMemo<NotesGroup[]>(() => {
     if (!notes || notes.length === 0) {
       return [];
@@ -97,14 +103,26 @@ export const NotesLayout = ({
         </div>
       </div>
 
-      <div className="h-full w-full flex justify-center overflow-y-scroll">
-        {selectedNote ? (
-          <NoteEditor note={selectedNote} colour={colour} />
-        ) : (
-          <div className="h-full w-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-gray-400 text-lg">No note selected</h1>
-          </div>
-        )}
+      <div className="h-full w-full relative flex flex-col min-w-0">
+        <div className="flex-1 overflow-y-scroll flex justify-center">
+          {selectedNote ? (
+            <NoteEditor note={selectedNote} colour={colour} />
+          ) : (
+            <div className="h-full w-full flex flex-col justify-center items-center text-center">
+              <h1 className="text-gray-400 text-lg">No note selected</h1>
+            </div>
+          )}
+        </div>
+
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none z-10">
+          <FloatingToolbar visible={isQuillFocused}>
+            <QuillFormattingToolbar
+              toolbarId="toolbar"
+              toolbarFormatting={toolbarFormatting}
+              colour={quillColour ?? colour}
+            />
+          </FloatingToolbar>
+        </div>
       </div>
     </div>
   );
