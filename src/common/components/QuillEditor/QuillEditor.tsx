@@ -41,12 +41,15 @@ const QuillEditor = ({
   const autoFocusRef = useRef(autoFocus);
   const onFocusRef = useRef(onFocus);
   const onBlurRef = useRef(onBlur);
+  const onSelectedFormattingChangeRef = useRef(onSelectedFormattingChange);
+  const isFocusedRef = useRef(false);
   const [quillEditor, setQuillEditor] = useState<Quill | null>(null);
 
   useLayoutEffect(() => {
     onChangeRef.current = onChange;
     onFocusRef.current = onFocus;
     onBlurRef.current = onBlur;
+    onSelectedFormattingChangeRef.current = onSelectedFormattingChange;
   });
 
   useEffect(() => {
@@ -66,8 +69,6 @@ const QuillEditor = ({
   useEffect(() => {
     if (!quillEditor) return;
 
-    let isFocused = false;
-
     const handleTextChange = (
       _delta: Delta,
       _oldDelta: Delta,
@@ -81,7 +82,7 @@ const QuillEditor = ({
           selection.length,
         );
 
-        onSelectedFormattingChange(selectionFormatting);
+        onSelectedFormattingChangeRef.current?.(selectionFormatting);
       }
 
       // Only notify consumers for user-driven changes (like a textarea)
@@ -97,15 +98,15 @@ const QuillEditor = ({
           range.length,
         );
 
-        onSelectedFormattingChange(selectionFormatting);
+        onSelectedFormattingChangeRef.current?.(selectionFormatting);
 
-        if (!isFocused) {
-          isFocused = true;
+        if (!isFocusedRef.current) {
+          isFocusedRef.current = true;
           onFocusRef.current?.();
         }
       } else {
-        if (isFocused) {
-          isFocused = false;
+        if (isFocusedRef.current) {
+          isFocusedRef.current = false;
           onBlurRef.current?.();
         }
       }
@@ -118,7 +119,7 @@ const QuillEditor = ({
       quillEditor?.off("text-change", handleTextChange);
       quillEditor?.off("selection-change", handleSelectionChange);
     };
-  }, [onSelectedFormattingChange, quillEditor]);
+  }, [quillEditor]);
 
   useEffect(() => {
     const container = containerRef.current;
