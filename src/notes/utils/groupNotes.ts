@@ -159,6 +159,12 @@ export function groupNotes(
   }, []);
 
   groupedNotes.sort((a, b) => {
+    // When grouping by tag, always pin the "no tags" group to the top
+    if (groupBy === "tag") {
+      if (a.title === null) return -1;
+      if (b.title === null) return 1;
+    }
+
     const aOrder = a.sortOrder ?? 0;
     const bOrder = b.sortOrder ?? 0;
 

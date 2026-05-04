@@ -4,7 +4,7 @@ export default create({
   base: "light",
 
   // Typography
-  fontBase: '"Helvetica Neue", sans-serif',
+  fontBase: '"Helvetica Neue", Helvetica, Arial, sans-serif',
   fontCode: "monospace",
 
   brandTitle: "Pocketbook",

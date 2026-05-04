@@ -1,10 +1,11 @@
 export const useElectronEnvironment = () => {
-  const isElectron = true;
   const isMac =
     typeof navigator !== "undefined" && /Mac/.test(navigator.platform);
+  const isWindows =
+    typeof navigator !== "undefined" && /Win/.test(navigator.platform);
 
   return {
-    isElectron,
-    isMacElectron: isElectron && isMac,
+    isMac,
+    isWindows,
   };
 };

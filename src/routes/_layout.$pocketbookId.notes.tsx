@@ -44,7 +44,7 @@ function NotesComponent() {
   const { updatePocketbook } = useUpdatePocketbook();
 
   const sortBy = currentPocketbook?.notesSortBy ?? "created";
-  const sortDirection = currentPocketbook?.notesSortDirection ?? "asc";
+  const sortDirection = currentPocketbook?.notesSortDirection ?? "desc";
   const groupBy = currentPocketbook?.notesGroupBy ?? null;
 
   const sortedNotes = useMemo(

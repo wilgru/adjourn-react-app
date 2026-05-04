@@ -15,7 +15,7 @@ import { SidebarBookmarkSection } from "./SidebarBookmarkSection";
 import { SidebarTagSection } from "./SidebarTagSection";
 
 export const Sidebar = () => {
-  const { isElectron, isMacElectron } = useElectronEnvironment();
+  const { isWindows } = useElectronEnvironment();
 
   const {
     pocketbookId,
@@ -42,17 +42,16 @@ export const Sidebar = () => {
         <div className="flex flex-col gap-3 justify-between overflow-y-auto">
           <div
             className={cn(
-              "flex flex-row items-center gap-2",
-              isElectron ? "justify-end" : "justify-between",
-              isMacElectron ? "electron-drag-region min-h-8" : "",
+              "flex flex-row items-center gap-2 electron-drag-region min-h-8",
+              isWindows ? "justify-between" : "justify-end",
             )}
           >
-            {!isElectron && (
+            {isWindows && (
               <h1 className="font-title text-slate-500 text-xl">Pocketbook</h1>
             )}
 
             <Button
-              className={isMacElectron ? "electron-no-drag" : ""}
+              className="electron-no-drag"
               variant="ghost"
               size="sm"
               colour={currentPocketbook.colour}
