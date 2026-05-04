@@ -7,7 +7,6 @@ import type {
 } from "@tanstack/react-query";
 import type { Note } from "src/notes/Note.type";
 import type { Tag } from "src/tags/Tag.type";
-import type { TagSchema } from "src/tags/tags.schema";
 
 type UseTagResponse = {
   tag: Tag | undefined;
@@ -38,8 +37,8 @@ export const useGetTag = (tagId: string): UseTagResponse => {
           window.api.getTags({ pocketbookId }),
         ])
       : [
-          { success: true as const, data: { notes: [] } },
-          { success: true as const, data: { tags: [] as TagSchema[], tagGroups: [] } },
+          { success: true, data: { notes: [] } },
+          { success: true, data: { tags: [], tagGroups: [] } },
         ];
 
     if (!notesResponse.success) throw new Error(notesResponse.error);
