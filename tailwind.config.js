@@ -5,7 +5,7 @@ export default {
   theme: {
     fontFamily: {
       title: ["Plantagenet Cherokee"],
-      sans: ["Helvetica Neue"],
+      sans: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
       // body: [""],
     },
     extend: {
