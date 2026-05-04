@@ -8,12 +8,12 @@ export const pocketbooks = sqliteTable("pocketbooks", {
   icon: text("icon").notNull().default(""),
   colour: text("colour").notNull().$type<ColourName>(),
   notesSortBy: text("notes_sort_by").notNull().default("created"),
-  notesSortDirection: text("notes_sort_direction").notNull().default("asc"),
+  notesSortDirection: text("notes_sort_direction").notNull().default("desc"),
   notesGroupBy: text("notes_group_by"),
   bookmarkedSortBy: text("bookmarked_sort_by").notNull().default("created"),
   bookmarkedSortDirection: text("bookmarked_sort_direction")
     .notNull()
-    .default("asc"),
+    .default("desc"),
   bookmarkedGroupBy: text("bookmarked_group_by"),
   user: text("user"),
   created: text("created").notNull(),

@@ -19,12 +19,12 @@ export const mapPocketbook = (
     notesSortBy:
       (pocketbook.notesSortBy as "alphabetical" | "created") ?? "created",
     notesSortDirection:
-      (pocketbook.notesSortDirection as "asc" | "desc") ?? "asc",
+      (pocketbook.notesSortDirection as "asc" | "desc") ?? "desc",
     notesGroupBy: (pocketbook.notesGroupBy as "created" | "tag" | null) ?? null,
     bookmarkedSortBy:
       (pocketbook.bookmarkedSortBy as "alphabetical" | "created") ?? "created",
     bookmarkedSortDirection:
-      (pocketbook.bookmarkedSortDirection as "asc" | "desc") ?? "asc",
+      (pocketbook.bookmarkedSortDirection as "asc" | "desc") ?? "desc",
     bookmarkedGroupBy:
       (pocketbook.bookmarkedGroupBy as "created" | "tag" | null) ?? null,
     noteCount: pocketbook.noteCount,

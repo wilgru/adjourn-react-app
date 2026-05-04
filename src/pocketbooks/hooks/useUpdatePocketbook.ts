@@ -42,11 +42,11 @@ export const useUpdatePocketbook = (): UseUpdatePocketbookResponse => {
       icon: updatePocketbookData.icon,
       colour: updatePocketbookData.colour.name,
       notesSortBy: updatePocketbookData.notesSortBy ?? "created",
-      notesSortDirection: updatePocketbookData.notesSortDirection ?? "asc",
+      notesSortDirection: updatePocketbookData.notesSortDirection ?? "desc",
       notesGroupBy: updatePocketbookData.notesGroupBy ?? null,
       bookmarkedSortBy: updatePocketbookData.bookmarkedSortBy ?? "created",
       bookmarkedSortDirection:
-        updatePocketbookData.bookmarkedSortDirection ?? "asc",
+        updatePocketbookData.bookmarkedSortDirection ?? "desc",
       bookmarkedGroupBy: updatePocketbookData.bookmarkedGroupBy ?? null,
     });
     if (!response.success) throw new Error(response.error);

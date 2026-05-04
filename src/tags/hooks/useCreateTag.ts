@@ -49,7 +49,7 @@ export const useCreateTag = (): UseCreateTagResponse => {
       description: createTagData.description,
       groupBy: null,
       sortBy: createTagData.sortBy ?? "created",
-      sortDirection: createTagData.sortDirection ?? "asc",
+      sortDirection: createTagData.sortDirection ?? "desc",
       links: JSON.stringify(createTagData.links),
       tagGroupId: createTagData.tagGroupId ?? null,
     });

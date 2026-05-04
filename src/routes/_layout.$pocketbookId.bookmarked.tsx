@@ -44,7 +44,7 @@ function RouteComponent() {
   const { updatePocketbook } = useUpdatePocketbook();
 
   const sortBy = currentPocketbook?.bookmarkedSortBy ?? "created";
-  const sortDirection = currentPocketbook?.bookmarkedSortDirection ?? "asc";
+  const sortDirection = currentPocketbook?.bookmarkedSortDirection ?? "desc";
   const groupBy = currentPocketbook?.bookmarkedGroupBy ?? null;
 
   const sortedNotes = useMemo(

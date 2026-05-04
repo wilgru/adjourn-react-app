@@ -6,7 +6,7 @@ export type SortDirection = "asc" | "desc";
 export const sortNotes = (
   notes: Note[],
   sortBy: NoteSortBy = "created",
-  sortDirection: SortDirection = "asc",
+  sortDirection: SortDirection = "desc",
 ): Note[] => {
   return [...notes].sort((a, b) => {
     let compareVal = 0;
