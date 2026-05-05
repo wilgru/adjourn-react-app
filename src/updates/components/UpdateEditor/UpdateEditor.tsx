@@ -234,13 +234,13 @@ export const UpdateEditor = ({
         tintClasses.card,
       )}
     >
-      {(dateStr || showNotes) && (
+      {(dateStr || (showNotes && (editedUpdate.notes ?? []).length > 0)) && (
         <div className="flex flex-wrap gap-2 items-center">
           {dateStr && (
             <span className="text-xs text-slate-400 shrink-0">{dateStr}</span>
           )}
           {showNotes &&
-            (editedUpdate.notes as Note[]).map((note) => (
+            ((editedUpdate.notes ?? []) as Note[]).map((note) => (
               <button
                 key={note.id}
                 onClick={(event) => {
