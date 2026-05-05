@@ -2,12 +2,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import debounce from "debounce";
+import { useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { colours } from "src/colours/colours.constant";
+import { quillEditorStateAtom } from "src/common/atoms/quillEditorStateAtom";
 import { Button } from "src/common/components/Button/Button";
 import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
-import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { NoteLinksModal } from "src/notes/components/NoteLinksModal/NoteLinksModal";
 import { useCreateNote } from "src/notes/hooks/useCreateNote";
@@ -18,7 +19,6 @@ import { UpdateEditor } from "src/updates/components/UpdateEditor/UpdateEditor";
 import { useGetUpdates } from "src/updates/hooks/useGetUpdates";
 import { TagMultiSelect } from "../../../tags/components/TagMultiSelect/TagMultiSelect";
 import { TaskEditor } from "../../../tasks/components/TaskEditor/TaskEditor";
-import type { StringMap } from "quill";
 import type { Colour } from "src/colours/Colour.type";
 import type { Link } from "src/common/types/Link.type";
 import type { Note } from "src/notes/Note.type";
@@ -45,8 +45,9 @@ const NoteEditor = ({
   const location = useLocation();
   const navigate = useNavigate();
 
+  const setQuillEditorState = useSetAtom(quillEditorStateAtom);
+
   const [editedNote, setEditedNote] = useState<Note>(note); // TODO: maybe use key prop when using NoteEditor to force reset instead of having to manage this state and useEffects to reset when the note prop changes.
-  const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [showNewUpdate, setShowNewUpdate] = useState(false);
   const [linksModalKey, setLinksModalKey] = useState(0);
 
@@ -76,19 +77,33 @@ const NoteEditor = ({
     debouncedSave.flush();
     setEditedNote(note);
     setShowNewUpdate(false);
+    setQuillEditorState((s) => ({ ...s, isQuillFocused: false }));
   }, [note.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keep the colour in the toolbar atom in sync with the current note's colour.
+  useEffect(() => {
+    setQuillEditorState((s) => ({ ...s, colour }));
+  }, [colour, setQuillEditorState]);
 
   // Flush any pending debounced save when the component unmounts (navigation).
   useEffect(() => {
     return () => {
       debouncedSave.flush();
+      setQuillEditorState({
+        isQuillFocused: false,
+        toolbarFormatting: undefined,
+        colour: undefined,
+      });
     };
-  }, [debouncedSave]);
+  }, [debouncedSave, setQuillEditorState]);
 
   // Scroll to the new update editor when it appears.
   useEffect(() => {
     if (showNewUpdate) {
-      newUpdateRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      newUpdateRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     }
   }, [showNewUpdate]);
 
@@ -134,7 +149,7 @@ const NoteEditor = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-[1000px] px-12 pt-6">
+    <div className="flex flex-col items-center gap-4 h-fit w-full max-w-[1000px] px-12 pt-6 pb-28">
       <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
         <textarea
           name="title"
@@ -235,21 +250,24 @@ const NoteEditor = ({
       )}
 
       <div className="flex flex-col gap-5 w-full">
-        <QuillFormattingToolbar
-          toolbarId={QUILL_TOOLBAR_ID}
-          toolbarFormatting={toolbarFormatting}
-          colour={colour}
-        />
-
         <QuillEditor
           key={editedNote.id}
           toolbarId={QUILL_TOOLBAR_ID}
           value={editedNote.content}
           colour={colour}
           onChange={(delta) => onUpdateNote({ content: delta })}
-          onSelectedFormattingChange={(selectionFormatting: StringMap) => {
-            setToolbarFormatting(selectionFormatting);
+          onSelectedFormattingChange={(selectionFormatting) => {
+            setQuillEditorState((s) => ({
+              ...s,
+              toolbarFormatting: selectionFormatting,
+            }));
           }}
+          onFocus={() =>
+            setQuillEditorState((s) => ({ ...s, isQuillFocused: true }))
+          }
+          onBlur={() =>
+            setQuillEditorState((s) => ({ ...s, isQuillFocused: false }))
+          }
         />
       </div>
 
