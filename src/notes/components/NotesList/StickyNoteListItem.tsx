@@ -40,8 +40,8 @@ export const StickyNoteListItem = ({
       search={(old) => ({ ...old, noteId: note.id })}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{ transform: `rotate(${rotation}deg)` }}
-      className="w-full my-2 text-sm transition-colors"
+      style={{ "--sticky-rotate": `${rotation}deg` } as React.CSSProperties}
+      className="w-full my-2 text-sm transition-colors [transform:rotate(var(--sticky-rotate,0deg))] motion-reduce:transform-none"
     >
       {({ isActive }: { isActive: boolean }) => (
         <div
