@@ -6,6 +6,7 @@ import { colours } from "src/colours/colours.constant";
 import { Button } from "src/common/components/Button/Button";
 import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { Toggle } from "src/common/components/Toggle/Toggle";
+import { useAutoResize } from "src/common/hooks/useAutoResize";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
 import { TaskDatePicker } from "src/tasks/components/TaskDatePicker/TaskDatePicker";
@@ -54,6 +55,9 @@ export const TaskEditor = ({
   const [linksModalKey, setLinksModalKey] = useState(0);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+
+  const titleRef = useAutoResize(editedTask.title);
+  const descriptionRef = useAutoResize(editedTask.description);
 
   // Timer for distinguishing single vs double click on the status circle
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -171,6 +175,7 @@ export const TaskEditor = ({
         <div className="flex flex-col grow">
           <div className="flex justify-between gap-2">
             <textarea
+              ref={titleRef}
               name="title"
               value={editedTask.title ?? ""}
               placeholder="No Title"
@@ -180,7 +185,7 @@ export const TaskEditor = ({
                 })
               }
               className={cn(
-                "h-6 flex-1 tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
+                "flex-1 tracking-tight text-md bg-transparent placeholder-slate-400 select-none resize-none outline-none",
                 isCompleted || isCancelled
                   ? "text-slate-500"
                   : "text-slate-700",
@@ -195,6 +200,7 @@ export const TaskEditor = ({
 
           {showDescription && (
             <textarea
+              ref={descriptionRef}
               name="description"
               value={editedTask.description ?? ""}
               placeholder="No description"
@@ -203,7 +209,7 @@ export const TaskEditor = ({
                   description: e.target.value,
                 })
               }
-              className="h-6 w-full text-sm font-normal bg-transparent placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
+              className="w-full text-sm font-normal bg-transparent placeholder-slate-400 text-slate-500 select-none resize-none outline-none"
             />
           )}
         </div>
