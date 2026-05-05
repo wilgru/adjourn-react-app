@@ -135,7 +135,7 @@ export const TaskEditor = ({
     (open: boolean) => setIsDatePickerOpen(open),
   ).current;
 
-  // Sync atom when focus state changes.
+  // Sync atom when focus state or colour changes.
   useEffect(() => {
     if (isFocused) {
       setTaskEditorState({
@@ -158,7 +158,7 @@ export const TaskEditor = ({
           : current,
       );
     }
-  }, [isFocused]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isFocused, colour, setTaskEditorState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Keep toolbar display data (flag, due date, completion) in sync while focused.
   useEffect(() => {
@@ -170,7 +170,7 @@ export const TaskEditor = ({
       isCompleted: !!editedTask.completedDate,
       isCancelled: !!editedTask.cancelledDate,
     }));
-  }, [editedTask.isFlagged, editedTask.dueDate, editedTask.completedDate, editedTask.cancelledDate, isFocused]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [editedTask.isFlagged, editedTask.dueDate, editedTask.completedDate, editedTask.cancelledDate, isFocused, setTaskEditorState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Clear atom on unmount if this task was the focused one.
   useEffect(() => {

@@ -117,12 +117,13 @@ export const NotesLayout = ({
           )}
         </div>
 
+        {/* isTaskFocused and isQuillFocused are mutually exclusive so each toolbar is
+            positioned at the same absolute location and only one is ever shown at a time. */}
         <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none z-10">
           <FloatingToolbar visible={isTaskFocused}>
             <TaskFloatingToolbar />
           </FloatingToolbar>
         </div>
-
         <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none z-10">
           <FloatingToolbar visible={isQuillFocused}>
             <QuillFormattingToolbar
