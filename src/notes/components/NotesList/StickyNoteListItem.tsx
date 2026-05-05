@@ -1,0 +1,91 @@
+import { Bookmark, ChatCenteredText } from "@phosphor-icons/react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { useState } from "react";
+import { colours } from "src/colours/colours.constant";
+import { cn } from "src/common/utils/cn";
+import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
+import { TagPill } from "../../../tags/components/TagPill/TagPill";
+import type { Colour } from "src/colours/Colour.type";
+import type { Note } from "src/notes/Note.type";
+
+type StickyNoteListItemProps = {
+  note: Note;
+
+  createdDateFormat?: string;
+  colour?: Colour;
+  to?: string;
+};
+
+const getStickyNoteRotation = (noteId: string): number => {
+  const charSum = noteId
+    .split("")
+    .reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 0);
+  // Map to range [-1.5, 1.5] degrees
+  return ((charSum % 31) - 15) / 10;
+};
+
+export const StickyNoteListItem = ({
+  note,
+  createdDateFormat = "ddd MMM D, YYYY",
+  colour = colours.orange,
+  to,
+}: StickyNoteListItemProps) => {
+  const location = useLocation();
+  const [isHovered, setIsHovered] = useState(false);
+  const rotation = getStickyNoteRotation(note.id);
+
+  return (
+    <Link
+      to={to ?? location.pathname}
+      search={(old) => ({ ...old, noteId: note.id })}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ transform: `rotate(${rotation}deg)` }}
+      className="w-full my-2 text-sm transition-colors"
+    >
+      {({ isActive }: { isActive: boolean }) => (
+        <div
+          className={cn(
+            "flex flex-col gap-2 px-3 py-2 rounded-sm shadow-sm",
+            isActive || isHovered
+              ? cn(colour.textPill, colour.backgroundPill)
+              : "bg-yellow-200",
+          )}
+        >
+          <div className="max-h-28 overflow-hidden pointer-events-none">
+            <QuillViewer content={note.content} />
+          </div>
+
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-slate-400">
+              {note.created.format(createdDateFormat)}
+            </p>
+
+            {note.tags.length > 0 &&
+              note.tags.map((tag) => (
+                <TagPill
+                  key={tag.id}
+                  tag={tag}
+                  size="xs"
+                  variant="ghost"
+                  closable={false}
+                  collapsed={true}
+                />
+              ))}
+
+            {note.updateCount > 0 && (
+              <div className="flex items-center gap-1 text-xs text-slate-400 m-1">
+                <ChatCenteredText size={14} />
+                <span>{note.updateCount}</span>
+              </div>
+            )}
+
+            {note.isBookmarked && (
+              <Bookmark className="fill-red-400 m-1" weight="fill" size={14} />
+            )}
+          </div>
+        </div>
+      )}
+    </Link>
+  );
+};

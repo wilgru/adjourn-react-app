@@ -1,4 +1,6 @@
 import { NoteListItem } from "./NoteListItem";
+import { StickyNoteListItem } from "./StickyNoteListItem";
+import { isNoteContentEmpty } from "src/notes/utils/isNoteContentEmpty";
 import type { Colour } from "src/colours/Colour.type";
 import type { NotesGroup } from "src/notes/Note.type";
 
@@ -20,14 +22,30 @@ export const NotesList = ({
           <p className="text-slate-400 text-xs">{noteGroup.title}</p>
         )}
 
-        {noteGroup.notes.map((note) => (
-          <NoteListItem
-            key={note.id}
-            note={note}
-            createdDateFormat={createdDateFormat}
-            colour={colour}
-          />
-        ))}
+        {noteGroup.notes.map((note) => {
+          const hasNoTitle = !note.title || note.title.trim() === "";
+          const hasContent = !isNoteContentEmpty(note.content);
+
+          if (hasNoTitle && hasContent) {
+            return (
+              <StickyNoteListItem
+                key={note.id}
+                note={note}
+                createdDateFormat={createdDateFormat}
+                colour={colour}
+              />
+            );
+          }
+
+          return (
+            <NoteListItem
+              key={note.id}
+              note={note}
+              createdDateFormat={createdDateFormat}
+              colour={colour}
+            />
+          );
+        })}
       </div>
     </section>
   );
