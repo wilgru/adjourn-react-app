@@ -1,6 +1,6 @@
+import { isNoteContentEmpty } from "src/notes/utils/isNoteContentEmpty";
 import { NoteListItem } from "./NoteListItem";
 import { StickyNoteListItem } from "./StickyNoteListItem";
-import { isNoteContentEmpty } from "src/notes/utils/isNoteContentEmpty";
 import type { Colour } from "src/colours/Colour.type";
 import type { NotesGroup } from "src/notes/Note.type";
 

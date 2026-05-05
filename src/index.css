@@ -29,20 +29,31 @@ body {
   -webkit-app-region: no-drag;
 }
 
-#quill-editor .ql-editor {
+#quill-editor .ql-editor,
+#quill-viewer .ql-editor,
+#quill-viewer-small .ql-editor {
   padding: 0;
 }
 
-#quill-editor p {
+#quill-editor p,
+#quill-viewer p,
+#quill-viewer-small p {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#quill-editor p,
+#quill-viewer p {
   font-size: 16px;
 }
 
-#quill-editor ul {
+#quill-editor ul,
+#quill-viewer ul {
   padding-left: 0;
 }
 
-#quill-editor ul li::before {
+#quill-editor ul li::before,
+#quill-viewer ul li::before,
+#quill-viewer-small ul li::before {
   font-size: 16px;
   margin-left: 2px;
   margin-right: 2px;
@@ -50,28 +61,39 @@ body {
   color: #cbd5e1; /* slate-300. Tailwind v4 will let you use var(--color-slate-300) */
 }
 
-#quill-editor ul li {
+#quill-editor ul li,
+#quill-viewer ul li {
   font-size: 16px;
   /* padding-left: 0; */
 }
 
-#quill-editor ol {
+#quill-editor ol,
+#quill-viewer ol,
+#quill-viewer-small ol {
   padding-left: 0;
 }
 
-#quill-editor ol li {
+#quill-editor ol li,
+#quill-viewer ol li {
   font-size: 16px;
 }
 
-#quill-editor blockquote {
-  font-size: 16px;
+#quill-editor blockquote,
+#quill-viewer blockquote,
+#quill-viewer-small blockquote {
   border-left: 2px solid #cbd5e1; /* slate-300. Tailwind v4 will let you use var(--color-slate-300) */
   padding-left: 4px;
 }
 
+#quill-editor blockquote,
+#quill-viewer blockquote {
+  font-size: 16px;
+}
+
 #quill-editor pre,
+#quill-viewer pre,
+#quill-viewer-small pre,
 code {
-  font-size: 14px;
   font-family:
     "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
@@ -80,17 +102,29 @@ code {
   border-radius: 8px;
 }
 
-#quill-editor pre {
+#quill-editor pre,
+#quill-viewer pre,
+code {
+  font-size: 14px;
+}
+
+#quill-editor pre,
+#quill-viewer pre,
+#quill-viewer-small pre {
   padding: 4px 8px;
 }
 
-#quill-editor a {
+#quill-editor a,
+#quill-viewer a,
+#quill-viewer-small a {
   color: var(--ql-link-color, #f97316); /* falls back to orange-500 */
   text-decoration: underline;
   cursor: pointer;
 }
 
-#quill-editor .ql-editor.ql-blank::before {
+#quill-editor .ql-editor.ql-blank::before,
+#quill-viewer .ql-editor.ql-blank::before,
+#quill-viewer-small .ql-editor.ql-blank::before {
   left: unset;
   right: unset;
   color: #94a3b8; /* slate-400. Tailwind v4 will let you use var(--color-slate-400) */

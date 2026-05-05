@@ -4,6 +4,7 @@ import type Delta from "quill-delta";
 
 type QuillViewerProps = {
   content: Delta;
+  smallViewer?: boolean;
   className?: string;
   textColor?: string;
   onClick?: () => void;
@@ -11,6 +12,7 @@ type QuillViewerProps = {
 
 export default function QuillViewer({
   content,
+  smallViewer = false,
   className,
   textColor,
   onClick,
@@ -38,6 +40,18 @@ export default function QuillViewer({
 
       const quillEditor = new Quill(editorContainer, {
         readOnly: true,
+        formats: [
+          "bold",
+          "italic",
+          "underline",
+          "strike",
+          "code",
+          "list",
+          "indent",
+          "blockquote",
+          "code-block",
+          "link",
+        ],
       });
 
       quillEditor.setContents(content);
@@ -64,7 +78,7 @@ export default function QuillViewer({
 
   return (
     <div
-      id="quill-editor"
+      id={smallViewer ? "quill-viewer-small" : "quill-viewer"}
       ref={containerRef}
       onClick={onClick}
       className={cn("h-fit placeholder-slate-500", className)}

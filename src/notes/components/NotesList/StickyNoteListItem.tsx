@@ -2,8 +2,8 @@ import { Bookmark, ChatCenteredText } from "@phosphor-icons/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { colours } from "src/colours/colours.constant";
-import { cn } from "src/common/utils/cn";
 import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
+import { cn } from "src/common/utils/cn";
 import { TagPill } from "../../../tags/components/TagPill/TagPill";
 import type { Colour } from "src/colours/Colour.type";
 import type { Note } from "src/notes/Note.type";
@@ -46,14 +46,14 @@ export const StickyNoteListItem = ({
       {({ isActive }: { isActive: boolean }) => (
         <div
           className={cn(
-            "flex flex-col gap-2 px-3 py-2 rounded-sm shadow-sm",
+            "flex flex-col gap-2 px-3 py-2 rounded-sm shadow",
             isActive || isHovered
               ? cn(colour.textPill, colour.backgroundPill)
               : "bg-yellow-200",
           )}
         >
           <div className="max-h-28 overflow-hidden pointer-events-none">
-            <QuillViewer content={note.content} />
+            <QuillViewer smallViewer content={note.content} />
           </div>
 
           <div className="flex items-center gap-1">

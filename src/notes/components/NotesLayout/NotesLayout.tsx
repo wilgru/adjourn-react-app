@@ -40,7 +40,11 @@ export const NotesLayout = ({
   groupSortDirection = "desc",
   onCreateNote,
 }: NotesLayoutProps) => {
-  const { isQuillFocused, toolbarFormatting, colour: quillColour } = useAtomValue(quillEditorStateAtom);
+  const {
+    isQuillFocused,
+    toolbarFormatting,
+    colour: quillColour,
+  } = useAtomValue(quillEditorStateAtom);
 
   const noteGroups = useMemo<NotesGroup[]>(() => {
     if (!notes || notes.length === 0) {
