@@ -89,14 +89,21 @@ const NoteEditor = ({
   useEffect(() => {
     return () => {
       debouncedSave.flush();
-      setQuillEditorState({ isQuillFocused: false, toolbarFormatting: undefined, colour: undefined });
+      setQuillEditorState({
+        isQuillFocused: false,
+        toolbarFormatting: undefined,
+        colour: undefined,
+      });
     };
   }, [debouncedSave, setQuillEditorState]);
 
   // Scroll to the new update editor when it appears.
   useEffect(() => {
     if (showNewUpdate) {
-      newUpdateRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      newUpdateRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     }
   }, [showNewUpdate]);
 
@@ -142,7 +149,7 @@ const NoteEditor = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-[1000px] px-12 pt-6 pb-24">
+    <div className="flex flex-col items-center gap-4 h-fit w-full max-w-[1000px] px-12 pt-6 pb-28">
       <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
         <textarea
           name="title"
@@ -250,10 +257,17 @@ const NoteEditor = ({
           colour={colour}
           onChange={(delta) => onUpdateNote({ content: delta })}
           onSelectedFormattingChange={(selectionFormatting) => {
-            setQuillEditorState((s) => ({ ...s, toolbarFormatting: selectionFormatting }));
+            setQuillEditorState((s) => ({
+              ...s,
+              toolbarFormatting: selectionFormatting,
+            }));
           }}
-          onFocus={() => setQuillEditorState((s) => ({ ...s, isQuillFocused: true }))}
-          onBlur={() => setQuillEditorState((s) => ({ ...s, isQuillFocused: false }))}
+          onFocus={() =>
+            setQuillEditorState((s) => ({ ...s, isQuillFocused: true }))
+          }
+          onBlur={() =>
+            setQuillEditorState((s) => ({ ...s, isQuillFocused: false }))
+          }
         />
       </div>
 
