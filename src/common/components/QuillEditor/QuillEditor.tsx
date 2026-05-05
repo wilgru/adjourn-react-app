@@ -17,6 +17,8 @@ type QuillEditorProps = {
   autoFocus?: boolean;
   onChange: (delta: Delta) => void;
   onSelectedFormattingChange: (selectionFormatting: StringMap) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 // https://quilljs.com/docs/modules/toolbar/
@@ -31,14 +33,23 @@ const QuillEditor = ({
   autoFocus = false,
   onChange,
   onSelectedFormattingChange,
+  onFocus,
+  onBlur,
 }: QuillEditorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const onChangeRef = useRef(onChange);
   const autoFocusRef = useRef(autoFocus);
+  const onFocusRef = useRef(onFocus);
+  const onBlurRef = useRef(onBlur);
+  const onSelectedFormattingChangeRef = useRef(onSelectedFormattingChange);
+  const isFocusedRef = useRef(false);
   const [quillEditor, setQuillEditor] = useState<Quill | null>(null);
 
   useLayoutEffect(() => {
     onChangeRef.current = onChange;
+    onFocusRef.current = onFocus;
+    onBlurRef.current = onBlur;
+    onSelectedFormattingChangeRef.current = onSelectedFormattingChange;
   });
 
   useEffect(() => {
@@ -71,7 +82,7 @@ const QuillEditor = ({
           selection.length,
         );
 
-        onSelectedFormattingChange(selectionFormatting);
+        onSelectedFormattingChangeRef.current?.(selectionFormatting);
       }
 
       // Only notify consumers for user-driven changes (like a textarea)
@@ -87,7 +98,17 @@ const QuillEditor = ({
           range.length,
         );
 
-        onSelectedFormattingChange(selectionFormatting);
+        onSelectedFormattingChangeRef.current?.(selectionFormatting);
+
+        if (!isFocusedRef.current) {
+          isFocusedRef.current = true;
+          onFocusRef.current?.();
+        }
+      } else {
+        if (isFocusedRef.current) {
+          isFocusedRef.current = false;
+          onBlurRef.current?.();
+        }
       }
     };
 
@@ -98,7 +119,7 @@ const QuillEditor = ({
       quillEditor?.off("text-change", handleTextChange);
       quillEditor?.off("selection-change", handleSelectionChange);
     };
-  }, [onSelectedFormattingChange, quillEditor]);
+  }, [quillEditor]);
 
   useEffect(() => {
     const container = containerRef.current;
