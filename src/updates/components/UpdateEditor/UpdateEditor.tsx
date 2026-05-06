@@ -269,7 +269,6 @@ export const UpdateEditor = ({
 
       <QuillViewer
         content={editedUpdate.content ?? new Delta()}
-        textColor={tintClasses.textColor}
         onClick={() => setIsEditing(true)}
       />
     </div>
