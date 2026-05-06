@@ -251,7 +251,6 @@ const NoteEditor = ({
 
       <div className="flex flex-col gap-5 w-full">
         <QuillEditor
-          key={editedNote.id}
           toolbarId={QUILL_TOOLBAR_ID}
           value={editedNote.content}
           colour={colour}

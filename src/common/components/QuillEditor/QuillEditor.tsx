@@ -142,7 +142,7 @@ const QuillEditor = ({
 
       const quill: Quill = new QuillConstructor(editorContainer, {
         // debug: import.meta.env.DEV ? "info" : undefined, // TODO: add back in with dev tools
-        placeholder: "No content",
+        // placeholder: "No content",
         modules: {
           toolbar: {
             container: `#${toolbarId}`,
@@ -218,7 +218,7 @@ const QuillEditor = ({
           ? ({ "--ql-link-color": getColourHex(colour) } as React.CSSProperties)
           : undefined
       }
-    ></div>
+    />
   );
 };
 
