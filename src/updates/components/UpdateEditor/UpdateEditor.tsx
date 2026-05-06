@@ -131,26 +131,21 @@ export const UpdateEditor = ({
 
   if (isEditing) {
     return (
-      <div className="relative flex items-center gap-4">
-        <p className="text-xs text-slate-400 shrink-0 w-32 text-right leading-tight">
-          {dateStr ?? ""}
-        </p>
-
-        <div className="relative h-full w-4 flex items-center justify-center">
-          <div className="absolute h-full pointer-events-none w-0.5 bg-slate-100" />
-
-          <div className="absolute pointer-events-none text-slate-100">
-            <Icon iconName="circle" size="xs" />
-          </div>
-        </div>
-
-        <div className="flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 bg-white border border-slate-200">
+      <div className="relative">
+        <div className="rounded-2xl p-4 my-2 flex flex-col gap-3 bg-white border border-slate-200">
           <div className="flex items-center justify-between flex-wrap gap-2 border-b-2 pb-3 border-slate-100">
-            <NoteMultiSelect
-              selectedNotes={(editedUpdate.notes ?? []) as Note[]}
-              colour={resolvedColour}
-              onChange={(notes) => onUpdateField({ notes })}
-            />
+            <div className="flex items-center gap-3 flex-wrap">
+              {dateStr && (
+                <span className="text-xs text-slate-400 shrink-0">
+                  {dateStr}
+                </span>
+              )}
+              <NoteMultiSelect
+                selectedNotes={(editedUpdate.notes ?? []) as Note[]}
+                colour={resolvedColour}
+                onChange={(notes) => onUpdateField({ notes })}
+              />
+            </div>
 
             <div className="flex gap-1.5 items-center">
               <button
@@ -233,64 +228,46 @@ export const UpdateEditor = ({
   }
 
   return (
-    <div className="relative flex items-center gap-4">
-      <p className="text-xs text-slate-400 shrink-0 w-32 text-right leading-tight">
-        {dateStr}
-      </p>
+    <div
+      className={cn(
+        "rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors",
+        tintClasses.card,
+      )}
+    >
+      {(dateStr || (showNotes && (editedUpdate.notes ?? []).length > 0)) && (
+        <div className="flex flex-wrap gap-2 items-center">
+          {dateStr && (
+            <span className="text-xs text-slate-400 shrink-0">{dateStr}</span>
+          )}
+          {showNotes &&
+            ((editedUpdate.notes ?? []) as Note[]).map((note) => (
+              <button
+                key={note.id}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  navigate({
+                    to: `/${pocketbookId ?? ""}/notes`,
+                    search: { noteId: note.id },
+                  });
+                }}
+                className={cn(
+                  "flex items-center gap-1 pl-2 pr-1 py-1 text-xs rounded-full transition-colors",
+                  tintClasses.notePill,
+                )}
+              >
+                {note.title ?? "Untitled Note"}
 
-      <div className="relative h-full w-4 flex items-center justify-center">
-        <div className="absolute h-full pointer-events-none w-0.5 bg-slate-100" />
-
-        <div className="absolute pointer-events-none text-slate-100">
-          <Icon iconName="circle" size="xs" />
+                <Icon iconName="arrowCircleRight" size="sm" />
+              </button>
+            ))}
         </div>
-      </div>
+      )}
 
-      <div
-        className={cn(
-          "flex-1 rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors",
-          tintClasses.card,
-        )}
-      >
-        {showNotes && (
-          <div className="flex justify-between">
-            <div className="flex flex-wrap gap-2 items-center">
-              {(editedUpdate.notes ?? []).length === 0 ? (
-                <span className="text-xs text-slate-400 italic">
-                  No notes attached
-                </span>
-              ) : (
-                (editedUpdate.notes as Note[]).map((note) => (
-                  <button
-                    key={note.id}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      navigate({
-                        to: `/${pocketbookId ?? ""}/notes`,
-                        search: { noteId: note.id },
-                      });
-                    }}
-                    className={cn(
-                      "flex items-center gap-1 pl-2 pr-1 py-1 text-xs rounded-full transition-colors",
-                      tintClasses.notePill,
-                    )}
-                  >
-                    {note.title ?? "Untitled Note"}
-
-                    <Icon iconName="arrowCircleRight" size="sm" />
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-        <QuillViewer
-          content={editedUpdate.content ?? new Delta()}
-          textColor={tintClasses.textColor}
-          onClick={() => setIsEditing(true)}
-        />
-      </div>
+      <QuillViewer
+        content={editedUpdate.content ?? new Delta()}
+        textColor={tintClasses.textColor}
+        onClick={() => setIsEditing(true)}
+      />
     </div>
   );
 };
