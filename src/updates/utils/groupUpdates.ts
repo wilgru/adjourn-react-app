@@ -33,5 +33,15 @@ export const groupUpdates = (updates: Update[]): UpdatesGroup[] => {
     [],
   );
 
+  // Sort each group's updates newest-first, then sort groups newest-first.
+  groupedUpdates.forEach((group) => {
+    group.updates.sort((a, b) => b.created.valueOf() - a.created.valueOf());
+  });
+
+  groupedUpdates.sort(
+    (a, b) =>
+      b.updates[0].created.valueOf() - a.updates[0].created.valueOf(),
+  );
+
   return groupedUpdates;
 };
