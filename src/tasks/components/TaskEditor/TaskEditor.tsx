@@ -176,6 +176,7 @@ export const TaskEditor = ({
           <div className="flex justify-between gap-2">
             <textarea
               ref={titleRef}
+              rows={1}
               name="title"
               value={editedTask.title ?? ""}
               placeholder="No Title"
@@ -201,6 +202,7 @@ export const TaskEditor = ({
           {showDescription && (
             <textarea
               ref={descriptionRef}
+              rows={1}
               name="description"
               value={editedTask.description ?? ""}
               placeholder="No description"

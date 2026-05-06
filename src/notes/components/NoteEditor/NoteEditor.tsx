@@ -155,6 +155,7 @@ const NoteEditor = ({
       <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
         <textarea
           ref={titleRef}
+          rows={1}
           name="title"
           value={editedNote.title ?? ""}
           placeholder="No Title"
