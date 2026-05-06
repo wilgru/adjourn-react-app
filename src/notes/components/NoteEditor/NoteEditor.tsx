@@ -10,6 +10,7 @@ import { Button } from "src/common/components/Button/Button";
 import { NoteLinkPill } from "src/common/components/NoteLinkPill/NoteLinkPill";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
+import { useAutoResize } from "src/common/hooks/useAutoResize";
 import { NoteLinksModal } from "src/notes/components/NoteLinksModal/NoteLinksModal";
 import { useCreateNote } from "src/notes/hooks/useCreateNote";
 import { useDeleteNote } from "src/notes/hooks/useDeleteNote";
@@ -52,6 +53,7 @@ const NoteEditor = ({
   const [linksModalKey, setLinksModalKey] = useState(0);
 
   const newUpdateRef = useRef<HTMLDivElement>(null);
+  const titleRef = useAutoResize(editedNote.title);
 
   // Ref that always points to the latest save implementation so the debounced
   // function never closes over stale state.
@@ -152,11 +154,13 @@ const NoteEditor = ({
     <div className="flex flex-col items-center gap-4 h-fit w-full max-w-[1000px] px-12 pt-6 pb-28">
       <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
         <textarea
+          ref={titleRef}
+          rows={1}
           name="title"
           value={editedNote.title ?? ""}
           placeholder="No Title"
           onChange={(e) => onUpdateNote({ title: e.target.value })}
-          className="h-12 text-5xl font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
+          className="text-5xl font-title tracking-tight overflow-y-hidden bg-white placeholder-slate-400 select-none resize-none outline-none"
         />
 
         {editedNote.links.length > 0 && (
