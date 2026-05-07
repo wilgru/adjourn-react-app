@@ -60,7 +60,7 @@ const BookmarkNavItem = ({
         className: cn(colour.textPill, colour.backgroundPill),
       }}
       className={cn(
-        "flex justify-between items-center gap-2 px-2 py-1 rounded-full text-sm transition-colors",
+        "flex justify-between items-center gap-2 px-2 py-1 rounded-full text-sm transition-colors min-w-0",
         isHovered && colour.textPill,
         isHovered && colour.backgroundPill,
       )}
@@ -68,13 +68,13 @@ const BookmarkNavItem = ({
       {({ isActive }: { isActive: boolean }) => (
         <div
           className={cn(
-            "flex items-center gap-2",
+            "flex items-center gap-2 min-w-0",
             (isHovered || isActive) && colour.textPill,
           )}
         >
           <Icon
             iconName="bookmark"
-            className={colour.textPill}
+            className={cn(colour.textPill, "flex-shrink-0")}
             size="sm"
             weight={isHovered || isActive ? "fill" : "regular"}
           />

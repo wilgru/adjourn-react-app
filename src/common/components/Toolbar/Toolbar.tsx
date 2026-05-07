@@ -65,7 +65,7 @@ export const Toolbar = ({
       <div
         className={cn(
           "flex items-center gap-2 electron-no-drag",
-          isWindows && "mr-[144px]",
+          isWindows && "mr-[140px]",
         )}
       >
         <NoteSearchBar />

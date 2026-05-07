@@ -63,7 +63,7 @@ const createWindow = () => {
           titleBarOverlay: {
             color: "#ffffff00",
             symbolColor: "#64748b",
-            height: 60,
+            height: 64,
           },
         }
       : {}),
