@@ -28,7 +28,7 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       };
     default:
       return {
-        card: "bg-slate-50",
+        card: "bg-white",
         border: "border-slate-100",
         notePill: "bg-slate-100 text-slate-600 hover:bg-slate-200",
       };
