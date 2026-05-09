@@ -24,20 +24,20 @@ export const TaskFloatingToolbar = () => {
   return (
     <div className="flex flex-row items-center gap-1">
       <div className="flex flex-row gap-1 pr-1 border-r-2 border-slate-100">
+        <Toggle
+          isToggled={isImportant}
+          size="sm"
+          colour={colours.red}
+          onClick={onFlagClick ?? undefined}
+          iconName="warningCircle"
+        />
+
         <Button
           colour={toolbarColour}
           variant="ghost"
           size="sm"
           iconName="link"
           onClick={onLinkClick ?? undefined}
-        />
-
-        <Toggle
-          isToggled={isImportant}
-          size="sm"
-          colour={toolbarColour}
-          onClick={onFlagClick ?? undefined}
-          iconName="warning"
         />
 
         {onDueDateChange && (

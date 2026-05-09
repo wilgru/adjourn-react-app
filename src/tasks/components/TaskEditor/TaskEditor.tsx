@@ -195,7 +195,7 @@ export const TaskEditor = ({
     editedTask.cancelledDate,
     isFocused,
     setTaskEditorState,
-  ]); 
+  ]);
 
   // Clear atom on unmount if this task was the focused one.
   useEffect(() => {
@@ -276,14 +276,18 @@ export const TaskEditor = ({
 
       <div className="w-full flex items-start justify-between">
         <div className="flex flex-col grow">
-          <div className="flex justify-between gap-2">
+          <div className="flex justify-between items-center gap-2">
             <div className="flex items-start gap-1 flex-1">
               {editedTask.isImportant && (
                 <Icon
-                  iconName="warning"
+                  iconName="exclamationMark"
                   size="sm"
-                  weight="fill"
-                  className="mt-px shrink-0 text-red-500"
+                  className={cn(
+                    "mt-[3px] -mx-1 shrink-0",
+                    isCompleted || isCancelled
+                      ? "text-slate-500"
+                      : "text-red-500",
+                  )}
                 />
               )}
 
