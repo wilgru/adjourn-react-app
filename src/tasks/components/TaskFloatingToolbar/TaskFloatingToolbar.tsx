@@ -22,8 +22,18 @@ export const TaskFloatingToolbar = () => {
   const toolbarColour = colour ?? colours.orange;
 
   return (
-    <div className="flex flex-row items-center gap-1">
-      <div className="flex flex-row gap-1 pr-1 border-r-2 border-slate-100">
+    <div className="flex flex-row items-center">
+      <div className="flex flex-row gap-1 border-r-2 pr-1 border-slate-100">
+        <Button variant="ghost" size="sm" iconName="caretUp" colour={colour} />
+        <Button
+          variant="ghost"
+          size="sm"
+          iconName="caretDown"
+          colour={colour}
+        />
+      </div>
+
+      <div className="flex flex-row gap-1 border-r-2 px-1 border-slate-100">
         <Toggle
           isToggled={isImportant}
           size="sm"

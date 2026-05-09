@@ -33,6 +33,8 @@ import {
   ArrowCircleRight,
   ExclamationMark,
   WarningCircle,
+  CaretUp,
+  CaretDown,
 } from "@phosphor-icons/react";
 import { ChatCenteredText } from "@phosphor-icons/react/dist/ssr";
 import { icons } from "src/icons/icons.constant";
@@ -139,6 +141,10 @@ const Icon = ({
       return <ExclamationMark {...iconProps} weight="regular" />;
     case "warningCircle":
       return <WarningCircle {...iconProps} />;
+    case "caretUp":
+      return <CaretUp {...iconProps} />;
+    case "caretDown":
+      return <CaretDown {...iconProps} />;
     default:
       return <></>;
   }
