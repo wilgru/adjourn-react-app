@@ -31,6 +31,7 @@ import {
   Info,
   Notebook,
   ArrowCircleRight,
+  Warning,
 } from "@phosphor-icons/react";
 import { ChatCenteredText } from "@phosphor-icons/react/dist/ssr";
 import { icons } from "src/icons/icons.constant";
@@ -133,6 +134,8 @@ const Icon = ({
       return <ArrowCircleRight {...iconProps} />;
     case "info":
       return <Info {...iconProps} />;
+    case "warning":
+      return <Warning {...iconProps} />;
     default:
       return <></>;
   }

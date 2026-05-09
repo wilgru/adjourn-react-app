@@ -8,7 +8,7 @@ import { TaskDatePicker } from "src/tasks/components/TaskDatePicker/TaskDatePick
 export const TaskFloatingToolbar = () => {
   const {
     colour,
-    isFlagged,
+    isImportant,
     dueDate,
     isCompleted,
     isCancelled,
@@ -33,11 +33,11 @@ export const TaskFloatingToolbar = () => {
         />
 
         <Toggle
-          isToggled={isFlagged}
+          isToggled={isImportant}
           size="sm"
           colour={toolbarColour}
           onClick={onFlagClick ?? undefined}
-          iconName="flag"
+          iconName="warning"
         />
 
         {onDueDateChange && (
