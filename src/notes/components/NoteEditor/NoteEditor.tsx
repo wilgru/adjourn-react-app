@@ -152,7 +152,7 @@ const NoteEditor = ({
 
   return (
     <div className="flex flex-col items-center gap-4 min-h-full w-full max-w-[1000px] px-12 pt-6">
-      <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-4">
+      <div className="w-full flex flex-col gap-2 justify-between border-b-2 border-slate-100 pb-3">
         <textarea
           ref={titleRef}
           rows={1}
@@ -171,77 +171,73 @@ const NoteEditor = ({
           </div>
         )}
 
-        <div className="flex flex-row flex-wrap items-center justify-between">
-          <div className="flex flex-row flex-wrap gap-2 items-center">
-            <TagMultiSelect
-              key={editedNote.id}
-              initialTags={editedNote.tags}
-              colour={colour}
-              onChange={(tags) => onUpdateNote({ tags })}
-            />
+        <div className="flex flex-row flex-wrap gap-2 items-center">
+          <TagMultiSelect
+            key={editedNote.id}
+            initialTags={editedNote.tags}
+            colour={colour}
+            onChange={(tags) => onUpdateNote({ tags })}
+          />
 
-            <Dialog.Root
-              onOpenChange={(open) => {
-                if (open) setLinksModalKey((k) => k + 1);
-              }}
-            >
-              <Dialog.Trigger asChild>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  colour={colour}
-                  iconName="link"
-                />
-              </Dialog.Trigger>
-
-              <NoteLinksModal
-                key={linksModalKey}
-                links={editedNote.links}
+          <Dialog.Root
+            onOpenChange={(open) => {
+              if (open) setLinksModalKey((k) => k + 1);
+            }}
+          >
+            <Dialog.Trigger asChild>
+              <Button
+                size="sm"
+                variant="ghost"
                 colour={colour}
-                onSave={onSaveLinks}
+                iconName="link"
               />
-            </Dialog.Root>
+            </Dialog.Trigger>
 
-            <Button
-              size="sm"
-              variant="ghost"
+            <NoteLinksModal
+              key={linksModalKey}
+              links={editedNote.links}
               colour={colour}
-              onClick={onCreateTask}
-              iconName="checkCircle"
+              onSave={onSaveLinks}
             />
+          </Dialog.Root>
 
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={colour}
-              onClick={() => setShowNewUpdate(true)}
-              iconName="chatCenteredText"
-            />
+          <Button
+            size="sm"
+            variant="ghost"
+            colour={colour}
+            onClick={onCreateTask}
+            iconName="checkCircle"
+          />
 
-            <Toggle
-              isToggled={editedNote.isBookmarked}
-              size="sm"
-              colour={colours.red}
-              onClick={() =>
-                onUpdateNote({ isBookmarked: !editedNote.isBookmarked })
-              }
-              iconName="bookmark"
-            />
+          <Button
+            size="sm"
+            variant="ghost"
+            colour={colour}
+            onClick={() => setShowNewUpdate(true)}
+            iconName="chatCenteredText"
+          />
 
-            <p className="text-slate-500 text-xs">
-              {editedNote.created.format("D MMMM YYYY, hh:mm a")}
-            </p>
-          </div>
+          <Toggle
+            isToggled={editedNote.isBookmarked}
+            size="sm"
+            colour={colours.red}
+            onClick={() =>
+              onUpdateNote({ isBookmarked: !editedNote.isBookmarked })
+            }
+            iconName="bookmark"
+          />
 
-          <div className="flex flex-row flex-wrap gap-2 items-center">
-            <Button
-              size="sm"
-              variant="ghost"
-              colour={colours.red}
-              onClick={onDeleteNote}
-              iconName="trash"
-            />
-          </div>
+          <Button
+            size="sm"
+            variant="ghost"
+            colour={colours.red}
+            onClick={onDeleteNote}
+            iconName="trash"
+          />
+
+          <p className="text-slate-500 text-xs">
+            {editedNote.created.format("D MMMM YYYY, hh:mm a")}
+          </p>
         </div>
       </div>
 
