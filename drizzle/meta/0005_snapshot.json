@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "id": "7d1c5da7-a575-45f6-99a4-4ffde01c7081",
   "prevId": "71804652-4f33-4484-bd61-087498ef2834",
   "tables": {
     "note_tags": {
@@ -490,6 +490,14 @@
           "autoincrement": false,
           "default": "'[]'"
         },
+        "is_important": {
+          "name": "is_important",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
         "note": {
           "name": "note",
           "type": "text",
@@ -545,14 +553,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "is_important": {
-          "name": "is_important",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": false
         }
       },
       "indexes": {},
@@ -718,7 +718,9 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"tasks\".\"is_flagged\"": "\"tasks\".\"is_important\""
+    }
   },
   "internal": {
     "indexes": {}
