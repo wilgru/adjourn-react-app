@@ -230,7 +230,7 @@ export const UpdateEditor = ({
   return (
     <div
       className={cn(
-        "rounded-2xl p-4 my-2 flex flex-col gap-3 transition-colors border shadow hover:shadow-md",
+        "rounded-2xl p-4 my-2 flex flex-col gap-3 transition-shadow border shadow hover:shadow-md",
         tintClasses.card,
         tintClasses.border,
       )}
