@@ -14,14 +14,14 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
       return {
         card: "bg-yellow-50",
         border: "border-yellow-100",
-        notePill: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
+        notePill: "bg-yellow-100 text-yellow-600 hover:bg-yellow-200",
         colour: colours.yellow,
       };
     case "green":
       return {
         card: "bg-green-50",
         border: "border-green-100",
-        notePill: "bg-green-100 text-green-700 hover:bg-green-200",
+        notePill: "bg-green-100 text-green-600 hover:bg-green-200",
         colour: colours.green,
       };
     case "blue":
@@ -34,8 +34,8 @@ export const getTintClasses = (tint: UpdateTint | null | undefined) => {
     default:
       return {
         card: "bg-white",
-        border: "border-slate-100",
-        notePill: "bg-slate-100 text-slate-600 hover:bg-slate-200",
+        border: "border-gray-100",
+        notePill: "bg-gray-100 text-gray-600 hover:bg-gray-200",
         colour: colours.grey,
       };
   }

@@ -108,8 +108,8 @@ export const colours: { [key in ColourName]: Colour } = {
     textPill: "text-gray-500",
     textPillInverted: "hover:text-gray-600",
     background: "bg-gray-400",
-    backgroundPill: "bg-gray-200",
-    backgroundPillInverted: "hover:bg-gray-300",
+    backgroundPill: "bg-gray-100",
+    backgroundPillInverted: "hover:bg-gray-200",
     backgroundGlow: "hover:bg-gray-100",
   },
 };
