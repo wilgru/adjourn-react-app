@@ -7,6 +7,7 @@ import { Icon } from "src/icons/components/Icon/Icon";
 import TableOfContents from "src/tableOfContents/TableOfContents/TableOfContents";
 import { UpdateEditor } from "src/updates/components/UpdateEditor/UpdateEditor";
 import { UpdatesSection } from "src/updates/components/UpdatesSection/UpdatesSection";
+import { getTintClasses } from "src/updates/utils/getTintClasses";
 import { groupUpdates } from "src/updates/utils/groupUpdates";
 import type { Colour } from "src/colours/Colour.type";
 import type { Update } from "src/updates/Update.type";
@@ -37,6 +38,12 @@ export const UpdatesLayout = ({
       groupedUpdates.map((group) => ({
         title: group.title,
         navigationId: group.title,
+        icons: group.updates
+          .filter((update) => update.isWaypoint)
+          .map((update) => ({
+            iconName: "flagBannerFold",
+            colour: getTintClasses(update.tint).colour,
+          })),
       })),
     [groupedUpdates],
   );

@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { colours } from "src/colours/colours.constant";
 import { cn } from "src/common/utils/cn";
+import { Icon } from "src/icons/components/Icon/Icon";
 import type { Colour } from "src/colours/Colour.type";
 import type { TableOfContentsItem } from "src/tableOfContents/TableOfContentsItem.type";
 
@@ -28,13 +29,28 @@ const TableOfContentsListItem = ({
     >
       <h2
         className={cn(
-          "text-sm py-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
+          "text-sm py-1 px-3 cursor-pointer rounded-full transition-colors flex items-center gap-2 max-w-full",
           item.italic && "italic",
           colour.backgroundPillInverted,
           colour.textPillInverted,
         )}
       >
-        {item.title}
+        <span className="min-w-0 overflow-x-hidden whitespace-nowrap overflow-ellipsis">
+          {item.title}
+        </span>
+
+        {item.icons && item.icons.length > 0 && (
+          <span className="flex items-center gap-1 shrink-0" aria-hidden="true">
+            {item.icons.map((icon, index) => (
+              <Icon
+                key={`${item.title}-${icon.iconName}-${index}`}
+                iconName={icon.iconName}
+                size="sm"
+                className={icon.colour.text}
+              />
+            ))}
+          </span>
+        )}
       </h2>
     </li>
   );

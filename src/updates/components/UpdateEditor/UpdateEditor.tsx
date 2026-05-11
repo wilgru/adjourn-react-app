@@ -6,6 +6,7 @@ import { Button } from "src/common/components/Button/Button";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { QuillFormattingToolbar } from "src/common/components/QuillFormattingToolbar/QuillFormattingToolbar";
 import QuillViewer from "src/common/components/QuillViewer/QuillViewer";
+import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
 import { NoteMultiSelect } from "src/notes/components/NoteMultiSelect/NoteMultiSelect";
@@ -40,6 +41,7 @@ const getInitialUpdate = (update: Partial<Update>): Partial<Update> => ({
   id: update.id ?? "",
   content: update.content ?? new Delta(),
   tint: update.tint ?? null,
+  isWaypoint: update.isWaypoint ?? false,
   notes: update.notes ?? [],
   created: update.created,
   updated: update.updated,
@@ -82,14 +84,18 @@ export const UpdateEditor = ({
 
   const onDone = async () => {
     if (editedUpdate.id) {
-      await updateUpdate({
+      const updated = await updateUpdate({
         updateId: editedUpdate.id,
         updateData: {
           content: editedUpdate.content,
           tint: editedUpdate.tint,
+          isWaypoint: editedUpdate.isWaypoint,
           notes: editedUpdate.notes as Note[],
         },
       });
+      if (updated) {
+        setEditedUpdate(updated);
+      }
       setIsEditing(false);
     } else {
       // New update — create explicitly now
@@ -98,9 +104,11 @@ export const UpdateEditor = ({
           content: editedUpdate.content!,
           tint: editedUpdate.tint ?? null,
           notes: (editedUpdate.notes ?? []) as Note[],
+          isWaypoint: editedUpdate.isWaypoint ?? false,
         },
       });
       if (created) {
+        setEditedUpdate(created);
         onCreated?.();
       }
     }
@@ -148,6 +156,18 @@ export const UpdateEditor = ({
             </div>
 
             <div className="flex gap-1.5 items-center">
+              <Toggle
+                isToggled={editedUpdate.isWaypoint ?? false}
+                onClick={() =>
+                  onUpdateField({
+                    isWaypoint: !(editedUpdate.isWaypoint ?? false),
+                  })
+                }
+                size="sm"
+                colour={tintClasses.colour}
+                iconName="flagBannerFold"
+              />
+
               <button
                 onClick={() => onUpdateField({ tint: null })}
                 className={cn(
@@ -158,6 +178,7 @@ export const UpdateEditor = ({
                 )}
                 title="No colour"
               />
+
               {TINT_OPTIONS.map(({ value, bg }) => (
                 <button
                   key={value}
