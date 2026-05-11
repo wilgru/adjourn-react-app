@@ -21,6 +21,7 @@ export const mapUpdate = (
       ? new Delta(JSON.parse(update.content))
       : new Delta(),
     tint: (update.tint as UpdateTint | null) ?? null,
+    isWaypoint: update.isWaypoint,
     notes: options.notes ?? [],
     created: dayjs.utc(update.created).local(),
     updated: dayjs.utc(update.updated).local(),

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "src/Users/hooks/useUser";
 import { useCurrentPocketbookId } from "src/pocketbooks/hooks/useCurrentPocketbookId";
 import { mapUpdate } from "src/updates/utils/mapUpdate";
+import { syncUpdateLists } from "src/updates/utils/syncUpdateLists";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Update } from "src/updates/Update.type";
 
@@ -31,17 +32,26 @@ export const useCreateUpdate = (): UseCreateUpdateResponse => {
         ? JSON.stringify(createUpdateData.content)
         : null,
       tint: createUpdateData.tint,
+      isWaypoint: createUpdateData.isWaypoint ?? false,
       noteIds: createUpdateData.notes.map((n) => n.id),
       pocketbookId: pocketbookId ?? null,
       userId: user?.id ?? null,
     });
     if (!response.success) throw new Error(response.error);
 
-    return mapUpdate(response.data, { notes: createUpdateData.notes });
+    const createdUpdate = mapUpdate(response.data, {
+      notes: createUpdateData.notes,
+    });
+
+    syncUpdateLists(queryClient, createdUpdate, {
+      notes: createUpdateData.notes,
+    });
+
+    return createdUpdate;
   };
 
   const onSuccess = () => {
-    queryClient.refetchQueries({
+    void queryClient.invalidateQueries({
       queryKey: ["updates.list"],
     });
   };

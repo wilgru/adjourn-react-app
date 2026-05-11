@@ -8,17 +8,24 @@ export type UpdateUpdateInput = {
   updateId: string;
   content: string | null;
   tint: string | null;
+  isWaypoint: boolean;
   noteIds: string[];
 };
 
 createIpcHandler(
   "updates:update",
-  ({ updateId, content, tint, noteIds }: UpdateUpdateInput): UpdateSchema => {
+  ({
+    updateId,
+    content,
+    tint,
+    isWaypoint,
+    noteIds,
+  }: UpdateUpdateInput): UpdateSchema => {
     const now = new Date().toISOString();
 
     const [updated] = db
       .update(updates)
-      .set({ content, tint, updated: now })
+      .set({ content, tint, isWaypoint, updated: now })
       .where(eq(updates.id, updateId))
       .returning()
       .all();

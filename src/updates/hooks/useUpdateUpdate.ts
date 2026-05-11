@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mapUpdate } from "src/updates/utils/mapUpdate";
+import { syncUpdateLists } from "src/updates/utils/syncUpdateLists";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Update } from "src/updates/Update.type";
 
@@ -28,15 +29,24 @@ export const useUpdateUpdate = (): UseUpdateUpdateResponse => {
       updateId,
       content: updateData.content ? JSON.stringify(updateData.content) : null,
       tint: updateData.tint ?? null,
+      isWaypoint: updateData.isWaypoint ?? false,
       noteIds: updateData.notes?.map((n) => n.id) ?? [],
     });
     if (!response.success) throw new Error(response.error);
 
-    return mapUpdate(response.data, { notes: updateData.notes ?? [] });
+    const updatedUpdate = mapUpdate(response.data, {
+      notes: updateData.notes ?? [],
+    });
+
+    syncUpdateLists(queryClient, updatedUpdate, {
+      notes: updateData.notes ?? [],
+    });
+
+    return updatedUpdate;
   };
 
   const onSuccess = () => {
-    queryClient.refetchQueries({
+    void queryClient.invalidateQueries({
       queryKey: ["updates.list"],
     });
   };

@@ -1,0 +1,1 @@
+ALTER TABLE `updates` ADD `is_waypoint` integer DEFAULT false NOT NULL;

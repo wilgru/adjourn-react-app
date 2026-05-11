@@ -6,6 +6,7 @@ import type { UpdateSchema } from "src/updates/updates.schema";
 export type CreateUpdateInput = {
   content: string | null;
   tint: string | null;
+  isWaypoint: boolean;
   noteIds: string[];
   pocketbookId: string | null;
   userId: string | null;
@@ -16,6 +17,7 @@ createIpcHandler(
   ({
     content,
     tint,
+    isWaypoint,
     noteIds,
     pocketbookId,
     userId,
@@ -29,6 +31,7 @@ createIpcHandler(
         id,
         content,
         tint,
+        isWaypoint,
         pocketbook: pocketbookId,
         user: userId,
         created: now,

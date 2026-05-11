@@ -43,6 +43,13 @@
       "when": 1778366855349,
       "tag": "0005_rename_is_flagged_to_is_important",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1778534900989,
+      "tag": "0006_add_is_waypoint_to_updates",
+      "breakpoints": true
     }
   ]
 }
