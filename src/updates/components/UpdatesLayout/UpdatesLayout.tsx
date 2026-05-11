@@ -33,20 +33,27 @@ export const UpdatesLayout = ({
 
   const badges = useMemo(() => [`${updates.length} updates`], [updates.length]);
 
-  const tableOfContentItems = useMemo(
-    () =>
-      groupedUpdates.map((group) => ({
-        title: group.title,
+  const tableOfContentItems = useMemo(() => {
+    return groupedUpdates.map((group) => {
+      // Parse "May 12, 2026" format
+      const parts = group.title.split(" ");
+      const month = parts[1];
+      const day = parts[0]?.replace(",", "");
+      const year = parts[2] || "";
+
+      return {
+        title: `${day} ${month}`,
         navigationId: group.title,
+        group: `${month} ${year}`,
         icons: group.updates
           .filter((update) => update.isWaypoint)
           .map((update) => ({
             iconName: "flagBannerFold",
             colour: getTintClasses(update.tint).colour,
           })),
-      })),
-    [groupedUpdates],
-  );
+      };
+    });
+  }, [groupedUpdates]);
 
   return (
     <div className="h-full max-w-[1000px] w-full min-w-0 pb-16 flex items-center">

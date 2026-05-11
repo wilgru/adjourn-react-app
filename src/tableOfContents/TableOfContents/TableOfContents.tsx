@@ -70,6 +70,8 @@ export default function TableOfContents({
   onJumpTo,
   colour = colours.orange,
 }: TableOfContentsProps) {
+  let previousGroup: string | undefined;
+
   return (
     <ul className="w-40 m-4 pl-2 pb-2 h-fit opacity-60 hover:opacity-100 transition-opacity">
       <li>
@@ -84,14 +86,27 @@ export default function TableOfContents({
         </h2>
       </li>
 
-      {items.map((item) => (
-        <TableOfContentsListItem
-          key={item.navigationId}
-          item={item}
-          colour={colour}
-          onJumpTo={onJumpTo}
-        />
-      ))}
+      {items.map((item, index) => {
+        const showGroupTitle = item.group && item.group !== previousGroup;
+        if (item.group) previousGroup = item.group;
+
+        return (
+          <div key={`${item.navigationId}-${index}`}>
+            {showGroupTitle && (
+              <li className="pointer-events-none">
+                <h3 className="text-xs px-3 pt-1 text-gray-400 tracking-wide">
+                  {item.group}
+                </h3>
+              </li>
+            )}
+            <TableOfContentsListItem
+              item={item}
+              colour={colour}
+              onJumpTo={onJumpTo}
+            />
+          </div>
+        );
+      })}
     </ul>
   );
 }

@@ -230,6 +230,21 @@ export const UpdateEditor = ({
               ))}
             </div>
           )}
+
+          {!isEditing && editedUpdate.isWaypoint && (
+            <div
+              className={cn(
+                "p-1 rounded-lg",
+                tintClasses.colour.backgroundPill,
+              )}
+            >
+              <Icon
+                iconName="flagBannerFold"
+                size="sm"
+                className={cn("shrink-0", tintClasses.colour.textPill)}
+              />
+            </div>
+          )}
         </div>
 
         {isEditing && (

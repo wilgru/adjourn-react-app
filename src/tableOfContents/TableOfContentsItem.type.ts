@@ -5,4 +5,5 @@ export type TableOfContentsItem = {
   navigationId: string | null;
   italic?: boolean;
   icons?: Array<{ iconName: string; colour: Colour }>;
+  group?: string;
 };
