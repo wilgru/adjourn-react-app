@@ -178,6 +178,7 @@ export const Calendar = ({
             dotsForDay.length > 0
               ? `${dateLabel}, ${dotsForDay.length} waypoint marker${dotsForDay.length === 1 ? "" : "s"}`
               : dateLabel;
+          const hasDots = dotsForDay.length > 0;
 
           return (
             <button
@@ -188,7 +189,9 @@ export const Calendar = ({
               onClick={() => onSelectDate?.(calendarDay.day)}
               className={cn(
                 "w-full cursor-pointer select-none transition-colors flex flex-col items-center justify-center",
-                isSmall ? "h-6 text-[10px] rounded-md gap-0" : "h-9 text-xs rounded-lg gap-0.5",
+                isSmall
+                  ? cn("text-[10px] rounded-md", hasDots ? "py-1 gap-px" : "py-0.5")
+                  : cn("text-xs rounded-lg", hasDots ? "py-1.5 gap-0.5" : "py-1"),
                 !calendarDay.isCurrentMonth && !isDisabled && "text-slate-300",
                 calendarDay.isCurrentMonth &&
                   !isSelected &&
@@ -205,25 +208,27 @@ export const Calendar = ({
               )}
             >
               <span>{calendarDay.day.date()}</span>
-              <span
-                className={cn(
-                  "flex items-center justify-center",
-                  isSmall ? "min-h-1 gap-px" : "min-h-2 gap-0.5",
-                )}
-              >
-                {dotsForDay
-                  .slice(0, MAX_VISIBLE_DOTS)
-                  .map((dotClassName, dotIndex) => (
-                    <span
-                      key={`${dayKey}-${dotClassName}-${dotIndex}`}
-                      role="presentation"
-                      className={cn(
-                        isSmall ? "w-0.5 h-0.5 rounded-full" : "w-1 h-1 rounded-full",
-                        dotClassName,
-                      )}
-                    />
-                  ))}
-              </span>
+              {hasDots && (
+                <span
+                  className={cn(
+                    "flex items-center justify-center",
+                    isSmall ? "gap-px" : "gap-0.5",
+                  )}
+                >
+                  {dotsForDay
+                    .slice(0, MAX_VISIBLE_DOTS)
+                    .map((dotClassName, dotIndex) => (
+                      <span
+                        key={`${dayKey}-${dotClassName}-${dotIndex}`}
+                        role="presentation"
+                        className={cn(
+                          isSmall ? "w-0.5 h-0.5 rounded-full" : "w-1 h-1 rounded-full",
+                          dotClassName,
+                        )}
+                      />
+                    ))}
+                </span>
+              )}
             </button>
           );
         })}
