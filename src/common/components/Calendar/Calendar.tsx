@@ -10,6 +10,11 @@ type CalendarProps = {
   colour?: Colour;
   selectedDate?: Dayjs | null;
   onSelectDate?: (date: Dayjs) => void;
+  isDateDisabled?: (date: Dayjs) => boolean;
+  dayDotIndicators?: Record<
+    string,
+    Array<{ colourClassName: string; count: number }>
+  >;
 };
 
 type CalendarDay = {
@@ -36,6 +41,8 @@ export const Calendar = ({
   colour = colours.orange,
   selectedDate,
   onSelectDate,
+  isDateDisabled,
+  dayDotIndicators,
 }: CalendarProps): JSX.Element => {
   const today = dayjs();
   const [displayYear, setDisplayYear] = useState(today.year());
@@ -139,25 +146,48 @@ export const Calendar = ({
           const isSelected =
             selectedDate && calendarDay.day.isSame(selectedDate, "day");
           const isToday = calendarDay.day.isSame(today, "day");
+          const isDisabled = isDateDisabled?.(calendarDay.day) ?? false;
+          const dayKey = calendarDay.day.format("YYYY-MM-DD");
+          const dotsForDay =
+            dayDotIndicators?.[dayKey]?.flatMap((dotIndicator) =>
+              Array.from({ length: dotIndicator.count }, () =>
+                dotIndicator.colourClassName,
+              ),
+            ) ?? [];
 
           return (
             <button
               key={index}
               type="button"
+              disabled={isDisabled}
               aria-label={calendarDay.day.format("MMMM D, YYYY")}
               onClick={() => onSelectDate?.(calendarDay.day)}
               className={cn(
-                "h-7 w-full text-xs text-center leading-7 rounded-full cursor-pointer select-none transition-colors",
-                !calendarDay.isCurrentMonth && "text-slate-300",
-                calendarDay.isCurrentMonth && !isSelected && "text-slate-700",
+                "h-9 w-full text-xs rounded-lg cursor-pointer select-none transition-colors flex flex-col items-center justify-center gap-0.5",
+                !calendarDay.isCurrentMonth && !isDisabled && "text-slate-300",
+                calendarDay.isCurrentMonth &&
+                  !isSelected &&
+                  !isDisabled &&
+                  "text-slate-700",
                 isToday && !isSelected && colour.textPill,
                 isSelected && colour.background,
                 isSelected && "text-white",
+                isDisabled && "cursor-not-allowed text-slate-300",
                 !isSelected && `hover:${colour.backgroundPill}`,
                 !isSelected && `hover:${colour.textPill}`,
+                isDisabled &&
+                  "hover:bg-transparent hover:text-slate-300 pointer-events-none",
               )}
             >
-              {calendarDay.day.date()}
+              <span>{calendarDay.day.date()}</span>
+              <span className="min-h-1.5 flex items-center justify-center gap-0.5">
+                {dotsForDay.slice(0, 4).map((dotClassName, dotIndex) => (
+                  <span
+                    key={`${dayKey}-${dotClassName}-${dotIndex}`}
+                    className={cn("w-1 h-1 rounded-full", dotClassName)}
+                  />
+                ))}
+              </span>
             </button>
           );
         })}

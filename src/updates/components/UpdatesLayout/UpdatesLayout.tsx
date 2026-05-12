@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { colours } from "src/colours/colours.constant";
+import { Calendar } from "src/common/components/Calendar/Calendar";
 import { EmptyState } from "src/common/components/EmptyState/EmptyState";
 import { PageHeader } from "src/common/components/PageHeader/PageHeader";
 import { cn } from "src/common/utils/cn";
@@ -9,6 +10,7 @@ import { UpdateEditor } from "src/updates/components/UpdateEditor/UpdateEditor";
 import { UpdatesSection } from "src/updates/components/UpdatesSection/UpdatesSection";
 import { getTintClasses } from "src/updates/utils/getTintClasses";
 import { groupUpdates } from "src/updates/utils/groupUpdates";
+import type { Dayjs } from "dayjs";
 import type { Colour } from "src/colours/Colour.type";
 import type { Update } from "src/updates/Update.type";
 
@@ -28,6 +30,9 @@ export const UpdatesLayout = ({
   onCreateNew,
 }: UpdatesLayoutProps) => {
   const [navigationId, setNavigationId] = useState("");
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState<Dayjs | null>(
+    null,
+  );
 
   const groupedUpdates = groupUpdates(updates);
 
@@ -35,16 +40,17 @@ export const UpdatesLayout = ({
 
   const tableOfContentItems = useMemo(() => {
     return groupedUpdates.map((group) => {
-      // Parse "May 12, 2026" format
-      const parts = group.title.split(" ");
-      const month = parts[1];
-      const day = parts[0]?.replace(",", "");
-      const year = parts[2] || "";
+      const groupDate = group.updates[0]?.created;
+      const month = groupDate?.format("MMMM") ?? "";
+      const day = groupDate?.format("D") ?? group.title;
+      const year = groupDate?.format("YYYY") ?? "";
+      const sectionTitle = groupDate ? `${day} ${month}` : group.title;
+      const sectionGroup = groupDate ? `${month} ${year}` : undefined;
 
       return {
-        title: `${day} ${month}`,
+        title: sectionTitle,
         navigationId: group.title,
-        group: `${month} ${year}`,
+        group: sectionGroup,
         icons: group.updates
           .filter((update) => update.isWaypoint)
           .map((update) => ({
@@ -53,6 +59,59 @@ export const UpdatesLayout = ({
           })),
       };
     });
+  }, [groupedUpdates]);
+
+  const dateByNavigationId = useMemo(() => {
+    return new Map(
+      groupedUpdates
+        .map((group) => [group.title, group.updates[0]?.created.startOf("day")])
+        .filter((entry): entry is [string, Dayjs] => Boolean(entry[1])),
+    );
+  }, [groupedUpdates]);
+
+  const navigationIdByDate = useMemo(() => {
+    return new Map(
+      groupedUpdates
+        .map((group) => [
+          group.updates[0]?.created.startOf("day").format("YYYY-MM-DD"),
+          group.title,
+        ])
+        .filter((entry): entry is [string, string] => Boolean(entry[0])),
+    );
+  }, [groupedUpdates]);
+
+  const availableDateKeys = useMemo(() => {
+    return new Set(
+      groupedUpdates
+        .map((group) => group.updates[0]?.created.startOf("day").format("YYYY-MM-DD"))
+        .filter(Boolean),
+    );
+  }, [groupedUpdates]);
+
+  const dayDotIndicators = useMemo(() => {
+    return groupedUpdates.reduce<
+      Record<string, Array<{ colourClassName: string; count: number }>>
+    >((acc, group) => {
+      const dateKey = group.updates[0]?.created.startOf("day").format("YYYY-MM-DD");
+      if (!dateKey) return acc;
+
+      const dotCountByColour = group.updates
+        .filter((update) => update.isWaypoint)
+        .reduce<Record<string, number>>((waypointAcc, update) => {
+          const colourClassName = getTintClasses(update.tint).colour.background;
+          waypointAcc[colourClassName] = (waypointAcc[colourClassName] ?? 0) + 1;
+          return waypointAcc;
+        }, {});
+
+      acc[dateKey] = Object.entries(dotCountByColour).map(
+        ([colourClassName, count]) => ({
+          colourClassName,
+          count,
+        }),
+      );
+
+      return acc;
+    }, {});
   }, [groupedUpdates]);
 
   return (
@@ -96,8 +155,28 @@ export const UpdatesLayout = ({
             items={tableOfContentItems}
             colour={colour}
             activeItemNavigationId={navigationId}
-            onJumpTo={(id) => setNavigationId(id)}
-          />
+            onJumpTo={(id) => {
+              setNavigationId(id);
+              const date = dateByNavigationId.get(id);
+              if (date) setSelectedCalendarDate(date);
+            }}
+          >
+            <Calendar
+              colour={colour}
+              selectedDate={selectedCalendarDate}
+              dayDotIndicators={dayDotIndicators}
+              isDateDisabled={(date) =>
+                !availableDateKeys.has(date.startOf("day").format("YYYY-MM-DD"))
+              }
+              onSelectDate={(date) => {
+                const dateKey = date.startOf("day").format("YYYY-MM-DD");
+                const targetNavigationId = navigationIdByDate.get(dateKey);
+                if (!targetNavigationId) return;
+                setSelectedCalendarDate(date.startOf("day"));
+                setNavigationId(targetNavigationId);
+              }}
+            />
+          </TableOfContents>
         </div>
       )}
     </div>
