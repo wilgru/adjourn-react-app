@@ -8,8 +8,15 @@ import type { Colour } from "src/colours/Colour.type";
 
 type CalendarProps = {
   colour?: Colour;
+  size?: "sm" | "medium";
   selectedDate?: Dayjs | null;
+  showSelectedDate?: boolean;
   onSelectDate?: (date: Dayjs) => void;
+  isDateDisabled?: (date: Dayjs) => boolean;
+  dayDotIndicators?: Record<
+    string,
+    Array<{ colourClassName: string; count: number }>
+  >;
 };
 
 type CalendarDay = {
@@ -31,12 +38,18 @@ const MONTH_NAMES = [
   "November",
   "December",
 ];
+const MAX_VISIBLE_DOTS = 4;
 
 export const Calendar = ({
   colour = colours.orange,
+  size = "medium",
   selectedDate,
+  showSelectedDate = true,
   onSelectDate,
+  isDateDisabled,
+  dayDotIndicators,
 }: CalendarProps): JSX.Element => {
+  const isSmall = size === "sm";
   const today = dayjs();
   const [displayYear, setDisplayYear] = useState(today.year());
   const [displayMonth, setDisplayMonth] = useState(today.month());
@@ -103,61 +116,123 @@ export const Calendar = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-2">
-        <span className="ml-1 font-title text-sm text-slate-500">
+      <div
+        className={cn(
+          "flex justify-between items-center",
+          isSmall ? "mb-1" : "mb-2",
+        )}
+      >
+        <span
+          className={cn(
+            "font-title text-slate-500",
+            isSmall ? "ml-2 text-xs" : "ml-1 text-sm",
+          )}
+        >
           {MONTH_NAMES[displayMonth]} {displayYear}
         </span>
-        <div className="flex items-center gap-1">
+        <div className={cn("flex items-center", isSmall ? "gap-0.5" : "gap-1")}>
           <Button
             onClick={handlePrevMonth}
             colour={colour}
             iconName="caretLeft"
             variant="ghost"
-            size="sm"
+            size={isSmall ? "xs" : "sm"}
           />
           <Button
             onClick={handleNextMonth}
             colour={colour}
             iconName="caretRight"
             variant="ghost"
-            size="sm"
+            size={isSmall ? "xs" : "sm"}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-0.5">
+      <div className={cn("grid grid-cols-7", isSmall ? "gap-px" : "gap-0.5")}>
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <span
             key={d}
-            className="text-xs font-medium text-slate-500 text-center py-0.5"
+            className={cn(
+              "font-medium text-slate-500 text-center",
+              isSmall ? "text-[10px] py-0" : "text-xs py-0.5",
+            )}
           >
             {d}
           </span>
         ))}
 
         {calendarDays.map((calendarDay, index) => {
+          const isDisabled = isDateDisabled?.(calendarDay.day) ?? false;
           const isSelected =
-            selectedDate && calendarDay.day.isSame(selectedDate, "day");
+            showSelectedDate && selectedDate?.isSame(calendarDay.day, "day");
+
           const isToday = calendarDay.day.isSame(today, "day");
+          const dayKey = calendarDay.day.format("YYYY-MM-DD");
+
+          const dotsForDay =
+            dayDotIndicators?.[dayKey]?.flatMap((dotIndicator) =>
+              Array.from(
+                { length: dotIndicator.count },
+                () => dotIndicator.colourClassName,
+              ),
+            ) ?? [];
+
+          const dateLabel = calendarDay.day.format("MMMM D, YYYY");
+          const ariaLabel =
+            dotsForDay.length > 0
+              ? `${dateLabel}, ${dotsForDay.length} waypoint marker${dotsForDay.length === 1 ? "" : "s"}`
+              : dateLabel;
+          const hasDots = dotsForDay.length > 0;
 
           return (
             <button
               key={index}
               type="button"
-              aria-label={calendarDay.day.format("MMMM D, YYYY")}
+              disabled={isDisabled}
+              aria-label={ariaLabel}
               onClick={() => onSelectDate?.(calendarDay.day)}
               className={cn(
-                "h-7 w-full text-xs text-center leading-7 rounded-full cursor-pointer select-none transition-colors",
-                !calendarDay.isCurrentMonth && "text-slate-300",
-                calendarDay.isCurrentMonth && !isSelected && "text-slate-700",
+                "w-full cursor-pointer select-none transition-colors flex flex-col items-center justify-center",
+                isSmall
+                  ? cn(
+                      "text-[10px] rounded-md",
+                      hasDots ? "py-1 gap-px" : "py-0.5",
+                    )
+                  : cn(
+                      "text-xs rounded-lg",
+                      hasDots ? "py-1.5 gap-0.5" : "py-1",
+                    ),
+                !calendarDay.isCurrentMonth && !isDisabled && "text-slate-300",
+                calendarDay.isCurrentMonth &&
+                  !isSelected &&
+                  !isDisabled &&
+                  "text-slate-700",
                 isToday && !isSelected && colour.textPill,
                 isSelected && colour.background,
                 isSelected && "text-white",
+                isDisabled && "cursor-not-allowed text-slate-300",
                 !isSelected && `hover:${colour.backgroundPill}`,
                 !isSelected && `hover:${colour.textPill}`,
+                isDisabled &&
+                  "hover:bg-transparent hover:text-slate-300 pointer-events-none",
               )}
             >
-              {calendarDay.day.date()}
+              <span>{calendarDay.day.date()}</span>
+              {hasDots && (
+                <span
+                  className={cn("flex items-center justify-center gap-0.5")}
+                >
+                  {dotsForDay
+                    .slice(0, MAX_VISIBLE_DOTS)
+                    .map((dotClassName, dotIndex) => (
+                      <span
+                        key={`${dayKey}-${dotClassName}-${dotIndex}`}
+                        role="presentation"
+                        className={cn("w-1 h-1 rounded-full", dotClassName)}
+                      />
+                    ))}
+                </span>
+              )}
             </button>
           );
         })}

@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { colours } from "src/colours/colours.constant";
 import { cn } from "src/common/utils/cn";
 import { Icon } from "src/icons/components/Icon/Icon";
+import type { ReactNode } from "react";
 import type { Colour } from "src/colours/Colour.type";
 import type { TableOfContentsItem } from "src/tableOfContents/TableOfContentsItem.type";
 
@@ -62,6 +63,7 @@ type TableOfContentsProps = {
   activeItemNavigationId: string;
   onJumpTo: (id: string) => void;
   colour?: Colour;
+  children?: ReactNode;
 };
 
 export default function TableOfContents({
@@ -69,44 +71,54 @@ export default function TableOfContents({
   items,
   onJumpTo,
   colour = colours.orange,
+  children,
 }: TableOfContentsProps) {
   let previousGroup: string | undefined;
 
   return (
-    <ul className="w-40 m-4 pl-2 pb-2 h-fit opacity-60 hover:opacity-100 transition-opacity">
-      <li>
+    <nav
+      aria-label={`${title} table of contents`}
+      className="w-56 m-4 pb-2 max-h-[calc(100vh-2rem)] overflow-y-auto opacity-60 hover:opacity-100 transition-opacity"
+    >
+      <div className="sticky flex flex-col gap-1 top-1 z-10 bg-white pt-1">
         <h2
           className={cn(
-            "font-title text-lg pt-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
+            "font-title text-lg px-3 pt-1 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
             colour.backgroundGlow,
             colour.textPillInverted,
           )}
         >
           {title}
         </h2>
-      </li>
 
-      {items.map((item, index) => {
-        const showGroupTitle = item.group && item.group !== previousGroup;
-        if (item.group) previousGroup = item.group;
+        <div className="ml-2 border-b" />
 
-        return (
-          <div key={`${item.navigationId}-${index}`}>
-            {showGroupTitle && (
-              <li className="pointer-events-none">
-                <h3 className="text-xs px-3 pt-1 text-gray-400 tracking-wide">
-                  {item.group}
-                </h3>
-              </li>
-            )}
-            <TableOfContentsListItem
-              item={item}
-              colour={colour}
-              onJumpTo={onJumpTo}
-            />
-          </div>
-        );
-      })}
-    </ul>
+        {children && <div className="px-1 pt-2">{children}</div>}
+      </div>
+
+      <ul className="pt-2">
+        {items.map((item, index) => {
+          const showGroupTitle = item.group && item.group !== previousGroup;
+          if (item.group) previousGroup = item.group;
+
+          return (
+            <div key={`${item.navigationId}-${index}`}>
+              {showGroupTitle && (
+                <li className="pointer-events-none">
+                  <h3 className="text-xs px-3 pt-4 text-gray-400 tracking-wide">
+                    {item.group}
+                  </h3>
+                </li>
+              )}
+              <TableOfContentsListItem
+                item={item}
+                colour={colour}
+                onJumpTo={onJumpTo}
+              />
+            </div>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
