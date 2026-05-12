@@ -4,7 +4,7 @@ import type { Update, UpdatesGroup } from "src/updates/Update.type";
 export const groupUpdates = (updates: Update[]): UpdatesGroup[] => {
   const groupedUpdates = updates.reduce(
     (acc: UpdatesGroup[], update: Update) => {
-      const title = getRelativeDateTitle(update.created);
+      const title = getRelativeDateTitle(update.created, true, false);
       const existingGroup = acc.find((group) => group.title === title);
 
       if (existingGroup) {

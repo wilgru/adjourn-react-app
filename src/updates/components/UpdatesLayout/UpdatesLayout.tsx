@@ -5,6 +5,7 @@ import { Calendar } from "src/common/components/Calendar/Calendar";
 import { EmptyState } from "src/common/components/EmptyState/EmptyState";
 import { PageHeader } from "src/common/components/PageHeader/PageHeader";
 import { cn } from "src/common/utils/cn";
+import { getRelativeDateTitle } from "src/common/utils/getRelativeDateString";
 import { Icon } from "src/icons/components/Icon/Icon";
 import TableOfContents from "src/tableOfContents/TableOfContents/TableOfContents";
 import { UpdateEditor } from "src/updates/components/UpdateEditor/UpdateEditor";
@@ -45,12 +46,14 @@ export const UpdatesLayout = ({
   const tableOfContentItems = useMemo(() => {
     return groupedUpdates.map((group) => {
       const groupDate = getGroupDate(group);
-      const sectionTitle = groupDate
-        ? `${groupDate.format("D")} ${groupDate.format("MMMM")}`
-        : group.title;
+
       const sectionGroup = groupDate
         ? `${groupDate.format("MMMM")} ${groupDate.format("YYYY")}`
         : undefined;
+
+      const sectionTitle = groupDate
+        ? getRelativeDateTitle(groupDate, true, false)
+        : group.title;
 
       return {
         title: sectionTitle,
@@ -69,7 +72,10 @@ export const UpdatesLayout = ({
   const navigationIdByDate = useMemo(() => {
     return new Map(
       groupedUpdates
-        .map((group) => [getGroupDate(group)?.format("YYYY-MM-DD"), group.title])
+        .map((group) => [
+          getGroupDate(group)?.format("YYYY-MM-DD"),
+          group.title,
+        ])
         .filter((entry): entry is [string, string] => Boolean(entry[0])),
     );
   }, [groupedUpdates]);
@@ -93,7 +99,8 @@ export const UpdatesLayout = ({
         .filter((update) => update.isWaypoint)
         .reduce<Record<string, number>>((waypointAcc, update) => {
           const colourClassName = getTintClasses(update.tint).colour.background;
-          waypointAcc[colourClassName] = (waypointAcc[colourClassName] ?? 0) + 1;
+          waypointAcc[colourClassName] =
+            (waypointAcc[colourClassName] ?? 0) + 1;
           return waypointAcc;
         }, {});
 

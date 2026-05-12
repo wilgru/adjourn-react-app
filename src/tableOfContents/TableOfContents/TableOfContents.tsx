@@ -78,22 +78,27 @@ export default function TableOfContents({
   return (
     <nav
       aria-label={`${title} table of contents`}
-      className="w-56 m-4 pl-2 pb-2 max-h-[calc(100vh-2rem)] overflow-y-auto opacity-60 hover:opacity-100 transition-opacity"
+      className="w-56 m-4 pb-2 max-h-[calc(100vh-2rem)] overflow-y-auto opacity-60 hover:opacity-100 transition-opacity"
     >
-      <div className="sticky top-0 z-10 bg-white pb-2">
+      <div className="sticky flex flex-col gap-1 top-1 z-10 bg-white pt-1">
         <h2
           className={cn(
-            "font-title text-lg pt-1 px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
+            "font-title text-lg px-2 pt-1 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-color",
             colour.backgroundGlow,
             colour.textPillInverted,
           )}
         >
           {title}
         </h2>
-        {children && <div className="pt-2 px-1">{children}</div>}
+
+        <div className="px-1 flex flex-col gap-2">
+          <div className="border-b" />
+
+          {children && <>{children}</>}
+        </div>
       </div>
 
-      <ul>
+      <ul className="pt-3">
         {items.map((item, index) => {
           const showGroupTitle = item.group && item.group !== previousGroup;
           if (item.group) previousGroup = item.group;
@@ -102,7 +107,7 @@ export default function TableOfContents({
             <div key={`${item.navigationId}-${index}`}>
               {showGroupTitle && (
                 <li className="pointer-events-none">
-                  <h3 className="text-xs px-3 pt-1 text-gray-400 tracking-wide">
+                  <h3 className="text-xs px-3 pt-4 text-gray-400 tracking-wide">
                     {item.group}
                   </h3>
                 </li>

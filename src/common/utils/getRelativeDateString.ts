@@ -1,16 +1,26 @@
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 
-export const getRelativeDateTitle = (date: Dayjs): string => {
+export const getRelativeDateTitle = (
+  date: Dayjs,
+  showDay: boolean = false,
+  showTime: boolean = true,
+): string => {
   const today = dayjs();
   const diffDays = today.diff(date, "day");
 
-  if (diffDays === 0) return `Today, ${date.format("D MMMM")}`;
-  if (diffDays === 1) return `Yesterday, ${date.format("D MMMM")}`;
-  if (diffDays < 7) return date.format("dddd, D MMMM");
-  if (diffDays < 30) return date.format("D MMMM");
+  const dayLabel =
+    diffDays === 0
+      ? "Today"
+      : diffDays === 1
+        ? "Yesterday"
+        : date.format("dddd");
+  const dateLabel =
+    date.year() !== today.year()
+      ? date.format("D MMMM, YYYY")
+      : date.format("D MMMM");
 
-  return date.year() !== today.year()
-    ? date.format("D MMMM, YYYY")
-    : date.format("D MMMM");
+  const title = showDay ? `${dayLabel}, ${dateLabel}` : dateLabel;
+
+  return showTime ? `${title}, ${date.format("HH:mm")}` : title;
 };

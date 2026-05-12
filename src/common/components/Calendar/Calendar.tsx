@@ -125,7 +125,7 @@ export const Calendar = ({
         <span
           className={cn(
             "font-title text-slate-500",
-            isSmall ? "ml-0.5 text-xs" : "ml-1 text-sm",
+            isSmall ? "ml-2 text-xs" : "ml-1 text-sm",
           )}
         >
           {MONTH_NAMES[displayMonth]} {displayYear}
@@ -162,17 +162,21 @@ export const Calendar = ({
         ))}
 
         {calendarDays.map((calendarDay, index) => {
+          const isDisabled = isDateDisabled?.(calendarDay.day) ?? false;
           const isSelected =
             showSelectedDate && selectedDate?.isSame(calendarDay.day, "day");
+
           const isToday = calendarDay.day.isSame(today, "day");
-          const isDisabled = isDateDisabled?.(calendarDay.day) ?? false;
           const dayKey = calendarDay.day.format("YYYY-MM-DD");
+
           const dotsForDay =
             dayDotIndicators?.[dayKey]?.flatMap((dotIndicator) =>
-              Array.from({ length: dotIndicator.count }, () =>
-                dotIndicator.colourClassName,
+              Array.from(
+                { length: dotIndicator.count },
+                () => dotIndicator.colourClassName,
               ),
             ) ?? [];
+
           const dateLabel = calendarDay.day.format("MMMM D, YYYY");
           const ariaLabel =
             dotsForDay.length > 0
@@ -190,8 +194,14 @@ export const Calendar = ({
               className={cn(
                 "w-full cursor-pointer select-none transition-colors flex flex-col items-center justify-center",
                 isSmall
-                  ? cn("text-[10px] rounded-md", hasDots ? "py-1 gap-px" : "py-0.5")
-                  : cn("text-xs rounded-lg", hasDots ? "py-1.5 gap-0.5" : "py-1"),
+                  ? cn(
+                      "text-[10px] rounded-md",
+                      hasDots ? "py-1 gap-px" : "py-0.5",
+                    )
+                  : cn(
+                      "text-xs rounded-lg",
+                      hasDots ? "py-1.5 gap-0.5" : "py-1",
+                    ),
                 !calendarDay.isCurrentMonth && !isDisabled && "text-slate-300",
                 calendarDay.isCurrentMonth &&
                   !isSelected &&
@@ -210,10 +220,7 @@ export const Calendar = ({
               <span>{calendarDay.day.date()}</span>
               {hasDots && (
                 <span
-                  className={cn(
-                    "flex items-center justify-center",
-                    isSmall ? "gap-px" : "gap-0.5",
-                  )}
+                  className={cn("flex items-center justify-center gap-0.5")}
                 >
                   {dotsForDay
                     .slice(0, MAX_VISIBLE_DOTS)
@@ -221,10 +228,7 @@ export const Calendar = ({
                       <span
                         key={`${dayKey}-${dotClassName}-${dotIndex}`}
                         role="presentation"
-                        className={cn(
-                          isSmall ? "w-0.5 h-0.5 rounded-full" : "w-1 h-1 rounded-full",
-                          dotClassName,
-                        )}
+                        className={cn("w-1 h-1 rounded-full", dotClassName)}
                       />
                     ))}
                 </span>
