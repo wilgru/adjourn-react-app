@@ -9,6 +9,7 @@ import type { Colour } from "src/colours/Colour.type";
 type CalendarProps = {
   colour?: Colour;
   selectedDate?: Dayjs | null;
+  showSelectedDate?: boolean;
   onSelectDate?: (date: Dayjs) => void;
   isDateDisabled?: (date: Dayjs) => boolean;
   dayDotIndicators?: Record<
@@ -41,6 +42,7 @@ const MAX_VISIBLE_DOTS = 4;
 export const Calendar = ({
   colour = colours.orange,
   selectedDate,
+  showSelectedDate = true,
   onSelectDate,
   isDateDisabled,
   dayDotIndicators,
@@ -145,7 +147,9 @@ export const Calendar = ({
 
         {calendarDays.map((calendarDay, index) => {
           const isSelected =
-            selectedDate && calendarDay.day.isSame(selectedDate, "day");
+            showSelectedDate &&
+            selectedDate &&
+            calendarDay.day.isSame(selectedDate, "day");
           const isToday = calendarDay.day.isSame(today, "day");
           const isDisabled = isDateDisabled?.(calendarDay.day) ?? false;
           const dayKey = calendarDay.day.format("YYYY-MM-DD");

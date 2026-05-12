@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { colours } from "src/colours/colours.constant";
 import { Calendar } from "src/common/components/Calendar/Calendar";
@@ -34,10 +35,8 @@ export const UpdatesLayout = ({
   onCancelNew,
   onCreateNew,
 }: UpdatesLayoutProps) => {
+  const navigate = useNavigate();
   const [navigationId, setNavigationId] = useState("");
-  const [selectedCalendarDate, setSelectedCalendarDate] = useState<Dayjs | null>(
-    null,
-  );
 
   const groupedUpdates = groupUpdates(updates);
 
@@ -65,14 +64,6 @@ export const UpdatesLayout = ({
           })),
       };
     });
-  }, [groupedUpdates]);
-
-  const dateByNavigationId = useMemo(() => {
-    return new Map(
-      groupedUpdates
-        .map((group) => [group.title, getGroupDate(group)])
-        .filter((entry): entry is [string, Dayjs] => Boolean(entry[1])),
-    );
   }, [groupedUpdates]);
 
   const navigationIdByDate = useMemo(() => {
@@ -158,15 +149,11 @@ export const UpdatesLayout = ({
             items={tableOfContentItems}
             colour={colour}
             activeItemNavigationId={navigationId}
-            onJumpTo={(id) => {
-              setNavigationId(id);
-              const date = dateByNavigationId.get(id);
-              if (date) setSelectedCalendarDate(date);
-            }}
+            onJumpTo={(id) => setNavigationId(id)}
           >
             <Calendar
               colour={colour}
-              selectedDate={selectedCalendarDate}
+              showSelectedDate={false}
               dayDotIndicators={dayDotIndicators}
               isDateDisabled={(date) =>
                 !availableDateKeys.has(date.startOf("day").format("YYYY-MM-DD"))
@@ -175,8 +162,8 @@ export const UpdatesLayout = ({
                 const dateKey = date.startOf("day").format("YYYY-MM-DD");
                 const targetNavigationId = navigationIdByDate.get(dateKey);
                 if (!targetNavigationId) return;
-                setSelectedCalendarDate(date.startOf("day"));
                 setNavigationId(targetNavigationId);
+                navigate({ to: `#${targetNavigationId}` });
               }}
             />
           </TableOfContents>
