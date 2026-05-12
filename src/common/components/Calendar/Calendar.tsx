@@ -8,6 +8,7 @@ import type { Colour } from "src/colours/Colour.type";
 
 type CalendarProps = {
   colour?: Colour;
+  size?: "sm" | "medium";
   selectedDate?: Dayjs | null;
   showSelectedDate?: boolean;
   onSelectDate?: (date: Dayjs) => void;
@@ -41,12 +42,14 @@ const MAX_VISIBLE_DOTS = 4;
 
 export const Calendar = ({
   colour = colours.orange,
+  size = "medium",
   selectedDate,
   showSelectedDate = true,
   onSelectDate,
   isDateDisabled,
   dayDotIndicators,
 }: CalendarProps): JSX.Element => {
+  const isSmall = size === "sm";
   const today = dayjs();
   const [displayYear, setDisplayYear] = useState(today.year());
   const [displayMonth, setDisplayMonth] = useState(today.month());
@@ -113,33 +116,46 @@ export const Calendar = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-2">
-        <span className="ml-1 font-title text-sm text-slate-500">
+      <div
+        className={cn(
+          "flex justify-between items-center",
+          isSmall ? "mb-1" : "mb-2",
+        )}
+      >
+        <span
+          className={cn(
+            "font-title text-slate-500",
+            isSmall ? "ml-0.5 text-xs" : "ml-1 text-sm",
+          )}
+        >
           {MONTH_NAMES[displayMonth]} {displayYear}
         </span>
-        <div className="flex items-center gap-1">
+        <div className={cn("flex items-center", isSmall ? "gap-0.5" : "gap-1")}>
           <Button
             onClick={handlePrevMonth}
             colour={colour}
             iconName="caretLeft"
             variant="ghost"
-            size="sm"
+            size={isSmall ? "xs" : "sm"}
           />
           <Button
             onClick={handleNextMonth}
             colour={colour}
             iconName="caretRight"
             variant="ghost"
-            size="sm"
+            size={isSmall ? "xs" : "sm"}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-0.5">
+      <div className={cn("grid grid-cols-7", isSmall ? "gap-px" : "gap-0.5")}>
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <span
             key={d}
-            className="text-xs font-medium text-slate-500 text-center py-0.5"
+            className={cn(
+              "font-medium text-slate-500 text-center",
+              isSmall ? "text-[10px] py-0" : "text-xs py-0.5",
+            )}
           >
             {d}
           </span>
@@ -171,7 +187,8 @@ export const Calendar = ({
               aria-label={ariaLabel}
               onClick={() => onSelectDate?.(calendarDay.day)}
               className={cn(
-                "h-9 w-full text-xs rounded-lg cursor-pointer select-none transition-colors flex flex-col items-center justify-center gap-0.5",
+                "w-full cursor-pointer select-none transition-colors flex flex-col items-center justify-center",
+                isSmall ? "h-6 text-[10px] rounded-md gap-0" : "h-9 text-xs rounded-lg gap-0.5",
                 !calendarDay.isCurrentMonth && !isDisabled && "text-slate-300",
                 calendarDay.isCurrentMonth &&
                   !isSelected &&
@@ -188,14 +205,22 @@ export const Calendar = ({
               )}
             >
               <span>{calendarDay.day.date()}</span>
-              <span className="min-h-2 flex items-center justify-center gap-0.5">
+              <span
+                className={cn(
+                  "flex items-center justify-center",
+                  isSmall ? "min-h-1 gap-px" : "min-h-2 gap-0.5",
+                )}
+              >
                 {dotsForDay
                   .slice(0, MAX_VISIBLE_DOTS)
                   .map((dotClassName, dotIndex) => (
                     <span
                       key={`${dayKey}-${dotClassName}-${dotIndex}`}
                       role="presentation"
-                      className={cn("w-1 h-1 rounded-full", dotClassName)}
+                      className={cn(
+                        isSmall ? "w-0.5 h-0.5 rounded-full" : "w-1 h-1 rounded-full",
+                        dotClassName,
+                      )}
                     />
                   ))}
               </span>
