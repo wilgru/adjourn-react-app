@@ -53,11 +53,12 @@ const isHttpUrl = (value: string) => {
 };
 
 const createWindow = () => {
+  const isDev = !app.isPackaged;
   const isMac = process.platform === "darwin";
   const isWindows = process.platform === "win32";
 
   mainWindow = new BrowserWindow({
-    width: 1200,
+    width: isDev ? 2400 : 1200,
     height: 800,
     title: "Pocketbook",
     titleBarStyle: "hidden",
@@ -90,7 +91,8 @@ const createWindow = () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
-  if (!app.isPackaged) {
+
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 
