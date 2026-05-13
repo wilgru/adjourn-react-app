@@ -123,7 +123,7 @@ export const Calendar = ({
         )}
       >
         <h3
-          className={cn("text-slate-400 ml-1", isSmall ? "text-xs" : "text-sm")}
+          className={cn("text-slate-400", isSmall ? "ml-1.5 text-xs" : "ml-1 text-sm")}
         >
           {MONTH_NAMES[displayMonth]} {displayYear}
         </h3>
@@ -133,14 +133,14 @@ export const Calendar = ({
             onClick={handlePrevMonth}
             colour={colour}
             iconName="caretLeft"
-            variant="ghost"
+            variant="ghost-strong"
             size={isSmall ? "xs" : "sm"}
           />
           <Button
             onClick={handleNextMonth}
             colour={colour}
             iconName="caretRight"
-            variant="ghost"
+            variant="ghost-strong"
             size={isSmall ? "xs" : "sm"}
           />
         </div>
